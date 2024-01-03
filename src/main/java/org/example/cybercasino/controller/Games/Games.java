@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 public class Games {
     @PostMapping("/generateResult")
-    public List<Integer> generateResult(@RequestBody GameInformation gameInformation) {
+    public List<String> generateResult(@RequestBody GameInformation gameInformation) {
         //check arguments validity
         if (!checkArgumentsValidity(gameInformation)) {
             throw new IllegalArgumentException("Invalid arguments");
@@ -51,7 +51,7 @@ public class Games {
 
         //generate result
         GameStrategy generator = gameType.getGameStrategy();
-        List<Integer> result = generator.generate(gameType.getGameConstants());
+        List<String> result = generator.generate(gameType.getGameConstants());
 
         boolean isWin = generator.isWinning(result);
         //if user won, update balance

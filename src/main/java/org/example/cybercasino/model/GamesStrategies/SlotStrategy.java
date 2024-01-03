@@ -22,7 +22,7 @@ public class SlotStrategy extends GameStrategy {
     }
 
     @Override
-    public List<Integer> generate(Object ...args) {
+    public List<String> generate(Object ...args) {
         if (args.length != 1 || !(args[0] instanceof SlotMachineConstants slotMachineConstants)) {
             throw new IllegalArgumentException("Invalid arguments");
         }
@@ -32,8 +32,8 @@ public class SlotStrategy extends GameStrategy {
     }
 
     @Override
-    public boolean isWinning(List<Integer> result) {
-        return false;
+    public boolean isWinning(List<String> result) {
+        return result.stream().distinct().count() == 1;
     }
 
     //private methods
@@ -42,17 +42,20 @@ public class SlotStrategy extends GameStrategy {
         return random.nextInt(100) < probability;
     }
 
-    private List<Integer> generateResult(SlotMachineConstants slotMachineConstants, boolean isWin) {
-        List<Integer> result = new ArrayList<>();
+    private List<String> generateResult(SlotMachineConstants slotMachineConstants, boolean isWin) {
+        List<String> result = new ArrayList<>();
         if (isWin) {
-            int winningElement = random.nextInt(slotMachineConstants.numberOfElements);
+            int winningElementPos = random.nextInt(slotMachineConstants.numberOfElements);
+            String winningElement = slotMachineConstants.elements[winningElementPos];
+
             for (int i = 0; i < slotMachineConstants.numberOfReels; i++) {
                 result.add(winningElement);
             }
         }
         else {
             for (int i = 0; i < slotMachineConstants.numberOfReels; i++) {
-                result.add(random.nextInt(slotMachineConstants.numberOfElements));
+                int rndElemPos = random.nextInt(slotMachineConstants.numberOfElements);
+                result.add(slotMachineConstants.elements[rndElemPos]);
             }
         }
         return result;

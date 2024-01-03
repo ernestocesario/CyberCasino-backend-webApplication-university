@@ -14,12 +14,12 @@ public class RouletteStrategy extends GameStrategy {
         return instance;
     }
     @Override
-    public List<Integer> generate(Object ...args) {
+    public List<String> generate(Object ...args) {
         return null;
     }
 
     @Override
-    public boolean isWinning(List<Integer> result) {
+    public boolean isWinning(List<String> result) {
         return false;
     }
 }

@@ -1,5 +1,6 @@
 package org.example.cybercasino.model.DAOs;
 
+import jakarta.transaction.Transactional;
 import org.example.cybercasino.model.DTOs.utils.Match;
 import org.example.cybercasino.model.Database;
 import org.example.cybercasino.model.constants.DatabaseConstants;
@@ -22,6 +23,7 @@ public class GameHistoryDAO {
         return instance;
     }
 
+    @Transactional
     public void addMatch(Match match) {
         long nextId = getNextId();
 

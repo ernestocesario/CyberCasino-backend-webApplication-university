@@ -10,6 +10,19 @@ public class PremiumSlotMachineConstants extends SlotMachineConstants {
     }
 
     private PremiumSlotMachineConstants() {
-        super(5, 12, 20);
+        super(5, 12, 20, new String[]{
+                "peach",
+                "bag",
+                "bar",
+                "melon",
+                "apple",
+                "cherry",
+                "ruby",
+                "lemon",
+                "777",
+                "banana",
+                "grape",
+                "strawberry"
+        });
     }
 }

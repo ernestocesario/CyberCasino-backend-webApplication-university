@@ -10,6 +10,19 @@ public class FruitSlotMachineConstants extends SlotMachineConstants {
     }
 
     private FruitSlotMachineConstants() {
-        super(4, 12, 7);
+        super(4, 12, 7, new String[]{
+                "banana",
+                "bar",
+                "blueberry",
+                "cherry",
+                "clover",
+                "crown",
+                "diamond",
+                "golden_cherry",
+                "golden_raspberry",
+                "orange",
+                "raspberry",
+                "seven"
+        });
     }
 }

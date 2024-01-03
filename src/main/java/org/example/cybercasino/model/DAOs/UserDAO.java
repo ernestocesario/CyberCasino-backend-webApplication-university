@@ -1,5 +1,6 @@
 package org.example.cybercasino.model.DAOs;
 
+import jakarta.transaction.Transactional;
 import org.example.cybercasino.model.DTOs.User;
 import org.example.cybercasino.model.Database;
 import org.example.cybercasino.model.constants.DatabaseConstants;
@@ -69,6 +70,7 @@ public class UserDAO {
         return null;
     }
 
+    @Transactional
     public boolean addUser(User user) {
         if (findByEmail(user.getEmail()) != null || findUserByUsername(user.getUsername()) != null) {
             return false;

@@ -9,6 +9,19 @@ public class MineSlotMachineConstants extends SlotMachineConstants {
         return instance;
     }
     private MineSlotMachineConstants() {
-        super(4, 12, 10);
+        super(4, 12, 10, new String[]{
+                "star",
+                "lightning",
+                "chest",
+                "key",
+                "lock",
+                "coin",
+                "red_gem",
+                "hearth",
+                "purple_gem",
+                "bag",
+                "green_gem",
+                "shield"
+        });
     }
 }
