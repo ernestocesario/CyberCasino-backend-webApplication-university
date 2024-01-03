@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.example.cybercasino.model.DAOs.UserDAO;
 import org.example.cybercasino.model.DTOs.User;
 import org.example.cybercasino.model.constants.FrontendConstants;
+import org.example.cybercasino.utils.hashingAlgorithms.BCryptHashAlgorithm;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,18 +16,21 @@ import java.util.Base64;
 @RestController
 @CrossOrigin(origins = FrontendConstants.frontendUrl, allowCredentials = "true")
 public class Authentication {
-    @PostMapping("/login")
-    public AuthToken login(@RequestBody SimpleUser simpleUser, HttpServletRequest req) {
+    @PostMapping("/register")
+    public boolean register(@RequestBody SimpleUser simpleUser) {
         String email = simpleUser.email;
-        String hashedPassword = simpleUser.password;
-        String concat = email + ":" + hashedPassword;
-        String token = Base64.getEncoder().encodeToString(concat.getBytes());
-        User user = getUserByToken(token);
-        if (user != null) {
-            req.getSession().setAttribute("user", user);
-            return new AuthToken(token);
-        }
-        return null;
+        String username = simpleUser.username;
+        String hashedPassword = BCryptHashAlgorithm.getInstance().getHash(simpleUser.password);
+        User user = new User(email, username, hashedPassword, 0, false);
+        return UserDAO.getInstance().addUser(user);
+    }
+
+    @PostMapping("/login")
+    public AuthToken login(@RequestBody Credentials credentials) {
+        String email = credentials.email;
+        String hashedPassword = credentials.password;
+        String token = encodeToken(email, hashedPassword);
+        return userExists(email, hashedPassword) ? new AuthToken(token) : null;
     }
 
     @PostMapping("/logout")
@@ -42,21 +46,30 @@ public class Authentication {
         }
 
         String token = auth.substring("Basic ".length());
-        return getUserByToken(token) != null;
+        return userExistsFromToken(token);
     }
 
-    //private methods
-    private User getUserByToken(String token) {
-        if (token == null) {
-            return null;
-        }
-        String[] credentials = new String(Base64.getDecoder().decode(token)).split(":");
-        String username = credentials[0];
-        String password = credentials[1];
+    public static boolean userExistsFromToken(String token) {
+        Credentials credentials = decodeToken(token);
+        return userExists(credentials.email, credentials.password);
+    }
 
-        User user = UserDAO.getInstance().findByEmail(username);
-        if (user != null && user.getHashedPassword().equals(password))
-            return user;
-        return null;
+    public static Credentials decodeToken(String token) {
+        String decodedToken = new String(Base64.getDecoder().decode(token));
+        String[] split = decodedToken.split(":");
+        Credentials credentials = new Credentials();
+        credentials.email = split[0];
+        credentials.password = split[1];
+        return credentials;
+    }
+
+    public static String encodeToken(String email, String hashedPassword) {
+        String concat = email + ":" + hashedPassword;
+        return Base64.getEncoder().encodeToString(concat.getBytes());
+    }
+
+    public static boolean userExists(String email, String hashedPassword) {
+        User user = UserDAO.getInstance().findByEmail(email);
+        return user != null && user.getHashedPassword().equals(hashedPassword);
     }
 }

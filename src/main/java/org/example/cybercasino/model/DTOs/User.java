@@ -8,15 +8,13 @@ public class User {
     private String hashedPassword;
     private double Balance;
     private boolean dailySpinAvailable;
-    private Timestamp creation_time;
 
-    public User(String email, String username, String hashedPassword, double balance, boolean dailySpinAvailable, Timestamp creation_time) {
+    public User(String email, String username, String hashedPassword, double balance, boolean dailySpinAvailable) {
         this.username = username;
         this.email = email;
         this.hashedPassword = hashedPassword;
         Balance = balance;
         this.dailySpinAvailable = dailySpinAvailable;
-        this.creation_time = creation_time;
     }
 
     public String getUsername() {
@@ -39,7 +37,17 @@ public class User {
         return dailySpinAvailable;
     }
 
-    public Timestamp getCreation_time() {
-        return creation_time;
+
+    //update balance
+    public void addBalance(double amount) {
+        Balance += amount;
+    }
+
+    public void subtractBalance(double amount) {
+        Balance -= amount;
+    }
+
+    public void setBalance(double balance) {
+        Balance = balance;
     }
 }

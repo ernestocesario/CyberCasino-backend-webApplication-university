@@ -34,9 +34,8 @@ public class UserDAO {
                 String password = resultSet.getString(USERS_TBL_PASSWORD_COL);
                 double balance = resultSet.getDouble(USERS_TBL_BALANCE_COL);
                 boolean dailySpinAvailable = resultSet.getBoolean(USERS_TBL_DAILYSPIN_COL);
-                Timestamp creationTime = resultSet.getTimestamp(USERS_TBL_CREATIONTIME_COL);
 
-                return new User(email, username, password, balance, dailySpinAvailable, creationTime);
+                return new User(email, username, password, balance, dailySpinAvailable);
             }
             return null;
         }
@@ -44,5 +43,53 @@ public class UserDAO {
             Database.getInstance().fatalDatabaseError(e);
         }
         return null;
+    }
+
+    public User findUserByUsername(String username) {
+        try (Connection connection = Database.getInstance().createDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DatabaseConstants.GET_USER_BY_USERNAME)) {
+
+            preparedStatement.setString(1, username);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String email = resultSet.getString(USERS_TBL_EMAIL_COL);
+                String password = resultSet.getString(USERS_TBL_PASSWORD_COL);
+                double balance = resultSet.getDouble(USERS_TBL_BALANCE_COL);
+                boolean dailySpinAvailable = resultSet.getBoolean(USERS_TBL_DAILYSPIN_COL);
+
+                return new User(email, username, password, balance, dailySpinAvailable);
+            }
+            return null;
+        }
+        catch (SQLException e) {
+            Database.getInstance().fatalDatabaseError(e);
+        }
+        return null;
+    }
+
+    public boolean addUser(User user) {
+        if (findByEmail(user.getEmail()) != null || findUserByUsername(user.getUsername()) != null) {
+            return false;
+        }
+
+        try (Connection connection = Database.getInstance().createDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DatabaseConstants.ADD_USER)) {
+
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(2, user.getUsername());
+            preparedStatement.setString(3, user.getHashedPassword());
+            preparedStatement.setDouble(4, user.getBalance());
+            preparedStatement.setBoolean(5, user.isDailySpinAvailable());
+
+            preparedStatement.executeLargeUpdate();
+            return true;
+        }
+
+        catch (SQLException e) {
+            Database.getInstance().fatalDatabaseError(e);
+            return false;
+        }
     }
 }
