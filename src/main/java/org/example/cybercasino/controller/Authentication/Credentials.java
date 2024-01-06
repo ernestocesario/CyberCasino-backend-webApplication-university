@@ -1,6 +1,6 @@
 package org.example.cybercasino.controller.Authentication;
 
 public class Credentials {
-    public String email;
+    public String username;
     public String password;
 }

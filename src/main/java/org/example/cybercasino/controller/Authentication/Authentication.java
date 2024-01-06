@@ -27,10 +27,10 @@ public class Authentication {
 
     @PostMapping("/login")
     public AuthToken login(@RequestBody Credentials credentials) {
-        String email = credentials.email;
+        String username = credentials.username;
         String hashedPassword = credentials.password;
-        String token = encodeToken(email, hashedPassword);
-        return userExists(email, hashedPassword) ? new AuthToken(token) : null;
+        String token = encodeToken(username, hashedPassword);
+        return userExists(username, hashedPassword) ? new AuthToken(token) : null;
     }
 
     @PostMapping("/logout")
@@ -51,14 +51,14 @@ public class Authentication {
 
     public static boolean userExistsFromToken(String token) {
         Credentials credentials = decodeToken(token);
-        return userExists(credentials.email, credentials.password);
+        return userExists(credentials.username, credentials.password);
     }
 
     public static Credentials decodeToken(String token) {
         String decodedToken = new String(Base64.getDecoder().decode(token));
         String[] split = decodedToken.split(":");
         Credentials credentials = new Credentials();
-        credentials.email = split[0];
+        credentials.username = split[0];
         credentials.password = split[1];
         return credentials;
     }
@@ -68,8 +68,8 @@ public class Authentication {
         return Base64.getEncoder().encodeToString(concat.getBytes());
     }
 
-    public static boolean userExists(String email, String hashedPassword) {
-        User user = UserDAO.getInstance().findByEmail(email);
+    public static boolean userExists(String username, String hashedPassword) {
+        User user = UserDAO.getInstance().findUserByUsername(username);
         return user != null && user.getHashedPassword().equals(hashedPassword);
     }
 }

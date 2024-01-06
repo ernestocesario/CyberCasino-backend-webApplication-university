@@ -41,7 +41,7 @@ public class Games {
         Credentials credentials = Authentication.decodeToken(userToken);
 
         //check if user has enough money
-        User user = UserDAO.getInstance().findByEmail(credentials.email);
+        User user = UserDAO.getInstance().findUserByUsername(credentials.username);
         if (user.getBalance() < bet) {
             throw new IllegalArgumentException("User does not have enough money");
         }
