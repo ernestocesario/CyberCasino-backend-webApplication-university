@@ -12,16 +12,16 @@ import org.example.cybercasino.model.constants.Games.SlotMachine.MineSlotMachine
 import org.example.cybercasino.model.constants.Games.SlotMachine.PremiumSlotMachineConstants;
 
 public enum GameType {
-    FRUIT_SLOT,
-    PREMIUM_SLOT,
-    MINE_SLOT,
+    FRUITSLOT,
+    PREMIUMSLOT,
+    MINESLOT,
     ROULETTE,
     DAILY_SPIN;
 
 
     public GameStrategy getGameStrategy() {
         return switch (this) {
-            case FRUIT_SLOT, PREMIUM_SLOT, MINE_SLOT -> SlotStrategy.getInstance();
+            case FRUITSLOT, PREMIUMSLOT, MINESLOT -> SlotStrategy.getInstance();
             case ROULETTE -> RouletteStrategy.getInstance();
             case DAILY_SPIN -> DailySpinStrategy.getInstance();
         };
@@ -29,9 +29,9 @@ public enum GameType {
 
     public Object getGameConstants() {
         return switch (this) {
-            case FRUIT_SLOT -> FruitSlotMachineConstants.getInstance();
-            case PREMIUM_SLOT -> PremiumSlotMachineConstants.getInstance();
-            case MINE_SLOT -> MineSlotMachineConstants.getInstance();
+            case FRUITSLOT -> FruitSlotMachineConstants.getInstance();
+            case PREMIUMSLOT -> PremiumSlotMachineConstants.getInstance();
+            case MINESLOT -> MineSlotMachineConstants.getInstance();
             case ROULETTE -> RouletteConstants.getInstance();
             case DAILY_SPIN -> DailySpinConstants.getInstance();
         };

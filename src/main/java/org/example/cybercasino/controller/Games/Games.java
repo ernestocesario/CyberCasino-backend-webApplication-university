@@ -3,6 +3,7 @@ package org.example.cybercasino.controller.Games;
 import org.example.cybercasino.controller.Authentication.Authentication;
 import org.example.cybercasino.controller.Authentication.Credentials;
 import org.example.cybercasino.controller.Games.utils.GameInformation;
+import org.example.cybercasino.controller.Games.utils.GeneratedGame;
 import org.example.cybercasino.model.DAOs.GameHistoryDAO;
 import org.example.cybercasino.model.DAOs.UserDAO;
 import org.example.cybercasino.model.DTOs.User;
@@ -10,6 +11,8 @@ import org.example.cybercasino.model.DTOs.utils.Match;
 import org.example.cybercasino.model.DTOs.utils.MatchResult;
 import org.example.cybercasino.model.GameType;
 import org.example.cybercasino.model.GamesStrategies.GameStrategy;
+import org.example.cybercasino.model.constants.FrontendConstants;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,9 +24,10 @@ import java.time.ZoneId;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = FrontendConstants.frontendUrl, allowCredentials = "true")
 public class Games {
     @PostMapping("/generateResult")
-    public List<String> generateResult(@RequestBody GameInformation gameInformation) {
+    public GeneratedGame generateResult(@RequestBody GameInformation gameInformation) {
         //check arguments validity
         if (!checkArgumentsValidity(gameInformation)) {
             throw new IllegalArgumentException("Invalid arguments");
@@ -63,13 +67,15 @@ public class Games {
             }
         }
 
+        UserDAO.getInstance().updateUser(user);
+
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.ofInstant(Instant.now(), ZoneId.of("UTC")));
-        Match match = new Match(user, gameType, bet, isWin ? MatchResult.WIN : MatchResult.LOSS, timestamp);
+        Match match = new Match(user, gameType, isWin ? bet * 2 : -bet , isWin ? MatchResult.WIN : MatchResult.LOSS, timestamp);
 
         //add match to database
         GameHistoryDAO.getInstance().addMatch(match);
 
-        return result;
+        return new GeneratedGame(result, user.getBalance());
     }
 
 

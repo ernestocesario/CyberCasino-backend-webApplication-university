@@ -22,7 +22,7 @@ public class Authentication {
         String email = simpleUser.email;
         String username = simpleUser.username;
         String hashedPassword = BCryptHashAlgorithm.getInstance().getHash(simpleUser.password);
-        User user = new User(email, username, hashedPassword, 0, new Date(0), false);
+        User user = new User(email, username, hashedPassword, 10, new Date(0), false);
         return UserDAO.getInstance().addUser(user);
     }
 
@@ -74,5 +74,14 @@ public class Authentication {
     public static boolean userExists(String username, String hashedPassword) {
         User user = UserDAO.getInstance().findUserByUsername(username);
         return user != null && BCryptHashAlgorithm.getInstance().checkHash(hashedPassword, user.getHashedPassword());
+    }
+
+    public static User getUserFromToken(String token) {
+        Credentials credentials = decodeToken(token);
+        User user = UserDAO.getInstance().findUserByUsername(credentials.username);
+        if (user != null && BCryptHashAlgorithm.getInstance().checkHash(credentials.password, user.getHashedPassword())) {
+            return user;
+        }
+        return null;
     }
 }

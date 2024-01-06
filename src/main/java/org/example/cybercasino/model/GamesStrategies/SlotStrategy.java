@@ -38,9 +38,10 @@ public class SlotStrategy extends GameStrategy {
 
     //private methods
     private boolean willWin(SlotMachineConstants slotMachineConstants) {
-        double probability = (double) slotMachineConstants.winningPercentage / 100.0;
-        return random.nextInt(100) < probability;
+        return random.nextInt(100) < slotMachineConstants.winningPercentage;
     }
+
+    //TODO add fake win
 
     private List<String> generateResult(SlotMachineConstants slotMachineConstants, boolean isWin) {
         List<String> result = new ArrayList<>();
@@ -56,6 +57,16 @@ public class SlotStrategy extends GameStrategy {
             for (int i = 0; i < slotMachineConstants.numberOfReels; i++) {
                 int rndElemPos = random.nextInt(slotMachineConstants.numberOfElements);
                 result.add(slotMachineConstants.elements[rndElemPos]);
+            }
+            //evita che si generino risultati con tutti gli elementi uguali, anche se non è una vincita
+            if (result.stream().distinct().count() == 1) {
+                String elem = result.get(0);
+                for (int i = 0; i < slotMachineConstants.elements.length; i++) {
+                    if (!slotMachineConstants.elements[i].equals(elem)) {
+                        result.set(slotMachineConstants.numberOfReels - 1, slotMachineConstants.elements[i]);
+                        break;
+                    }
+                }
             }
         }
         return result;

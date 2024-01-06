@@ -3,10 +3,10 @@ package org.example.cybercasino.model.DTOs;
 import java.util.Date;
 
 public class User {
-    private String username;
-    private String email;
-    private String hashedPassword;
-    private double Balance;
+    private final String username;
+    private final String email;
+    private final String hashedPassword;
+    private double balance;
     private Date lastDailySpin;
     private boolean isBanned;
 
@@ -14,7 +14,7 @@ public class User {
         this.username = username;
         this.email = email;
         this.hashedPassword = hashedPassword;
-        Balance = balance;
+        this.balance = balance;
         this.lastDailySpin = lastDailySpin;
         this.isBanned = isBanned;
     }
@@ -32,7 +32,7 @@ public class User {
     }
 
     public double getBalance() {
-        return Balance;
+        return balance;
     }
 
     public Date getLastDailySpin() {
@@ -50,15 +50,15 @@ public class User {
 
     //update balance
     public void addBalance(double amount) {
-        Balance += amount;
+        balance += amount;
     }
 
     public void subtractBalance(double amount) {
-        Balance -= amount;
+        balance -= amount;
     }
 
     public void setBalance(double balance) {
-        Balance = balance;
+        this.balance = balance;
     }
 
     public void updateLastDailySpin() {

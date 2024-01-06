@@ -5,9 +5,8 @@ public class DatabaseConstants {
 
     //Tables
     public static final String USERS_TABLE = "users";
-    public static final String GAMES_TABLE = "games";
-    public static final String TRANSACTION_HISTORY_TABLE = "transaction_history";
-    public static final String GAME_HISTORY_TABLE = "game_history";
+    public static final String TRANSACTION_HISTORY_TABLE = "transactionhistory";
+    public static final String GAME_HISTORY_TABLE = "gamehistory";
 
     //Users Table Columns Names
     public static final String USERS_TBL_EMAIL_COL = "email";
@@ -35,6 +34,7 @@ public class DatabaseConstants {
     public static final String GET_USER_BY_USERNAME = "SELECT * FROM " + USERS_TABLE + " WHERE " + USERS_TBL_USERNAME_COL + " = ?";
     public static final String GET_USER_BY_EMAIL = "SELECT * FROM " + USERS_TABLE + " WHERE " + USERS_TBL_EMAIL_COL + " = ?";
     public static final String ADD_USER = "INSERT INTO " + USERS_TABLE + " (" + USERS_TBL_EMAIL_COL + ", " + USERS_TBL_USERNAME_COL + ", " + USERS_TBL_PASSWORD_COL + ", " + USERS_TBL_BALANCE_COL + ", " + USERS_TBL_DAILYSPIN_COL + ", " + USERS_TBL_BANNED_COL + ") VALUES (?, ?, ?, ?, ?, ?)";
+    public static final String UPDATE_USER = "UPDATE " + USERS_TABLE + " SET " + USERS_TBL_USERNAME_COL + " = ?, " + USERS_TBL_PASSWORD_COL + " = ?, " + USERS_TBL_BALANCE_COL + " = ?, " + USERS_TBL_DAILYSPIN_COL + " = ?, " + USERS_TBL_BANNED_COL + " = ? WHERE " + USERS_TBL_EMAIL_COL + " = ?";
 
     //Game History queries
     public static final String GET_LAST_ID_GAMEHISTORY = "SELECT MAX(" + GAME_HISTORY_TBL_ID_COL + ") FROM " + GAME_HISTORY_TABLE;

@@ -95,4 +95,29 @@ public class UserDAO {
             return false;
         }
     }
+
+    public boolean updateUser(User user) {
+        if (findByEmail(user.getEmail()) == null) {
+            return false;
+        }
+
+        try (Connection connection = Database.getInstance().createDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DatabaseConstants.UPDATE_USER)) {
+
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getHashedPassword());
+            preparedStatement.setDouble(3, user.getBalance());
+            preparedStatement.setDate(4, new java.sql.Date(user.getLastDailySpin().getTime()));
+            preparedStatement.setBoolean(5, user.isBanned());
+            preparedStatement.setString(6, user.getEmail());
+
+            preparedStatement.executeLargeUpdate();
+            return true;
+        }
+
+        catch (SQLException e) {
+            Database.getInstance().fatalDatabaseError(e);
+            return false;
+        }
+    }
 }
