@@ -14,7 +14,7 @@ public class BCryptHashAlgorithm implements GenericHashAlgorithm {
     }
 
     //Local Constants
-    private final int BCRYPT_LOG_ROUND = 15;
+    private final int BCRYPT_LOG_ROUND = 8;
 
     @Override
     public String getHash(String text) {

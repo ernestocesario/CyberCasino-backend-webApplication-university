@@ -1,20 +1,22 @@
 package org.example.cybercasino.model.DTOs;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 public class User {
     private String username;
     private String email;
     private String hashedPassword;
     private double Balance;
-    private boolean dailySpinAvailable;
+    private Date lastDailySpin;
+    private boolean isBanned;
 
-    public User(String email, String username, String hashedPassword, double balance, boolean dailySpinAvailable) {
+    public User(String email, String username, String hashedPassword, double balance, Date lastDailySpin, boolean isBanned) {
         this.username = username;
         this.email = email;
         this.hashedPassword = hashedPassword;
         Balance = balance;
-        this.dailySpinAvailable = dailySpinAvailable;
+        this.lastDailySpin = lastDailySpin;
+        this.isBanned = isBanned;
     }
 
     public String getUsername() {
@@ -33,8 +35,16 @@ public class User {
         return Balance;
     }
 
+    public Date getLastDailySpin() {
+        return lastDailySpin;
+    }
+
     public boolean isDailySpinAvailable() {
-        return dailySpinAvailable;
+        return lastDailySpin.before(new Date());
+    }
+
+    public boolean isBanned() {
+        return isBanned;
     }
 
 
@@ -49,5 +59,13 @@ public class User {
 
     public void setBalance(double balance) {
         Balance = balance;
+    }
+
+    public void updateLastDailySpin() {
+        lastDailySpin = new Date();
+    }
+
+    public void setBanned(boolean banned) {
+        isBanned = banned;
     }
 }

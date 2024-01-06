@@ -1,7 +1,7 @@
 package org.example.cybercasino.controller.Authentication;
 
 public class SimpleUser {
-    String username;
-    String email;
-    String password;
+    public String username;
+    public String email;
+    public String password;
 }

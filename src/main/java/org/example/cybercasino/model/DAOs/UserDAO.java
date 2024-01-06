@@ -1,6 +1,5 @@
 package org.example.cybercasino.model.DAOs;
 
-import jakarta.transaction.Transactional;
 import org.example.cybercasino.model.DTOs.User;
 import org.example.cybercasino.model.Database;
 import org.example.cybercasino.model.constants.DatabaseConstants;
@@ -34,9 +33,10 @@ public class UserDAO {
                 String username = resultSet.getString(USERS_TBL_USERNAME_COL);
                 String password = resultSet.getString(USERS_TBL_PASSWORD_COL);
                 double balance = resultSet.getDouble(USERS_TBL_BALANCE_COL);
-                boolean dailySpinAvailable = resultSet.getBoolean(USERS_TBL_DAILYSPIN_COL);
+                Date lastDailySpin = resultSet.getDate(USERS_TBL_DAILYSPIN_COL);
+                boolean isBanned = resultSet.getBoolean(USERS_TBL_BANNED_COL);
 
-                return new User(email, username, password, balance, dailySpinAvailable);
+                return new User(email, username, password, balance, lastDailySpin, isBanned);
             }
             return null;
         }
@@ -58,9 +58,10 @@ public class UserDAO {
                 String email = resultSet.getString(USERS_TBL_EMAIL_COL);
                 String password = resultSet.getString(USERS_TBL_PASSWORD_COL);
                 double balance = resultSet.getDouble(USERS_TBL_BALANCE_COL);
-                boolean dailySpinAvailable = resultSet.getBoolean(USERS_TBL_DAILYSPIN_COL);
+                Date lastDailySpin = resultSet.getDate(USERS_TBL_DAILYSPIN_COL);
+                boolean isBanned = resultSet.getBoolean(USERS_TBL_BANNED_COL);
 
-                return new User(email, username, password, balance, dailySpinAvailable);
+                return new User(email, username, password, balance, lastDailySpin, isBanned);
             }
             return null;
         }
@@ -70,7 +71,6 @@ public class UserDAO {
         return null;
     }
 
-    @Transactional
     public boolean addUser(User user) {
         if (findByEmail(user.getEmail()) != null || findUserByUsername(user.getUsername()) != null) {
             return false;
@@ -83,7 +83,8 @@ public class UserDAO {
             preparedStatement.setString(2, user.getUsername());
             preparedStatement.setString(3, user.getHashedPassword());
             preparedStatement.setDouble(4, user.getBalance());
-            preparedStatement.setBoolean(5, user.isDailySpinAvailable());
+            preparedStatement.setDate(5, new java.sql.Date(user.getLastDailySpin().getTime()));
+            preparedStatement.setBoolean(6, user.isBanned());
 
             preparedStatement.executeLargeUpdate();
             return true;

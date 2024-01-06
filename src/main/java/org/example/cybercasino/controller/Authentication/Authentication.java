@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Base64;
+import java.util.Date;
 
 @RestController
 @CrossOrigin(origins = FrontendConstants.frontendUrl, allowCredentials = "true")
@@ -21,16 +22,18 @@ public class Authentication {
         String email = simpleUser.email;
         String username = simpleUser.username;
         String hashedPassword = BCryptHashAlgorithm.getInstance().getHash(simpleUser.password);
-        User user = new User(email, username, hashedPassword, 0, false);
+        User user = new User(email, username, hashedPassword, 0, new Date(0), false);
         return UserDAO.getInstance().addUser(user);
     }
 
     @PostMapping("/login")
     public AuthToken login(@RequestBody Credentials credentials) {
         String username = credentials.username;
-        String hashedPassword = credentials.password;
-        String token = encodeToken(username, hashedPassword);
-        return userExists(username, hashedPassword) ? new AuthToken(token) : null;
+        String plainPassword = credentials.password;
+        String token = encodeToken(username, plainPassword);
+        AuthToken authToken = new AuthToken();
+        authToken.token = token;
+        return userExists(username, plainPassword) ? authToken : null;
     }
 
     @PostMapping("/logout")
@@ -70,6 +73,6 @@ public class Authentication {
 
     public static boolean userExists(String username, String hashedPassword) {
         User user = UserDAO.getInstance().findUserByUsername(username);
-        return user != null && user.getHashedPassword().equals(hashedPassword);
+        return user != null && BCryptHashAlgorithm.getInstance().checkHash(hashedPassword, user.getHashedPassword());
     }
 }
