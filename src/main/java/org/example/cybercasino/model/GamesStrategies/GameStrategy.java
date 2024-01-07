@@ -13,7 +13,7 @@ public abstract class GameStrategy {
 
         boolean isWin = willWin(gameConstants);
         List<String> gameResult = generateResult(gameConstants, isWin);
-        double amount = calculateAmount(bet, isWin, gameConstants);
+        double amount = calculateAmount(gameResult, bet, isWin, gameConstants);
 
         return new GeneratedGame(gameResult, isWin, amount);
     }
@@ -24,5 +24,5 @@ public abstract class GameStrategy {
 
     protected abstract List<String> generateResult(Object gameConstants, boolean isWin);
 
-    protected abstract double calculateAmount(double bet, boolean isWin, Object gameConstants);
+    protected abstract double calculateAmount(List<String> gameResult, double bet, boolean isWin, Object gameConstants);
 }

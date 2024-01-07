@@ -9,6 +9,13 @@ public class DailySpinConstants {
         return instance;
     }
 
+    public final int[] elements = {0, 1, 3, 5, 10, 200};
+    public final int[] chances = {Integer.MAX_VALUE, 100, 8, 5, 3, 1};
+
+    public final int loseElementIndex = 0;
+
+    public final int winningProbability = 50;
+
     private DailySpinConstants() {
     }
 }

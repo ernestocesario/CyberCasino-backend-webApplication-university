@@ -71,7 +71,7 @@ public class SlotStrategy extends GameStrategy {
     }
 
     @Override
-    protected double calculateAmount(double bet, boolean isWin, Object gameConstants) {
+    protected double calculateAmount(List<String> gameResult, double bet, boolean isWin, Object gameConstants) {
         SlotMachineConstants slotMachineConstants = (SlotMachineConstants) gameConstants;
         return isWin ? bet * slotMachineConstants.betMultiplier : bet;
     }

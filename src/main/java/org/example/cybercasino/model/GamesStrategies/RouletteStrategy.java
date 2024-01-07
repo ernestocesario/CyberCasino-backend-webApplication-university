@@ -30,7 +30,7 @@ public class RouletteStrategy extends GameStrategy {
     }
 
     @Override
-    protected double calculateAmount(double bet, boolean isWin, Object gameConstants) {
+    protected double calculateAmount(List<String> gameResult, double bet, boolean isWin, Object gameConstants) {
         return 0;
     }
 }
