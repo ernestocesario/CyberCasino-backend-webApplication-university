@@ -1,4 +1,4 @@
-package org.example.cybercasino.model;
+package org.example.cybercasino.model.constants.Games;
 
 import org.example.cybercasino.model.GamesStrategies.DailySpinStrategy;
 import org.example.cybercasino.model.GamesStrategies.GameStrategy;
@@ -10,18 +10,17 @@ import org.example.cybercasino.model.constants.Games.RouletteConstants;
 import org.example.cybercasino.model.constants.Games.SlotMachine.FruitSlotMachineConstants;
 import org.example.cybercasino.model.constants.Games.SlotMachine.MineSlotMachineConstants;
 import org.example.cybercasino.model.constants.Games.SlotMachine.PremiumSlotMachineConstants;
+import org.example.cybercasino.model.constants.Games.SlotMachine.SlotMachineType;
 
 public enum GameType {
-    FRUITSLOT,
-    PREMIUMSLOT,
-    MINESLOT,
+    SLOT_MACHINE,
     ROULETTE,
     DAILY_SPIN;
 
 
     public GameStrategy getGameStrategy() {
         return switch (this) {
-            case FRUITSLOT, PREMIUMSLOT, MINESLOT -> SlotStrategy.getInstance();
+            case SLOT_MACHINE -> SlotStrategy.getInstance();
             case ROULETTE -> RouletteStrategy.getInstance();
             case DAILY_SPIN -> DailySpinStrategy.getInstance();
         };
@@ -29,11 +28,21 @@ public enum GameType {
 
     public Object getGameConstants() {
         return switch (this) {
-            case FRUITSLOT -> FruitSlotMachineConstants.getInstance();
-            case PREMIUMSLOT -> PremiumSlotMachineConstants.getInstance();
-            case MINESLOT -> MineSlotMachineConstants.getInstance();
+            case SLOT_MACHINE -> throw new RuntimeException("No slot machine type specified");
             case ROULETTE -> RouletteConstants.getInstance();
             case DAILY_SPIN -> DailySpinConstants.getInstance();
+        };
+    }
+
+    public Object getGameConstants(SlotMachineType slotMachineType) {
+        if (this != SLOT_MACHINE) {
+            throw new RuntimeException("This game type is not a slot machine");
+        }
+
+        return switch (slotMachineType) {
+            case FRUIT -> FruitSlotMachineConstants.getInstance();
+            case MINE -> MineSlotMachineConstants.getInstance();
+            case PREMIUM -> PremiumSlotMachineConstants.getInstance();
         };
     }
 }

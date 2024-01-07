@@ -1,9 +1,9 @@
 package org.example.cybercasino.model.DTOs.utils;
 
 import org.example.cybercasino.model.DTOs.User;
-import org.example.cybercasino.model.GameType;
+import org.example.cybercasino.model.constants.Games.GameType;
 
 import java.sql.Timestamp;
 
-public record Match(User user, GameType gameType, double amount, MatchResult matchResult, Timestamp timestamp) {
+public record Match(User user, GameType gameType, double amount, Timestamp timestamp) {
 }

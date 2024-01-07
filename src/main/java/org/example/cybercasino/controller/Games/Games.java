@@ -3,15 +3,17 @@ package org.example.cybercasino.controller.Games;
 import org.example.cybercasino.controller.Authentication.Authentication;
 import org.example.cybercasino.controller.Authentication.Credentials;
 import org.example.cybercasino.controller.Games.utils.GameInformation;
-import org.example.cybercasino.controller.Games.utils.GeneratedGame;
+import org.example.cybercasino.controller.Games.utils.GameResult;
+import org.example.cybercasino.utils.GeneratedGame;
 import org.example.cybercasino.model.DAOs.GameHistoryDAO;
 import org.example.cybercasino.model.DAOs.UserDAO;
 import org.example.cybercasino.model.DTOs.User;
 import org.example.cybercasino.model.DTOs.utils.Match;
-import org.example.cybercasino.model.DTOs.utils.MatchResult;
-import org.example.cybercasino.model.GameType;
+import org.example.cybercasino.model.constants.Games.GameType;
 import org.example.cybercasino.model.GamesStrategies.GameStrategy;
 import org.example.cybercasino.model.constants.FrontendConstants;
+import org.example.cybercasino.model.constants.Games.SlotMachine.SlotMachineType;
+import org.example.cybercasino.model.constants.MessageConstants;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,80 +23,102 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = FrontendConstants.frontendUrl, allowCredentials = "true")
 public class Games {
-    @PostMapping("/generateResult")
-    public GeneratedGame generateResult(@RequestBody GameInformation gameInformation) {
-        //check arguments validity
-        if (!checkArgumentsValidity(gameInformation)) {
-            throw new IllegalArgumentException("Invalid arguments");
-        }
+    @PostMapping("/play")
+    public GameResult play(@RequestBody GameInformation gameInformation) {
+        if (!checkArgumentsValidity(gameInformation))
+            throw new IllegalArgumentException(MessageConstants.INVALID_ARGUMENTS);
 
-        String userToken = gameInformation.getSessionToken();
-        GameType gameType = GameType.valueOf(gameInformation.getGameName());
-        int bet = gameInformation.getBet();
+        if (!checkAuthentication(gameInformation))
+            throw new IllegalArgumentException(MessageConstants.USER_NOT_FOUND);
 
-        //check if user exist
-        if (!Authentication.userExistsFromToken(userToken)) {
-            throw new IllegalArgumentException("User does not exist");
-        }
-
-        Credentials credentials = Authentication.decodeToken(userToken);
-
-        //check if user has enough money
+        Credentials credentials = Authentication.decodeToken(gameInformation.getSessionToken());
         User user = UserDAO.getInstance().findUserByUsername(credentials.username);
-        if (user.getBalance() < bet) {
-            throw new IllegalArgumentException("User does not have enough money");
-        }
 
-        //subtract bet from user balance
-        user.subtractBalance(bet);
+        if(!checkUserBalance(user, gameInformation))
+            throw new IllegalArgumentException(MessageConstants.USER_BALANCE_INSUFFICIENT);
 
-        //generate result
-        GameStrategy generator = gameType.getGameStrategy();
-        List<String> result = generator.generate(gameType.getGameConstants());
+        //generate game result
+        GeneratedGame generatedGame = resultGenerator(gameInformation);
 
-        boolean isWin = generator.isWinning(result);
-        //if user won, update balance
-        if (isWin) {
-            if (gameType == GameType.DAILY_SPIN) {
-                //TODO add daily spin reward
-            } else {
-                user.addBalance(bet * 2);
-            }
-        }
+        //update user balance
+        updateUserBalance(user, generatedGame);
 
+        //update user in database
         UserDAO.getInstance().updateUser(user);
 
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.ofInstant(Instant.now(), ZoneId.of("UTC")));
-        Match match = new Match(user, gameType, isWin ? bet * 2 : -bet , isWin ? MatchResult.WIN : MatchResult.LOSS, timestamp);
-
         //add match to database
-        GameHistoryDAO.getInstance().addMatch(match);
+        addMatchToGameHistory(user, gameInformation.getGameType(), generatedGame);
 
-        return new GeneratedGame(result, user.getBalance());
+        return new GameResult(generatedGame.gameResult(), user.getBalance());
     }
 
 
 
     //private methods
     private boolean checkArgumentsValidity(GameInformation gameInformation) {
-        return gameInformation != null &&
-                gameInformation.getSessionToken() != null &&
-                gameInformation.getGameName() != null &&
-                gameExists(gameInformation.getGameName()) &&
-                gameInformation.getBet() > 0;
+        if (gameInformation != null && gameInformation.getSessionToken() != null && gameInformation.getGameType() != null) {
+            //if gameType is slot machine, check that additionalInfo is an instance of SlotMachineType
+            if (gameInformation.getGameType() == GameType.SLOT_MACHINE) {
+                try {
+                    SlotMachineType.valueOf(gameInformation.getAdditionalInfo());
+                }
+                catch (IllegalArgumentException e) {
+                    return false;
+                }
+            }
+
+            //if gameType isn't DAILY_SPIN, check that bet is greater than 0
+            return gameInformation.getGameType() == GameType.DAILY_SPIN || gameInformation.getBet() > 0;
+        }
+        return false;
     }
 
-    private boolean gameExists(String gameName) {
-        try {
-            GameType.valueOf(gameName);
+    private boolean checkAuthentication(GameInformation gameInformation) {
+        return Authentication.userExistsFromToken(gameInformation.getSessionToken());
+    }
+
+    private boolean checkUserBalance(User user, GameInformation gameInformation) {
+        if (gameInformation.getGameType() == GameType.DAILY_SPIN) {
             return true;
-        } catch (IllegalArgumentException e) {
-            return false;
         }
+
+        return user.getBalance() >= gameInformation.getBet();
+    }
+
+    private GeneratedGame resultGenerator(GameInformation gameInformation) {
+        GameType gameType = gameInformation.getGameType();
+
+        Object gameConstants;
+        if (gameType == GameType.SLOT_MACHINE) {
+            SlotMachineType slotMachineType = SlotMachineType.valueOf(gameInformation.getAdditionalInfo());
+            gameConstants = gameType.getGameConstants(slotMachineType);
+        }
+        else {
+            gameConstants = gameType.getGameConstants();
+        }
+
+        GameStrategy generator = gameType.getGameStrategy();
+
+        return generator.generate(gameInformation.getBet(), gameConstants);
+    }
+
+    private void updateUserBalance(User user, GeneratedGame generatedGame) {
+        double amount = generatedGame.amount();
+        if (generatedGame.isWin())
+            user.addBalance(amount);
+        else
+            user.subtractBalance(amount);
+    }
+
+    private void addMatchToGameHistory(User user, GameType gameType, GeneratedGame generatedGame) {
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.ofInstant(Instant.now(), ZoneId.of("UTC")));
+        double matchAmount = generatedGame.isWin() ? generatedGame.amount() : -generatedGame.amount();
+
+        Match match = new Match(user, gameType, matchAmount, timestamp);
+        GameHistoryDAO.getInstance().addMatch(match);
     }
 }

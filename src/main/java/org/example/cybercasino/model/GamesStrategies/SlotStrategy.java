@@ -21,29 +21,27 @@ public class SlotStrategy extends GameStrategy {
         return instance;
     }
 
+
     @Override
-    public List<String> generate(Object ...args) {
-        if (args.length != 1 || !(args[0] instanceof SlotMachineConstants slotMachineConstants)) {
-            throw new IllegalArgumentException("Invalid arguments");
+    protected boolean checkArgs(Object... args) {
+        if (args.length != 1) {
+            return false;
         }
-
-        boolean win = willWin(slotMachineConstants);
-        return generateResult(slotMachineConstants, win);
+        return args[0] instanceof SlotMachineConstants;
     }
 
     @Override
-    public boolean isWinning(List<String> result) {
-        return result.stream().distinct().count() == 1;
-    }
-
-    //private methods
-    private boolean willWin(SlotMachineConstants slotMachineConstants) {
+    protected boolean willWin(Object gameConstants) {
+        SlotMachineConstants slotMachineConstants = (SlotMachineConstants) gameConstants;
         return random.nextInt(100) < slotMachineConstants.winningPercentage;
     }
 
     //TODO add fake win
 
-    private List<String> generateResult(SlotMachineConstants slotMachineConstants, boolean isWin) {
+    @Override
+    protected List<String> generateResult(Object gameConstants, boolean isWin) {
+        SlotMachineConstants slotMachineConstants = (SlotMachineConstants) gameConstants;
+
         List<String> result = new ArrayList<>();
         if (isWin) {
             int winningElementPos = random.nextInt(slotMachineConstants.numberOfElements);
@@ -70,5 +68,11 @@ public class SlotStrategy extends GameStrategy {
             }
         }
         return result;
+    }
+
+    @Override
+    protected double calculateAmount(double bet, boolean isWin, Object gameConstants) {
+        SlotMachineConstants slotMachineConstants = (SlotMachineConstants) gameConstants;
+        return isWin ? bet * slotMachineConstants.betMultiplier : bet;
     }
 }

@@ -1,9 +1,28 @@
 package org.example.cybercasino.model.GamesStrategies;
 
+import org.example.cybercasino.utils.GeneratedGame;
+
 import java.util.List;
 
 public abstract class GameStrategy {
-    public abstract List<String> generate(Object ...args);
-    
-    public abstract boolean isWinning(List<String> result);
+    public final GeneratedGame generate(double bet, Object ...args) {
+        if (!checkArgs(args)) {
+            throw new IllegalArgumentException("Invalid arguments");
+        }
+        Object gameConstants = args[0];
+
+        boolean isWin = willWin(gameConstants);
+        List<String> gameResult = generateResult(gameConstants, isWin);
+        double amount = calculateAmount(bet, isWin, gameConstants);
+
+        return new GeneratedGame(gameResult, isWin, amount);
+    }
+
+    protected abstract boolean checkArgs(Object ...args);
+
+    protected abstract boolean willWin(Object gameConstants);
+
+    protected abstract List<String> generateResult(Object gameConstants, boolean isWin);
+
+    protected abstract double calculateAmount(double bet, boolean isWin, Object gameConstants);
 }

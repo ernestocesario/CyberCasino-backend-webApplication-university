@@ -13,13 +13,24 @@ public class RouletteStrategy extends GameStrategy {
         }
         return instance;
     }
+
     @Override
-    public List<String> generate(Object ...args) {
+    protected boolean checkArgs(Object... args) {
+        return false;
+    }
+
+    @Override
+    protected boolean willWin(Object gameConstants) {
+        return false;
+    }
+
+    @Override
+    protected List<String> generateResult(Object gameConstants, boolean isWin) {
         return null;
     }
 
     @Override
-    public boolean isWinning(List<String> result) {
-        return false;
+    protected double calculateAmount(double bet, boolean isWin, Object gameConstants) {
+        return 0;
     }
 }

@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.example.cybercasino.model.DAOs.UserDAO;
 import org.example.cybercasino.model.DTOs.User;
 import org.example.cybercasino.model.constants.FrontendConstants;
-import org.example.cybercasino.utils.hashingAlgorithms.BCryptHashAlgorithm;
+import org.example.cybercasino.utils.BCryptHashAlgorithm;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
