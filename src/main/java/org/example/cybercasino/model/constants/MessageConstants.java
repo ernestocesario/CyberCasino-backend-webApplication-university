@@ -7,4 +7,5 @@ public class MessageConstants {
     public static final String INVALID_ARGUMENTS = "Invalid arguments";
     public static final String USER_NOT_FOUND = "User not found";
     public static final String USER_BALANCE_INSUFFICIENT = "User balance insufficient";
+    public static final String DAILY_SPIN_ALREADY_PLAYED = "Daily spin already played today!";
 }

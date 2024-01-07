@@ -20,9 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
+import java.sql.Date;
 
 @RestController
 @CrossOrigin(origins = FrontendConstants.frontendUrl, allowCredentials = "true")
@@ -40,6 +39,8 @@ public class Games {
 
         if(!checkUserBalance(user, gameInformation))
             throw new IllegalArgumentException(MessageConstants.USER_BALANCE_INSUFFICIENT);
+
+        checkGameRules(user, gameInformation);
 
         //generate game result
         GeneratedGame generatedGame = resultGenerator(gameInformation);
@@ -79,6 +80,18 @@ public class Games {
 
     private boolean checkAuthentication(GameInformation gameInformation) {
         return Authentication.userExistsFromToken(gameInformation.getSessionToken());
+    }
+
+    private void checkGameRules(User user, GameInformation gameInformation) {
+        if (gameInformation.getGameType() == GameType.DAILY_SPIN) {
+            LocalDate todayUTC = LocalDate.now(ZoneOffset.UTC).atStartOfDay().toLocalDate();
+
+
+            if (user.getLastDailySpin().before(Date.valueOf(todayUTC)))
+                user.setLastDailySpin(Date.valueOf(todayUTC));
+            else
+                throw new RuntimeException(MessageConstants.DAILY_SPIN_ALREADY_PLAYED);
+        }
     }
 
     private boolean checkUserBalance(User user, GameInformation gameInformation) {

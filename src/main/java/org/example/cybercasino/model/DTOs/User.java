@@ -1,6 +1,6 @@
 package org.example.cybercasino.model.DTOs;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class User {
     private final String username;
@@ -39,10 +39,6 @@ public class User {
         return lastDailySpin;
     }
 
-    public boolean isDailySpinAvailable() {
-        return lastDailySpin.before(new Date());
-    }
-
     public boolean isBanned() {
         return isBanned;
     }
@@ -61,8 +57,8 @@ public class User {
         this.balance = balance;
     }
 
-    public void updateLastDailySpin() {
-        lastDailySpin = new Date();
+    public void setLastDailySpin(Date lastDailySpin) {
+        this.lastDailySpin = lastDailySpin;
     }
 
     public void setBanned(boolean banned) {

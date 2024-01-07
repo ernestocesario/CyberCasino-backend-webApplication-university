@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Base64;
-import java.util.Date;
+import java.sql.Date;
 
 @RestController
 @CrossOrigin(origins = FrontendConstants.frontendUrl, allowCredentials = "true")
@@ -22,7 +22,7 @@ public class Authentication {
         String email = simpleUser.email;
         String username = simpleUser.username;
         String hashedPassword = BCryptHashAlgorithm.getInstance().getHash(simpleUser.password);
-        User user = new User(email, username, hashedPassword, 10, new Date(0), false);
+        User user = new User(email, username, hashedPassword, 10, Date.valueOf("1970-01-01"), false);
         return UserDAO.getInstance().addUser(user);
     }
 

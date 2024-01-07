@@ -83,7 +83,7 @@ public class UserDAO {
             preparedStatement.setString(2, user.getUsername());
             preparedStatement.setString(3, user.getHashedPassword());
             preparedStatement.setDouble(4, user.getBalance());
-            preparedStatement.setDate(5, new java.sql.Date(user.getLastDailySpin().getTime()));
+            preparedStatement.setDate(5, user.getLastDailySpin());
             preparedStatement.setBoolean(6, user.isBanned());
 
             preparedStatement.executeLargeUpdate();
@@ -107,7 +107,7 @@ public class UserDAO {
             preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2, user.getHashedPassword());
             preparedStatement.setDouble(3, user.getBalance());
-            preparedStatement.setDate(4, new java.sql.Date(user.getLastDailySpin().getTime()));
+            preparedStatement.setDate(4, user.getLastDailySpin());
             preparedStatement.setBoolean(5, user.isBanned());
             preparedStatement.setString(6, user.getEmail());
 

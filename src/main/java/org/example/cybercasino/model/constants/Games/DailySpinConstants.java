@@ -9,8 +9,8 @@ public class DailySpinConstants {
         return instance;
     }
 
-    public final int[] elements = {0, 1, 3, 5, 10, 200};
-    public final int[] chances = {Integer.MAX_VALUE, 100, 8, 5, 3, 1};
+    public final int[] elements = {0, 1, 3, 5, 7, 10, 20, 50, 500};
+    public final int[] chances = {Integer.MAX_VALUE, 100, 12, 9, 7, 5, 3, 2, 1};
 
     public final int loseElementIndex = 0;
 
