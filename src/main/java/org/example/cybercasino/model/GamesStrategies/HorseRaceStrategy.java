@@ -1,35 +1,28 @@
 package org.example.cybercasino.model.GamesStrategies;
 
-import org.example.cybercasino.model.constants.Games.RouletteConstants;
-import org.example.cybercasino.model.constants.Games.SlotMachine.SlotMachineConstants;
-
 import java.util.List;
 
-public class RouletteStrategy extends GameStrategy {
-    private static RouletteStrategy instance;
-    private RouletteStrategy() {
+public class HorseRaceStrategy extends GameStrategy {
+    private static HorseRaceStrategy instance = null;
+
+    private HorseRaceStrategy() {
         super();
     }
 
-    public static RouletteStrategy getInstance() {
+    public static HorseRaceStrategy getInstance() {
         if (instance == null) {
-            instance = new RouletteStrategy();
+            instance = new HorseRaceStrategy();
         }
         return instance;
     }
 
     @Override
     protected boolean checkArgs(Object... args) {
-        //NON SO CHE CONTROLLO DEVO FARE QUI !!!!!!!!!!!!!!!!!!!!!!!!!!
-        if (args.length != 1) {
-            return false;
-        }
-        return args[0] instanceof RouletteConstants;
+        return false;
     }
 
     @Override
     protected boolean willWin(Object gameConstants) {
-
         return false;
     }
 

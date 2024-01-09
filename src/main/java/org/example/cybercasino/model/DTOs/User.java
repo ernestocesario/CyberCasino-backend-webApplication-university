@@ -10,6 +10,9 @@ public class User {
     private Date lastDailySpin;
     private boolean isBanned;
 
+    private TransactionHistory transactionHistory;
+    private GameHistory gameHistory;
+
     public User(String email, String username, String hashedPassword, double balance, Date lastDailySpin, boolean isBanned) {
         this.username = username;
         this.email = email;
@@ -19,49 +22,57 @@ public class User {
         this.isBanned = isBanned;
     }
 
-    public String getUsername() {
+    public final String getUsername() {
         return username;
     }
 
-    public String getEmail() {
+    public final String getEmail() {
         return email;
     }
 
-    public String getHashedPassword() {
+    public final String getHashedPassword() {
         return hashedPassword;
     }
 
-    public double getBalance() {
+    public final double getBalance() {
         return balance;
     }
 
-    public Date getLastDailySpin() {
+    public final Date getLastDailySpin() {
         return lastDailySpin;
     }
 
-    public boolean isBanned() {
+    public final boolean isBanned() {
         return isBanned;
+    }
+
+    public TransactionHistory getTransactionHistory() {
+        return transactionHistory;
+    }
+
+    public GameHistory getGameHistory() {
+        return gameHistory;
     }
 
 
     //update balance
-    public void addBalance(double amount) {
+    public final void addBalance(double amount) {
         balance += amount;
     }
 
-    public void subtractBalance(double amount) {
+    public final void subtractBalance(double amount) {
         balance -= amount;
     }
 
-    public void setBalance(double balance) {
+    public final void setBalance(double balance) {
         this.balance = balance;
     }
 
-    public void setLastDailySpin(Date lastDailySpin) {
+    public final void setLastDailySpin(Date lastDailySpin) {
         this.lastDailySpin = lastDailySpin;
     }
 
-    public void setBanned(boolean banned) {
+    public final void setBanned(boolean banned) {
         isBanned = banned;
     }
 }

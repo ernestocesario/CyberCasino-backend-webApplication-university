@@ -9,19 +9,10 @@ import java.sql.*;
 import static org.example.cybercasino.model.constants.DatabaseConstants.*;
 
 public class UserDAO {
-    private static UserDAO instance;
-
     private UserDAO() {
     }
 
-    public static UserDAO getInstance() {
-        if (instance == null) {
-            instance = new UserDAO();
-        }
-        return instance;
-    }
-
-    public User findByEmail(String email) {
+    public static User findByEmail(String email) {
         try (Connection connection = Database.getInstance().createDBConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DatabaseConstants.GET_USER_BY_EMAIL)) {
 
@@ -46,7 +37,7 @@ public class UserDAO {
         return null;
     }
 
-    public User findUserByUsername(String username) {
+    public static User findUserByUsername(String username) {
         try (Connection connection = Database.getInstance().createDBConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DatabaseConstants.GET_USER_BY_USERNAME)) {
 
@@ -71,7 +62,7 @@ public class UserDAO {
         return null;
     }
 
-    public boolean addUser(User user) {
+    public static boolean addUser(User user) {
         if (findByEmail(user.getEmail()) != null || findUserByUsername(user.getUsername()) != null) {
             return false;
         }
@@ -96,7 +87,7 @@ public class UserDAO {
         }
     }
 
-    public boolean updateUser(User user) {
+    public static boolean updateUser(User user) {
         if (findByEmail(user.getEmail()) == null) {
             return false;
         }

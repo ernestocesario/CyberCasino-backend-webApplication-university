@@ -35,7 +35,7 @@ public class Games {
             throw new IllegalArgumentException(MessageConstants.USER_NOT_FOUND);
 
         Credentials credentials = AuthenticationUtils.decodeToken(gameInformation.getSessionToken());
-        User user = UserDAO.getInstance().findUserByUsername(credentials.username);
+        User user = UserDAO.findUserByUsername(credentials.username);
 
         if(!checkUserBalance(user, gameInformation))
             throw new IllegalArgumentException(MessageConstants.USER_BALANCE_INSUFFICIENT);
@@ -49,7 +49,7 @@ public class Games {
         updateUserBalance(user, generatedGame);
 
         //update user in database
-        UserDAO.getInstance().updateUser(user);
+        UserDAO.updateUser(user);
 
         //add match to database
         addMatchToGameHistory(user, gameInformation.getGameType(), generatedGame);
@@ -140,6 +140,6 @@ public class Games {
         double matchAmount = generatedGame.isWin() ? generatedGame.amount() : -generatedGame.amount();
 
         Match match = new Match(user, gameType, matchAmount, timestamp);
-        GameHistoryDAO.getInstance().addMatch(match);
+        GameHistoryDAO.addMatch(match);
     }
 }

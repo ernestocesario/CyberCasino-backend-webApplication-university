@@ -4,10 +4,5 @@ import org.example.cybercasino.model.DTOs.User;
 
 import java.sql.Timestamp;
 
-public class Transaction {
-    private String id;
-    private User user;
-    private double amount;
-    private TransactionType transactionType;
-    private Timestamp timestamp;
+public record Transaction(String id, User user, double amount, TransactionType transactionType, Timestamp timestamp) {
 }

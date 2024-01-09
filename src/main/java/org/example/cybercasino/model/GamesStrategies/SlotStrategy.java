@@ -12,6 +12,7 @@ public class SlotStrategy extends GameStrategy {
 
 
     private SlotStrategy() {
+        super();
     }
 
     public static SlotStrategy getInstance() {

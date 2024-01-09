@@ -9,6 +9,7 @@ public class DailySpinStrategy extends GameStrategy {
     private static DailySpinStrategy instance;
     Random random = new Random();
     private DailySpinStrategy() {
+        super();
     }
 
     public static DailySpinStrategy getInstance() {

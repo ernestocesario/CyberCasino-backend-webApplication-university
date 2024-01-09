@@ -33,9 +33,9 @@ public class RegisterServlet extends HttpServlet {
         User user = new User(email, username, hashedPassword, 10, Date.valueOf("1970-01-01"), false);
 
         //check if user already exists
-        if (UserDAO.getInstance().findUserByUsername(username) != null || UserDAO.getInstance().findByEmail(email) != null)
+        if (UserDAO.findUserByUsername(username) != null || UserDAO.findByEmail(email) != null)
             resp.getWriter().write("false");
         else
-            resp.getWriter().write(String.valueOf(UserDAO.getInstance().addUser(user)));
+            resp.getWriter().write(String.valueOf(UserDAO.addUser(user)));
     }
 }

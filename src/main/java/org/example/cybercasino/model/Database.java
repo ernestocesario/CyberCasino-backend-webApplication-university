@@ -1,5 +1,8 @@
 package org.example.cybercasino.model;
 
+import org.example.cybercasino.model.DAOs.GameHistoryDAO;
+import org.example.cybercasino.model.DAOs.TransactionHistoryDAO;
+import org.example.cybercasino.model.constants.DatabaseConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -46,5 +49,34 @@ public class Database {
     public void fatalDatabaseError(Exception e) {
         System.err.println("Fatal database error: " + e.getMessage());
         System.exit(1);
+    }
+
+    public long getNextId(Class<?> clazz) {
+        String getNextIdQuery = getNextIdQueryByClass(clazz);
+        try(Connection connection = createDBConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(getNextIdQuery)) {
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getLong(1) + 1;
+            }
+            return 1L;
+        }
+        catch (SQLException e) {
+            Database.getInstance().fatalDatabaseError(e);
+            return -1L;
+        }
+    }
+
+    //private methods
+    private String getNextIdQueryByClass(Class<?> clazz) {
+        return switch (clazz.getCanonicalName()) {
+            case "org.example.cybercasino.model.DAOs.GameHistoryDAO" -> DatabaseConstants.GET_LAST_ID_GAMEHISTORY;
+            case "org.example.cybercasino.model.DAOs.TransactionHistoryDAO" -> DatabaseConstants.GET_LAST_ID_TRANSACTIONHISTORY;
+            default -> {
+                fatalDatabaseError(new RuntimeException("No next id query for class " + clazz.getCanonicalName() + " found"));
+                yield null;
+            }
+        };
     }
 }

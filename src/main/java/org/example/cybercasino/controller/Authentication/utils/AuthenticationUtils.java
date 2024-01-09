@@ -56,13 +56,13 @@ public class AuthenticationUtils {
     }
 
     public static boolean userExists(String username, String hashedPassword) {
-        User user = UserDAO.getInstance().findUserByUsername(username);
+        User user = UserDAO.findUserByUsername(username);
         return user != null && BCryptHashAlgorithm.getInstance().checkHash(hashedPassword, user.getHashedPassword());
     }
 
     public static User getUserFromToken(String token) {
         Credentials credentials = decodeToken(token);
-        User user = UserDAO.getInstance().findUserByUsername(credentials.username);
+        User user = UserDAO.findUserByUsername(credentials.username);
         if (user != null && BCryptHashAlgorithm.getInstance().checkHash(credentials.password, user.getHashedPassword())) {
             return user;
         }
