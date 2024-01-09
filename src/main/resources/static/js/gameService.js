@@ -30,16 +30,21 @@ export function generateResult(gameInformation) {
 }
 
 // Funzione per inviare una richiesta POST per ottenere il saldo
-export function getBalance(token) {
+export function getBalance(token){
     return fetch(backendUrl+'/getBalance', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(token),
+        body: JSON.stringify({token: token}),
         credentials: 'include',
     })
-        .then(response => response.json());
+        .then(response => {
+            if (!response.ok) { //gestisce errori HTTP in base al codice di stato della risposta.
+                console.log("response not ok" + response.status);
+            }
+            return response.json();  //ritorna un number (saldo utente)
+        })
 }
 
 // Dichiarazione dell'interfaccia GameResult

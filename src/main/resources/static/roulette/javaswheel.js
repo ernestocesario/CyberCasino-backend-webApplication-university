@@ -19,7 +19,8 @@ if (urlParams.has('token')) {
 
 //------------------------------------------------
 
-let bankValue = 1000;  //prenderlo dal db
+//let bankValue = 1000;  //prenderlo dal db
+
 let currentBet = 0;
 let wager = 5;
 let lastWager = 0; //memorizza l'ultima puntata
@@ -34,7 +35,19 @@ let container = document.createElement('div');
 container.setAttribute('id', 'container');
 document.body.append(container);
 
-startGame();
+
+let bankValue;
+let value = getBalance(token)
+    .then(
+        value => {
+            console.log("balance "+value);
+            bankValue = value;
+            startGame(); // il gioco va iniziato solo se il balance è stato ottenuto correttamente,
+            // altrimenti si potrebbe iniziare il gioco con un balance non aggiornato,
+            // inoltre, se il balance non è initializzato, tutte le funzioni a cascata mi darebbero problemi
+        });
+
+//startGame();
 
 let wheel = document.getElementsByClassName('wheel')[0];
 let ballTrack = document.getElementsByClassName('ballTrack')[0];
@@ -703,27 +716,5 @@ function removeChips(){
         removeChips();
     }
 }
-
-//----------------------
-/*
-function generateResult(sessionToken, gameType, bet, additionalInfo) {
-    const gameInformation = {
-        sessionToken: sessionToken,
-        gameType: gameType,
-        bet: bet,
-        additionalInfo: additionalInfo
-    };
-
-    return fetch(backendUrl + '/play', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(gameInformation),
-        credentials: 'include',
-    })
-        .then(response => response.json());
-}
- */
 
 
