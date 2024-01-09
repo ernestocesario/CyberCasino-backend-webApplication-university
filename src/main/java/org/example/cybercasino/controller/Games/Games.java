@@ -1,7 +1,7 @@
 package org.example.cybercasino.controller.Games;
 
-import org.example.cybercasino.controller.Authentication.Authentication;
-import org.example.cybercasino.controller.Authentication.Credentials;
+import org.example.cybercasino.controller.Authentication.utils.AuthenticationUtils;
+import org.example.cybercasino.controller.Authentication.utils.Credentials;
 import org.example.cybercasino.controller.Games.utils.GameInformation;
 import org.example.cybercasino.controller.Games.utils.GameResult;
 import org.example.cybercasino.utils.GeneratedGame;
@@ -34,7 +34,7 @@ public class Games {
         if (!checkAuthentication(gameInformation))
             throw new IllegalArgumentException(MessageConstants.USER_NOT_FOUND);
 
-        Credentials credentials = Authentication.decodeToken(gameInformation.getSessionToken());
+        Credentials credentials = AuthenticationUtils.decodeToken(gameInformation.getSessionToken());
         User user = UserDAO.getInstance().findUserByUsername(credentials.username);
 
         if(!checkUserBalance(user, gameInformation))
@@ -75,7 +75,7 @@ public class Games {
                     }
                 }
                 //if gameType is roulette, horseRace, check that betOn is not null or empty
-                case ROULETTE: case DAILY_SPIN:
+                case ROULETTE:
                     return gameInformation.getBetOn() != null && !gameInformation.getBetOn().isEmpty();
             }
 
@@ -86,7 +86,7 @@ public class Games {
     }
 
     private boolean checkAuthentication(GameInformation gameInformation) {
-        return Authentication.userExistsFromToken(gameInformation.getSessionToken());
+        return AuthenticationUtils.userExistsFromToken(gameInformation.getSessionToken());
     }
 
     private void checkGameRules(User user, GameInformation gameInformation) {

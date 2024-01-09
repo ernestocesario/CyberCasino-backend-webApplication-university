@@ -1,22 +1,16 @@
-package org.example.cybercasino.controller.Authentication;
+package org.example.cybercasino.controller.Authentication.utils;
 
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.example.cybercasino.model.DAOs.UserDAO;
 import org.example.cybercasino.model.DTOs.User;
-import org.example.cybercasino.model.constants.FrontendConstants;
 import org.example.cybercasino.utils.BCryptHashAlgorithm;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Base64;
-import java.sql.Date;
 
-@RestController
-@CrossOrigin(origins = FrontendConstants.frontendUrl, allowCredentials = "true")
-public class Authentication {
+
+public class AuthenticationUtils {
+    private AuthenticationUtils() {}
+    /*
     @PostMapping("/register")
     public boolean register(@RequestBody SimpleUser simpleUser) {
         String email = simpleUser.email;
@@ -40,17 +34,7 @@ public class Authentication {
         authToken.token = token;
         return userExists(username, plainPassword) ? authToken : null;
     }
-
-    @PostMapping("/isAuthenticated")
-    public boolean isAuthenticated(HttpServletRequest req) {
-        String auth = req.getHeader("Authorization");
-        if (auth == null) {
-            return false;
-        }
-
-        String token = auth.substring("Basic ".length());
-        return userExistsFromToken(token);
-    }
+    */
 
     public static boolean userExistsFromToken(String token) {
         Credentials credentials = decodeToken(token);
