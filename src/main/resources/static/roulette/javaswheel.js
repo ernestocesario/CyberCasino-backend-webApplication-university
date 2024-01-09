@@ -534,6 +534,8 @@ function spin(){
     //GameResult = [result: string[], balance: number]
     //qua non devo usare subscribe, è un metodo di angular, uso fetch nella funzione
     //var GameResult = generateResult(token,GameType,bet,"");
+
+    /*
     var gameInformation = GameInformation.create(token, GameType.ROULETTE, 1, "MINE");
     console.log(gameInformation);
     var GameResult = generateResult(gameInformation)
@@ -541,7 +543,7 @@ function spin(){
             console.log("result "+GameResult.result);
             console.log("balance "+GameResult.balance);
         })
-
+    */
 
     //var winningSpin = Math.floor(Math.random() * 36);
     var winningSpin = 9;
