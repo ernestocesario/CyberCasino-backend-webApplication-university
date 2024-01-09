@@ -2,16 +2,20 @@ package org.example.cybercasino.controller.Games.utils;
 
 import org.example.cybercasino.model.constants.Games.GameType;
 
+import java.util.List;
+
 public class GameInformation {
     private final String sessionToken;
     private final GameType gameType;
     private final int bet;
+    private final List<String> betOn;
     private final String additionalInfo;
 
-    public GameInformation(String sessionToken, GameType gameType, int bet, String additionalInfo) {
+    public GameInformation(String sessionToken, GameType gameType, int bet, List<String> betOn, String additionalInfo) {
         this.sessionToken = sessionToken;
         this.gameType = gameType;
         this.bet = bet;
+        this.betOn = betOn;
         this.additionalInfo = additionalInfo;
     }
 
@@ -25,6 +29,10 @@ public class GameInformation {
 
     public int getBet() {
         return bet;
+    }
+
+    public List<String> getBetOn() {
+        return betOn;
     }
 
     public String getAdditionalInfo() {

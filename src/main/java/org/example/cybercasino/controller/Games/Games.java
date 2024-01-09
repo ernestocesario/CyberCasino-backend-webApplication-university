@@ -62,14 +62,21 @@ public class Games {
     //private methods
     private boolean checkArgumentsValidity(GameInformation gameInformation) {
         if (gameInformation != null && gameInformation.getSessionToken() != null && gameInformation.getGameType() != null) {
-            //if gameType is slot machine, check that additionalInfo is an instance of SlotMachineType
-            if (gameInformation.getGameType() == GameType.SLOT_MACHINE) {
-                try {
-                    SlotMachineType.valueOf(gameInformation.getAdditionalInfo());
+
+            switch (gameInformation.getGameType()) {
+                //if gameType is slot machine, check that additionalInfo is an instance of SlotMachineType
+                case SLOT_MACHINE:
+                {
+                    try {
+                        SlotMachineType.valueOf(gameInformation.getAdditionalInfo());
+                    }
+                    catch (IllegalArgumentException e) {
+                        return false;
+                    }
                 }
-                catch (IllegalArgumentException e) {
-                    return false;
-                }
+                //if gameType is roulette, horseRace, check that betOn is not null or empty
+                case ROULETTE: case DAILY_SPIN:
+                    return gameInformation.getBetOn() != null && !gameInformation.getBetOn().isEmpty();
             }
 
             //if gameType isn't DAILY_SPIN, check that bet is greater than 0
