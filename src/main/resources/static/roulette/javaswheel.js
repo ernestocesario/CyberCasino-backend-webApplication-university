@@ -1,7 +1,28 @@
-let bankValue = 1000;
+import {generateResult, getBalance} from "../js/gameService.js";
+import {GameInformation} from "../js/gameInformation.js";
+import {GameType} from "../js/gameType.js";
+
+// Ottenere i parametri dall'URL
+const urlParams = new URLSearchParams(window.location.search);
+let token;
+//const GameType = 'ROULETTE';
+
+// Verificare se il parametro "token" è presente nell'URL
+if (urlParams.has('token')) {
+    // Ottenere il valore del parametro "token"
+    token = urlParams.get('token');
+    // Ora puoi utilizzare il valore del token come desideri
+    console.log('Token:', token);
+} else {
+    console.log('Nessun token presente nell\'URL');
+}
+
+//------------------------------------------------
+
+let bankValue = 1000;  //prenderlo dal db
 let currentBet = 0;
 let wager = 5;
-let lastWager = 0;
+let lastWager = 0; //memorizza l'ultima puntata
 let bet = [];
 let numbersBet = [];
 let previousNumbers = [];
@@ -65,7 +86,7 @@ function buildWheel(){
     wheel.append(outerRim);
 
     let numbers = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
-    for(i = 0; i < numbers.length; i++){
+    for(let i = 0; i < numbers.length; i++){
         let a = i + 1;
         let spanClass = (numbers[i] < 10)? 'single' : 'double';
         let sect = document.createElement('div');
@@ -127,7 +148,7 @@ function buildBettingBoard(){
     var wlttb = document.createElement('div');
     wlttb.setAttribute('id', 'wlttb_top');
     wlttb.setAttribute('class', 'wlttb');
-    for(i = 0; i < 11; i++){
+    for(let i = 0; i < 11; i++){
         let j = i;
         var ttbbetblock = document.createElement('div');
         ttbbetblock.setAttribute('class', 'ttbbetblock');
@@ -150,12 +171,12 @@ function buildBettingBoard(){
     }
     wl.append(wlttb);
 
-    for(c =  1; c < 4; c++){
+    for(let c =  1; c < 4; c++){
         let d = c;
         var wlttb = document.createElement('div');
         wlttb.setAttribute('id', 'wlttb_'+c);
         wlttb.setAttribute('class', 'wlttb');
-        for(i = 0; i < 12; i++){
+        for(let i = 0; i < 12; i++){
             let j = i;
             var ttbbetblock = document.createElement('div');
             ttbbetblock.setAttribute('class', 'ttbbetblock');
@@ -197,12 +218,12 @@ function buildBettingBoard(){
         wl.append(wlttb);
     }
 
-    for(c = 1; c < 12; c++){
+    for(let c = 1; c < 12; c++){
         let d = c;
         var wlrtl = document.createElement('div');
         wlrtl.setAttribute('id', 'wlrtl_'+c);
         wlrtl.setAttribute('class', 'wlrtl');
-        for(i = 1; i < 4; i++){
+        for(let i = 1; i < 4; i++){
             let j = i;
             var rtlbb = document.createElement('div');
             rtlbb.setAttribute('class', 'rtlbb'+i);
@@ -221,11 +242,11 @@ function buildBettingBoard(){
         wl.append(wlrtl);
     }
 
-    for(c = 1; c < 3; c++){
+    for(let c = 1; c < 3; c++){
         var wlcb = document.createElement('div');
         wlcb.setAttribute('id', 'wlcb_'+c);
         wlcb.setAttribute('class', 'wlcb');
-        for(i = 1; i < 12; i++){
+        for(let i = 1; i < 12; i++){
             let count = (c == 1)? i : i + 11;
             var cbbb = document.createElement('div');
             cbbb.setAttribute('id', 'cbbb_'+count);
@@ -253,7 +274,7 @@ function buildBettingBoard(){
     let bbtop = document.createElement('div');
     bbtop.setAttribute('class', 'bbtop');
     let bbtopBlocks = ['1 to 18', '19 to 36'];
-    for(i = 0; i < bbtopBlocks.length; i++){
+    for(let i = 0; i < bbtopBlocks.length; i++){
         let f = i;
         var bbtoptwo = document.createElement('div');
         bbtoptwo.setAttribute('class', 'bbtoptwo');
@@ -293,7 +314,7 @@ function buildBettingBoard(){
 
     var numberBlocks = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, '2 to 1', 2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, '2 to 1', 1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, '2 to 1'];
     var redBlocks = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
-    for(i = 0; i < numberBlocks.length; i++){
+    for(let i = 0; i < numberBlocks.length; i++){
         let a = i;
         var nbClass = (numberBlocks[i] == '2 to 1')? 'tt1_block' : 'number_block';
         var colourClass = (redBlocks.includes(numberBlocks[i]))? ' redNum' : ((nbClass == 'number_block')? ' blackNum' : '');
@@ -303,7 +324,7 @@ function buildBettingBoard(){
             if(numberBlocks[a] != '2 to 1'){
                 setBet(this, ''+numberBlocks[a]+'', 'inside_whole', 35);
             }else{
-                num = (a == 12)? '3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36' : ((a == 25)? '2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35' : '1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34');
+                let num = (a == 12)? '3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36' : ((a == 25)? '2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35' : '1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34');
                 setBet(this, num, 'outside_column', 2);
             }
         };
@@ -312,7 +333,7 @@ function buildBettingBoard(){
             if(numberBlocks[a] != '2 to 1'){
                 removeBet(this, ''+numberBlocks[a]+'', 'inside_whole', 35);
             }else{
-                num = (a == 12)? '3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36' : ((a == 25)? '2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35' : '1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34');
+                let num = (a == 12)? '3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36' : ((a == 25)? '2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35' : '1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34');
                 removeBet(this, num, 'outside_column', 2);
             }
         };
@@ -327,17 +348,17 @@ function buildBettingBoard(){
     let bo3Board = document.createElement('div');
     bo3Board.setAttribute('class', 'bo3_board');
     let bo3Blocks = ['1 to 12', '13 to 24', '25 to 36'];
-    for(i = 0; i < bo3Blocks.length; i++){
+    for(let i = 0; i < bo3Blocks.length; i++){
         let b = i;
         var bo3Block = document.createElement('div');
         bo3Block.setAttribute('class', 'bo3_block');
         bo3Block.onclick = function(){
-            num = (b == 0)? '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12' : ((b == 1)? '13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24' : '25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36');
+            let num = (b == 0)? '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12' : ((b == 1)? '13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24' : '25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36');
             setBet(this, num, 'outside_dozen', 2);
         };
         bo3Block.oncontextmenu = function(e){
             e.preventDefault();
-            num = (b == 0)? '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12' : ((b == 1)? '13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24' : '25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36');
+            let num = (b == 0)? '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12' : ((b == 1)? '13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24' : '25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36');
             removeBet(this, num, 'outside_dozen', 2);
         };
         bo3Block.innerText = bo3Blocks[i];
@@ -348,17 +369,17 @@ function buildBettingBoard(){
     let otoBoard = document.createElement('div');
     otoBoard.setAttribute('class', 'oto_board');
     let otoBlocks = ['EVEN', 'RED', 'BLACK', 'ODD'];
-    for(i = 0; i < otoBlocks.length; i++){
+    for(let i = 0; i < otoBlocks.length; i++){
         let d = i;
         var colourClass = (otoBlocks[i] == 'RED')? ' redNum' : ((otoBlocks[i] == 'BLACK')? ' blackNum' : '');
         var otoBlock = document.createElement('div');
         otoBlock.setAttribute('class', 'oto_block' + colourClass);
         otoBlock.onclick = function(){
-            num = (d == 0)? '2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36' : ((d == 1)? '1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36' : ((d == 2)? '2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35' : '1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35'));
+            let num = (d == 0)? '2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36' : ((d == 1)? '1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36' : ((d == 2)? '2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35' : '1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35'));
             setBet(this, num, 'outside_oerb', 1);
         };
         otoBlock.oncontextmenu = function(e){
-            num = (d == 0)? '2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36' : ((d == 1)? '1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36' : ((d == 2)? '2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35' : '1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35'));
+            let num = (d == 0)? '2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36' : ((d == 1)? '1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36' : ((d == 2)? '2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35' : '1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35'));
             e.preventDefault();
             removeBet(this, num, 'outside_oerb', 1);
         };
@@ -370,7 +391,7 @@ function buildBettingBoard(){
     let chipDeck = document.createElement('div');
     chipDeck.setAttribute('class', 'chipDeck');
     let chipValues = [1, 5, 10, 100, 'clear'];
-    for(i = 0; i < chipValues.length; i++){
+    for(let i = 0; i < chipValues.length; i++){
         let cvi = i;
         let chipColour = (i == 0)? 'red' : ((i == 1)? 'blue cdChipActive' : ((i == 2)? 'orange' : ((i == 3)? 'gold' : 'clearBet')));
         let chip = document.createElement('div');
@@ -460,7 +481,7 @@ function setBet(e, n, t, o){
         currentBet = currentBet + wager;
         document.getElementById('bankSpan').innerText = '' + bankValue.toLocaleString("en-GB") + '';
         document.getElementById('betSpan').innerText = '' + currentBet.toLocaleString("en-GB") + '';
-        for(i = 0; i < bet.length; i++){
+        for(let i = 0; i < bet.length; i++){
             if(bet[i].numbers == n && bet[i].type == t){
                 bet[i].amt = bet[i].amt + wager;
                 let chipColour = (bet[i].amt < 5)? 'red' : ((bet[i].amt < 10)? 'blue' : ((bet[i].amt < 100)? 'orange' : 'gold'));
@@ -480,7 +501,7 @@ function setBet(e, n, t, o){
         bet.push(obj);
 
         let numArray = n.split(',').map(Number);
-        for(i = 0; i < numArray.length; i++){
+        for(let i = 0; i < numArray.length; i++){
             if(!numbersBet.includes(numArray[i])){
                 numbersBet.push(numArray[i]);
             }
@@ -505,8 +526,23 @@ function spin(){
     // Riproduci il suono ------------------------------------------------------------
     audioElement.play();
     //--------------------------------------------------------------------------------
-
     //chiamata backend
+
+    //currentBet è la somma di tutte le puntate (es: ho puntato 1euro sul 2, 3euro sul 4...)
+    //numbersBet sono i numeri su cui ho puntato es: [6,24,3,1]
+
+    //GameResult = [result: string[], balance: number]
+    //qua non devo usare subscribe, è un metodo di angular, uso fetch nella funzione
+    //var GameResult = generateResult(token,GameType,bet,"");
+    var gameInformation = GameInformation.create(token, GameType.ROULETTE, 1, "MINE");
+    console.log(gameInformation);
+    var GameResult = generateResult(gameInformation)
+        .then(GameResult => {
+            console.log("result "+GameResult.result);
+            console.log("balance "+GameResult.balance);
+        })
+
+
     //var winningSpin = Math.floor(Math.random() * 36);
     var winningSpin = 9;
 
@@ -515,7 +551,7 @@ function spin(){
         if(numbersBet.includes(winningSpin)){
             let winValue = 0;
             let betTotal = 0;
-            for(i = 0; i < bet.length; i++){
+            for(let i = 0; i < bet.length; i++){
                 var numArray = bet[i].numbers.split(',').map(Number);
                 if(numArray.includes(winningSpin)){
                     bankValue = (bankValue + (bet[i].odds * bet[i].amt) + bet[i].amt);
@@ -602,7 +638,7 @@ function win(winningSpin, winValue, betTotal){
 
 function removeBet(e, n, t, o){
     wager = (wager == 0)? 100 : wager;
-    for(i = 0; i < bet.length; i++){
+    for(let i = 0; i < bet.length; i++){
         if(bet[i].numbers == n && bet[i].type == t){
             if(bet[i].amt != 0){
                 wager = (bet[i].amt > wager)? wager : bet[i].amt;
@@ -629,7 +665,7 @@ function removeBet(e, n, t, o){
 }
 
 function spinWheel(winningSpin){
-    for(i = 0; i < wheelnumbersAC.length; i++){
+    for(let i = 0; i < wheelnumbersAC.length; i++){
         if(wheelnumbersAC[i] == winningSpin){
             var degree = (i * 9.73) + 362;
         }
@@ -639,7 +675,7 @@ function spinWheel(winningSpin){
 
     setTimeout(function(){
         ballTrack.style.cssText = 'animation: ballRotate 2s linear infinite;';
-        style = document.createElement('style');
+        let style = document.createElement('style');
         style.type = 'text/css';
         style.innerText = '@keyframes ballStop {from {transform: rotate(0deg);}to{transform: rotate(-'+degree+'deg);}}';
         document.head.appendChild(style);
@@ -659,9 +695,33 @@ function spinWheel(winningSpin){
 function removeChips(){
     var chips = document.getElementsByClassName('chip');
     if(chips.length > 0){
-        for(i = 0; i < chips.length; i++){
+        for(let i = 0; i < chips.length; i++){
             chips[i].remove();
         }
         removeChips();
     }
 }
+
+//----------------------
+/*
+function generateResult(sessionToken, gameType, bet, additionalInfo) {
+    const gameInformation = {
+        sessionToken: sessionToken,
+        gameType: gameType,
+        bet: bet,
+        additionalInfo: additionalInfo
+    };
+
+    return fetch(backendUrl + '/play', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(gameInformation),
+        credentials: 'include',
+    })
+        .then(response => response.json());
+}
+ */
+
+

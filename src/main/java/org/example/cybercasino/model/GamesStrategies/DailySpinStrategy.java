@@ -30,12 +30,16 @@ public class DailySpinStrategy extends GameStrategy {
     protected boolean willWin(Object gameConstants) {
         DailySpinConstants dailySpinConstants = (DailySpinConstants) gameConstants;
         return random.nextInt(100) < dailySpinConstants.winningProbability;
+        //essendo la .winningProbability = 50, la funzione restituisce true con probabilità 50%,
+        //quindi il giocatore vince con probabilità 50%
     }
 
+    //responsabile di generare il risultato del gioco, in base alle costanti del daily spin
     @Override
     protected List<String> generateResult(Object gameConstants, boolean isWin) {
         DailySpinConstants dailySpinConstants = (DailySpinConstants) gameConstants;
 
+        // se la funzione willWin ha deciso che il giocatore deve vincere
         if (isWin) {
             int winType = random.nextInt(100);
 

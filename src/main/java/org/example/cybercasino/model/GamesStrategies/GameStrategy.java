@@ -11,10 +11,13 @@ public abstract class GameStrategy {
         }
         Object gameConstants = args[0];
 
+        //determino se il giocatore vincerà o meno
         boolean isWin = willWin(gameConstants);
+        //genero il risultato del gioco
         List<String> gameResult = generateResult(gameConstants, isWin);
+        //calcolo importo vinto o perso
         double amount = calculateAmount(gameResult, bet, isWin, gameConstants);
-
+        //creazione e restituzione oggetto GeneratedGame contenente il risultato del gioco, se il giocatore ha vinto e l'importo vinto/perso
         return new GeneratedGame(gameResult, isWin, amount);
     }
 

@@ -1,5 +1,8 @@
 package org.example.cybercasino.model.GamesStrategies;
 
+import org.example.cybercasino.model.constants.Games.RouletteConstants;
+import org.example.cybercasino.model.constants.Games.SlotMachine.SlotMachineConstants;
+
 import java.util.List;
 
 public class RouletteStrategy extends GameStrategy {
@@ -16,11 +19,16 @@ public class RouletteStrategy extends GameStrategy {
 
     @Override
     protected boolean checkArgs(Object... args) {
-        return false;
+        //NON SO CHE CONTROLLO DEVO FARE QUI !!!!!!!!!!!!!!!!!!!!!!!!!!
+        if (args.length != 1) {
+            return false;
+        }
+        return args[0] instanceof RouletteConstants;
     }
 
     @Override
     protected boolean willWin(Object gameConstants) {
+
         return false;
     }
 

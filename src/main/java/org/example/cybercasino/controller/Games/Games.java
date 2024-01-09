@@ -112,6 +112,7 @@ public class Games {
         }
         else {
             gameConstants = gameType.getGameConstants();
+
         }
 
         GameStrategy generator = gameType.getGameStrategy();
