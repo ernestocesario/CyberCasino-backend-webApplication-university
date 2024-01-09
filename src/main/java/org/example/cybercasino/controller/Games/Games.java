@@ -1,7 +1,7 @@
 package org.example.cybercasino.controller.Games;
 
-import org.example.cybercasino.controller.Authentication.Authentication;
-import org.example.cybercasino.controller.Authentication.Credentials;
+import org.example.cybercasino.controller.Authentication.utils.AuthenticationUtils;
+import org.example.cybercasino.controller.Authentication.utils.Credentials;
 import org.example.cybercasino.controller.Games.utils.GameInformation;
 import org.example.cybercasino.controller.Games.utils.GameResult;
 import org.example.cybercasino.utils.GeneratedGame;
@@ -34,7 +34,7 @@ public class Games {
         if (!checkAuthentication(gameInformation))
             throw new IllegalArgumentException(MessageConstants.USER_NOT_FOUND);
 
-        Credentials credentials = Authentication.decodeToken(gameInformation.getSessionToken());
+        Credentials credentials = AuthenticationUtils.decodeToken(gameInformation.getSessionToken());
         User user = UserDAO.getInstance().findUserByUsername(credentials.username);
 
         if(!checkUserBalance(user, gameInformation))
@@ -62,14 +62,21 @@ public class Games {
     //private methods
     private boolean checkArgumentsValidity(GameInformation gameInformation) {
         if (gameInformation != null && gameInformation.getSessionToken() != null && gameInformation.getGameType() != null) {
-            //if gameType is slot machine, check that additionalInfo is an instance of SlotMachineType
-            if (gameInformation.getGameType() == GameType.SLOT_MACHINE) {
-                try {
-                    SlotMachineType.valueOf(gameInformation.getAdditionalInfo());
+
+            switch (gameInformation.getGameType()) {
+                //if gameType is slot machine, check that additionalInfo is an instance of SlotMachineType
+                case SLOT_MACHINE:
+                {
+                    try {
+                        SlotMachineType.valueOf(gameInformation.getAdditionalInfo());
+                    }
+                    catch (IllegalArgumentException e) {
+                        return false;
+                    }
                 }
-                catch (IllegalArgumentException e) {
-                    return false;
-                }
+                //if gameType is roulette, horseRace, check that betOn is not null or empty
+                case ROULETTE:
+                    return gameInformation.getBetOn() != null && !gameInformation.getBetOn().isEmpty();
             }
 
             //if gameType isn't DAILY_SPIN, check that bet is greater than 0
@@ -79,7 +86,7 @@ public class Games {
     }
 
     private boolean checkAuthentication(GameInformation gameInformation) {
-        return Authentication.userExistsFromToken(gameInformation.getSessionToken());
+        return AuthenticationUtils.userExistsFromToken(gameInformation.getSessionToken());
     }
 
     private void checkGameRules(User user, GameInformation gameInformation) {

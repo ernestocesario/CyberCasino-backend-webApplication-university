@@ -1,4 +1,4 @@
-package org.example.cybercasino.controller.Authentication;
+package org.example.cybercasino.controller.Authentication.utils;
 
 public class SimpleUser {
     public String username;
