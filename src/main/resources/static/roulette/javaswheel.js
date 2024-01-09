@@ -35,42 +35,34 @@ let container = document.createElement('div');
 container.setAttribute('id', 'container');
 document.body.append(container);
 
-
+let wheel;
+let ballTrack;
 let bankValue;
 let value = getBalance(token)
     .then(
         value => {
             console.log("balance "+value);
             bankValue = value;
+            bankValue += 1000; //VA ELIMINATA, MI SERVE SOLO PER PROVARE LA ROULETTE, ALTRIMENTI AVREI COME SALDO 0 E NON POSSO BETTARE
             startGame(); // il gioco va iniziato solo se il balance è stato ottenuto correttamente,
             // altrimenti si potrebbe iniziare il gioco con un balance non aggiornato,
             // inoltre, se il balance non è initializzato, tutte le funzioni a cascata mi darebbero problemi
+            wheel = document.getElementsByClassName('wheel')[0];
+            ballTrack = document.getElementsByClassName('ballTrack')[0];
         });
 
 //startGame();
 
-let wheel = document.getElementsByClassName('wheel')[0];
-let ballTrack = document.getElementsByClassName('ballTrack')[0];
+
 
 // posso eliminarla ????
 function resetGame(){
-    /*bankValue = 1000;
-    currentBet = 0;
-    wager = 5;
-    bet = [];
-    numbersBet = [];
-    previousNumbers = [];
-    document.getElementById('betting_board').remove();
-    document.getElementById('notification').remove();
-    buildBettingBoard();*/
     window.location.href = "http://localhost:4200";
 }
-
 function startGame(){
     buildWheel();
     buildBettingBoard();
 }
-
 function gameOver(){
     let notification = document.createElement('div');
     notification.setAttribute('id', 'notification');
@@ -147,7 +139,6 @@ function buildWheel(){
     thendTwo.setAttribute('class', 'thendTwo');
     turretHandle.append(thendTwo);
     wheel.append(turretHandle);
-
     container.append(wheel);
 }
 
@@ -174,6 +165,7 @@ function buildBettingBoard(){
         let num = numA + ', ' + numB + ', ' + numC + ', ' + numD + ', ' + numE + ', ' + numF;
         var objType = 'double_street';
         ttbbetblock.onclick = function(){
+            //console.log(this+" num:"+num+" objType:"+objType+" o:"+5);
             setBet(this, num, objType, 5);
         };
         ttbbetblock.oncontextmenu = function(e){
@@ -207,6 +199,7 @@ function buildBettingBoard(){
                 }
                 var objType = (d == 3)? 'street' : 'split';
                 var odd = (d == 3)? 11 : 17;
+                //console.log(this+" num:"+num+" objType:"+objType+" o:"+odd)
                 setBet(this, num, objType, odd);
             };
             ttbbetblock.oncontextmenu = function(e){
@@ -244,6 +237,7 @@ function buildBettingBoard(){
             var numB = (6 + (3 * (d - 1))) - (j - 1);
             let num = numA + ', ' + numB;
             rtlbb.onclick = function(){
+                //console.log(this+" num:"+num+" objType:"+"split"+" o:"+17);
                 setBet(this, num, 'split', 17);
             };
             rtlbb.oncontextmenu = function(e){
@@ -271,6 +265,7 @@ function buildBettingBoard(){
             let num = (count >= 1 && count < 12)? (parseInt(numA) + ((count - 1) * 3)) + ', ' + (parseInt(numB)+((count - 1) * 3)) + ', ' + (parseInt(numC)+((count - 1) * 3)) + ', ' + (parseInt(numD)+((count - 1) * 3)) : ((parseInt(numA) - 1) + ((count - 12) * 3)) + ', ' + ((parseInt(numB) - 1)+((count - 12) * 3)) + ', ' + ((parseInt(numC) - 1)+((count - 12) * 3)) + ', ' + ((parseInt(numD) - 1)+((count - 12) * 3));
             var objType = 'corner_bet';
             cbbb.onclick = function(){
+                //console.log(this+" num:"+num+" objType:"+objType+" o:"+8);
                 setBet(this, num, objType, 8);
             };
             cbbb.oncontextmenu = function(e){
@@ -294,6 +289,7 @@ function buildBettingBoard(){
         let num = (f == 0)? '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18' : '19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36';
         var objType = (f == 0)? 'outside_low' : 'outside_high';
         bbtoptwo.onclick = function(){
+            //console.log(this+" num:"+num+" objType:"+objType+" o:"+1);
             setBet(this, num, objType, 1);
         };
         bbtoptwo.oncontextmenu = function(e){
@@ -313,6 +309,7 @@ function buildBettingBoard(){
     var objType = 'zero';
     var odds = 35;
     zero.onclick = function(){
+        //console.log(this+" num:"+'0'+" objType:"+objType+" o:"+odds);
         setBet(this, '0', objType, odds);
     };
     zero.oncontextmenu = function(e){
@@ -335,9 +332,11 @@ function buildBettingBoard(){
         numberBlock.setAttribute('class', nbClass + colourClass);
         numberBlock.onclick = function(){
             if(numberBlocks[a] != '2 to 1'){
+                //console.log(this+ " num:"+numberBlocks[a]+" objType:"+"inside_whole"+" o:"+35);
                 setBet(this, ''+numberBlocks[a]+'', 'inside_whole', 35);
             }else{
                 let num = (a == 12)? '3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36' : ((a == 25)? '2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35' : '1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34');
+                //console.log(this+" num:"+num+" "+" objType:"+"outside_column"+" o:"+2);
                 setBet(this, num, 'outside_column', 2);
             }
         };
@@ -367,6 +366,7 @@ function buildBettingBoard(){
         bo3Block.setAttribute('class', 'bo3_block');
         bo3Block.onclick = function(){
             let num = (b == 0)? '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12' : ((b == 1)? '13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24' : '25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36');
+            //console.log(this+" num:"+num+" "+" objType:"+"outside_dozen"+" o:"+2);
             setBet(this, num, 'outside_dozen', 2);
         };
         bo3Block.oncontextmenu = function(e){
@@ -389,6 +389,7 @@ function buildBettingBoard(){
         otoBlock.setAttribute('class', 'oto_block' + colourClass);
         otoBlock.onclick = function(){
             let num = (d == 0)? '2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36' : ((d == 1)? '1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36' : ((d == 2)? '2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35' : '1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35'));
+            //console.log(this+" num:"+num+" "+" objType:"+"outside_oerb"+" o:"+1);
             setBet(this, num, 'outside_oerb', 1);
         };
         otoBlock.oncontextmenu = function(e){
@@ -505,12 +506,13 @@ function setBet(e, n, t, o){
                 return;
             }
         }
-        var obj = {
-            amt: wager,
-            type: t,
-            odds: o,
-            numbers: n
+        var obj = {    //bet è un array di oggetti, ogni oggetto è una puntata
+            amt: wager,  //amt è la somma puntata su quel numero
+            type: t,   //type è il tipo di puntata (es: street, split, corner_bet...)
+            odds: o,  //odds è il moltiplicatore della puntata
+            numbers: n  //numbers è un array di numeri su cui ho puntato
         };
+        console.log("punata:"+obj.amt+" numeri:"+obj.numbers+" tipo"+obj.type+" moltipl:"+obj.odds+"");
         bet.push(obj);
 
         let numArray = n.split(',').map(Number);
@@ -568,8 +570,11 @@ function spin(){
             let betTotal = 0;
             for(let i = 0; i < bet.length; i++){
                 var numArray = bet[i].numbers.split(',').map(Number);
+                console.log("spin: "+numArray);
                 if(numArray.includes(winningSpin)){
                     bankValue = (bankValue + (bet[i].odds * bet[i].amt) + bet[i].amt);
+                    // queste due di sotto servono solo per far vedere a schermo il pannello nel caso di vincita
+                    // quello tutto rosso che dice le varie informazioni con la musica ludopatica
                     winValue = winValue + (bet[i].odds * bet[i].amt);
                     betTotal = betTotal + bet[i].amt;
                 }
