@@ -287,10 +287,16 @@ function buildBettingBoard(){
         var bbtoptwo = document.createElement('div');
         bbtoptwo.setAttribute('class', 'bbtoptwo');
         let num = (f == 0)? '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18' : '19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36';
-        var objType = (f == 0)? 'outside_low' : 'outside_high';
+        //var objType = (f == 0)? 'outside_low' : 'outside_high';
+        var objtype;
+        if (f == 0) {
+            objtype = 'outside_low';
+        } else {
+            objtype = 'outside_high';
+        }
         bbtoptwo.onclick = function(){
-            //console.log(this+" num:"+num+" objType:"+objType+" o:"+1);
-            setBet(this, num, objType, 1);
+            console.log(" num:"+num+" objType:"+objtype+" o:"+1);
+            setBet(this, num, objtype, 1);
         };
         bbtoptwo.oncontextmenu = function(e){
             e.preventDefault();
@@ -572,6 +578,7 @@ function spin(){
                 var numArray = bet[i].numbers.split(',').map(Number);
                 console.log("spin: "+numArray);
                 if(numArray.includes(winningSpin)){
+                    console.log("win: "+bet[i].amt+"*"+bet[i].odds+"="+(bet[i].odds * bet[i].amt));
                     bankValue = (bankValue + (bet[i].odds * bet[i].amt) + bet[i].amt);
                     // queste due di sotto servono solo per far vedere a schermo il pannello nel caso di vincita
                     // quello tutto rosso che dice le varie informazioni con la musica ludopatica
