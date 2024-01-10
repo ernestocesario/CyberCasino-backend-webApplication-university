@@ -31,11 +31,9 @@ public class Games {
         if (!checkArgumentsValidity(gameInformation))
             throw new IllegalArgumentException(MessageConstants.INVALID_ARGUMENTS);
 
-        if (!checkAuthentication(gameInformation))
+        User user = AuthenticationUtils.getUserFromToken(gameInformation.getSessionToken());
+        if (user == null)
             throw new IllegalArgumentException(MessageConstants.USER_NOT_FOUND);
-
-        Credentials credentials = AuthenticationUtils.decodeToken(gameInformation.getSessionToken());
-        User user = UserDAO.findUserByUsername(credentials.username);
 
         if(!checkUserBalance(user, gameInformation))
             throw new IllegalArgumentException(MessageConstants.USER_BALANCE_INSUFFICIENT);
@@ -83,10 +81,6 @@ public class Games {
             return gameInformation.getGameType() == GameType.DAILY_SPIN || gameInformation.getBet() > 0;
         }
         return false;
-    }
-
-    private boolean checkAuthentication(GameInformation gameInformation) {
-        return AuthenticationUtils.userExistsFromToken(gameInformation.getSessionToken());
     }
 
     private void checkGameRules(User user, GameInformation gameInformation) {

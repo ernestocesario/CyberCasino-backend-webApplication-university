@@ -8,10 +8,10 @@ public class GameInformation {
     private final String sessionToken;
     private final GameType gameType;
     private final int bet;
-    private final List<String> betOn;
+    private final List<Object> betOn;
     private final String additionalInfo;
 
-    public GameInformation(String sessionToken, GameType gameType, int bet, List<String> betOn, String additionalInfo) {
+    public GameInformation(String sessionToken, GameType gameType, int bet, List<Object> betOn, String additionalInfo) {
         this.sessionToken = sessionToken;
         this.gameType = gameType;
         this.bet = bet;
@@ -31,7 +31,7 @@ public class GameInformation {
         return bet;
     }
 
-    public List<String> getBetOn() {
+    public List<Object> getBetOn() {
         return betOn;
     }
 
