@@ -1,5 +1,6 @@
 package org.example.cybercasino.model.GamesStrategies;
 
+import org.example.cybercasino.model.constants.MessageConstants;
 import org.example.cybercasino.utils.GeneratedGame;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 public abstract class GameStrategy {
     public final GeneratedGame generate(double bet, Object ...args) {
         if (!checkArgs(args)) {
-            throw new IllegalArgumentException("Invalid arguments");
+            throw new IllegalArgumentException(MessageConstants.INVALID_ARGUMENTS.name());
         }
         Object gameConstants = args[0];
 

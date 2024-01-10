@@ -26,12 +26,12 @@ public class LoginServlet extends HttpServlet {
 
         Credentials credentials = ServletUtils.mapHttpServletRequestToObject(req, Credentials.class);
 
-        String username = credentials.username;
-        String plainPassword = credentials.password;
+        String username = credentials.username();
+        String plainPassword = credentials.password();
         String token = AuthenticationUtils.encodeToken(username, plainPassword);
         AuthToken authToken = new AuthToken();
         authToken.token = token;
-        if (AuthenticationUtils.userExists(username, plainPassword))
+        if (AuthenticationUtils.getUserFromToken(token) != null)
             resp.getWriter().write(new ObjectMapper().writeValueAsString(authToken));
         else
             resp.getWriter().write("null");

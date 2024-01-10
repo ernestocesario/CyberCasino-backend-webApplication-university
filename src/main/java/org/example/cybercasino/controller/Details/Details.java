@@ -7,6 +7,7 @@ import org.example.cybercasino.model.DAOs.GameHistoryDAO;
 import org.example.cybercasino.model.DTOs.User;
 import org.example.cybercasino.model.DTOs.utils.Match;
 import org.example.cybercasino.model.constants.FrontendConstants;
+import org.example.cybercasino.model.constants.MessageConstants;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class Details {
     public double getUserBalance(@RequestBody AuthToken token) {
         User user = AuthenticationUtils.getUserFromToken(token.token);
         if (user == null) {
-            throw new IllegalArgumentException("User does not exist");
+            throw new RuntimeException(MessageConstants.USER_NOT_FOUND.name());
         }
         return user.getBalance();
     }

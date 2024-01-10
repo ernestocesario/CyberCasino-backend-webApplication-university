@@ -1,9 +1,9 @@
 package org.example.cybercasino.controller.Games;
 
 import org.example.cybercasino.controller.Authentication.utils.AuthenticationUtils;
-import org.example.cybercasino.controller.Authentication.utils.Credentials;
 import org.example.cybercasino.controller.Games.utils.GameInformation;
 import org.example.cybercasino.controller.Games.utils.GameResult;
+import org.example.cybercasino.model.constants.MessageConstants;
 import org.example.cybercasino.utils.GeneratedGame;
 import org.example.cybercasino.model.DAOs.GameHistoryDAO;
 import org.example.cybercasino.model.DAOs.UserDAO;
@@ -13,7 +13,6 @@ import org.example.cybercasino.model.constants.Games.GameType;
 import org.example.cybercasino.model.GamesStrategies.GameStrategy;
 import org.example.cybercasino.model.constants.FrontendConstants;
 import org.example.cybercasino.model.constants.Games.SlotMachine.SlotMachineType;
-import org.example.cybercasino.model.constants.MessageConstants;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,14 +28,14 @@ public class Games {
     @PostMapping("/play")
     public GameResult play(@RequestBody GameInformation gameInformation) {
         if (!checkArgumentsValidity(gameInformation))
-            throw new IllegalArgumentException(MessageConstants.INVALID_ARGUMENTS);
+            throw new RuntimeException(MessageConstants.INVALID_ARGUMENTS.name());
 
         User user = AuthenticationUtils.getUserFromToken(gameInformation.getSessionToken());
         if (user == null)
-            throw new IllegalArgumentException(MessageConstants.USER_NOT_FOUND);
+            throw new RuntimeException(MessageConstants.USER_NOT_FOUND.name());
 
         if(!checkUserBalance(user, gameInformation))
-            throw new IllegalArgumentException(MessageConstants.USER_BALANCE_INSUFFICIENT);
+            throw new RuntimeException(MessageConstants.USER_BALANCE_INSUFFICIENT.name());
 
         checkGameRules(user, gameInformation);
 
@@ -91,7 +90,7 @@ public class Games {
             if (user.getLastDailySpin().before(Date.valueOf(todayUTC)))
                 user.setLastDailySpin(Date.valueOf(todayUTC));
             else
-                throw new RuntimeException(MessageConstants.DAILY_SPIN_ALREADY_PLAYED);
+                throw new RuntimeException(MessageConstants.DAILY_SPIN_ALREADY_USED.name());
         }
     }
 

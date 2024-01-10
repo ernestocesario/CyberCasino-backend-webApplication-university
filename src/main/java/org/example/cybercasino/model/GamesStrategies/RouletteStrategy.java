@@ -20,7 +20,6 @@ public class RouletteStrategy extends GameStrategy {
 
     @Override
     protected boolean checkArgs(Object... args) {
-        //NON SO CHE CONTROLLO DEVO FARE QUI !!!!!!!!!!!!!!!!!!!!!!!!!!
         if (args.length != 1) {
             return false;
         }
