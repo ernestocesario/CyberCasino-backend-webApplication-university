@@ -37,7 +37,7 @@ public class UserDAO {
         return null;
     }
 
-    public static User findUserByUsername(String username) {
+    public static User findByUsername(String username) {
         try (Connection connection = Database.getInstance().createDBConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DatabaseConstants.GET_USER_BY_USERNAME)) {
 
@@ -63,7 +63,7 @@ public class UserDAO {
     }
 
     public static boolean addUser(User user) {
-        if (findByEmail(user.getEmail()) != null || findUserByUsername(user.getUsername()) != null) {
+        if (findByEmail(user.getEmail()) != null || findByUsername(user.getUsername()) != null) {
             return false;
         }
 

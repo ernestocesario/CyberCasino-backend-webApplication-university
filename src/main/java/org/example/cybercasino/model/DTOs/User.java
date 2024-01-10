@@ -1,6 +1,10 @@
 package org.example.cybercasino.model.DTOs;
 
+import org.example.cybercasino.model.DTOs.utils.Match;
+import org.example.cybercasino.model.DTOs.utils.Transaction;
+
 import java.sql.Date;
+import java.util.List;
 
 public class User {
     private final String username;
@@ -10,8 +14,9 @@ public class User {
     private Date lastDailySpin;
     private boolean isBanned;
 
-    private TransactionHistory transactionHistory;
-    private GameHistory gameHistory;
+
+    protected List<Transaction> transactionHistory;
+    protected List<Match> gameHistory;
 
     public User(String email, String username, String hashedPassword, double balance, Date lastDailySpin, boolean isBanned) {
         this.username = username;
@@ -46,11 +51,15 @@ public class User {
         return isBanned;
     }
 
-    public TransactionHistory getTransactionHistory() {
+    public List<Transaction> getTransactionHistory(long ...additionalTransactionsToLoad) {
+        if (additionalTransactionsToLoad.length != 0)
+            throw new IllegalArgumentException("This method accept arguments only when it's called from UserProxy");
         return transactionHistory;
     }
 
-    public GameHistory getGameHistory() {
+    public List<Match> getGameHistory(long ...additionalMatchesToLoad) {
+        if (additionalMatchesToLoad.length != 0)
+            throw new IllegalArgumentException("This method accept arguments only when it's called from UserProxy");
         return gameHistory;
     }
 
@@ -74,5 +83,13 @@ public class User {
 
     public final void setBanned(boolean banned) {
         isBanned = banned;
+    }
+
+    public final void setTransactionHistory(List<Transaction> transactionHistory) {
+        this.transactionHistory = transactionHistory;
+    }
+
+    public final void setGameHistory(List<Match> gameHistory) {
+        this.gameHistory = gameHistory;
     }
 }

@@ -24,7 +24,7 @@ import java.sql.Date;
 
 @RestController
 @CrossOrigin(origins = FrontendConstants.frontendUrl, allowCredentials = "true")
-public class Games {
+public class GamesController {
     @PostMapping("/play")
     public GameResult play(@RequestBody GameInformation gameInformation) {
         if (!checkArgumentsValidity(gameInformation))
@@ -33,6 +33,9 @@ public class Games {
         User user = AuthenticationUtils.getUserFromToken(gameInformation.getSessionToken());
         if (user == null)
             throw new RuntimeException(MessageConstants.USER_NOT_FOUND.name());
+
+        if (user.isBanned())
+            throw new RuntimeException(MessageConstants.USER_BANNED.name());
 
         if(!checkUserBalance(user, gameInformation))
             throw new RuntimeException(MessageConstants.USER_BALANCE_INSUFFICIENT.name());
@@ -70,9 +73,11 @@ public class Games {
                     catch (IllegalArgumentException e) {
                         return false;
                     }
+                    break;
                 }
                 //if gameType is roulette, horseRace, check that betOn is not null or empty
                 case ROULETTE:
+                case HORSE_RACE:
                     return gameInformation.getBetOn() != null && !gameInformation.getBetOn().isEmpty();
             }
 
@@ -132,7 +137,7 @@ public class Games {
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.ofInstant(Instant.now(), ZoneId.of("UTC")));
         double matchAmount = generatedGame.isWin() ? generatedGame.amount() : -generatedGame.amount();
 
-        Match match = new Match(user, gameType, matchAmount, timestamp);
+        Match match = new Match(-1, user, gameType, matchAmount, timestamp);
         GameHistoryDAO.addMatch(match);
     }
 }

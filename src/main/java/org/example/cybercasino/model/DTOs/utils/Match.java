@@ -5,5 +5,5 @@ import org.example.cybercasino.model.constants.Games.GameType;
 
 import java.sql.Timestamp;
 
-public record Match(User user, GameType gameType, double amount, Timestamp timestamp) {
+public record Match(long id, User user, GameType gameType, double amount, Timestamp timestamp) {
 }

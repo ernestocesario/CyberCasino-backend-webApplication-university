@@ -53,7 +53,7 @@ public class AuthenticationUtils {
 
     public static User getUserFromToken(String token) {
         Credentials credentials = decodeToken(token);
-        User user = UserDAO.findUserByUsername(credentials.username());
+        User user = UserDAO.findByUsername(credentials.username());
         if (user != null && BCryptHashAlgorithm.getInstance().checkHash(credentials.password(), user.getHashedPassword())) {
             return user;
         }
