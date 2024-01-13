@@ -25,7 +25,7 @@ public class DailySpinStrategy extends GameStrategy {
     }
 
     @Override
-    protected boolean willWin(Object gameConstants) {
+    protected boolean willWin(List<Object> betOn, Object gameConstants) {
         DailySpinConstants dailySpinConstants = (DailySpinConstants) gameConstants;
         return random.nextInt(100) < dailySpinConstants.winningProbability;
         //essendo la .winningProbability = 50, la funzione restituisce true con probabilità 50%,

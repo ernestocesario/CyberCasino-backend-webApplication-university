@@ -12,7 +12,7 @@ public abstract class GameStrategy {
         }
 
         //determino se il giocatore vincerà o meno
-        boolean isWin = willWin(gameConstants);
+        boolean isWin = willWin(betOn, gameConstants);
         //genero il risultato del gioco
         List<String> gameResult = generateResult(betOn, isWin, gameConstants);
         //calcolo importo vinto o perso
@@ -23,7 +23,7 @@ public abstract class GameStrategy {
 
     protected abstract boolean checkArgs(List<Object> betOn, Object gameConstants);
 
-    protected abstract boolean willWin(Object gameConstants);
+    protected abstract boolean willWin(List<Object> betOn, Object gameConstants);
 
     protected abstract List<String> generateResult(List<Object> betOn, boolean isWin, Object gameConstants);
 

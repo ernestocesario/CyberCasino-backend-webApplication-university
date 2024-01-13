@@ -26,7 +26,7 @@ public class RouletteStrategy extends GameStrategy {
     }
 
     @Override
-    protected boolean willWin(Object gameConstants) {
+    protected boolean willWin(List<Object> betOn, Object gameConstants) {
         return false;
     }
 

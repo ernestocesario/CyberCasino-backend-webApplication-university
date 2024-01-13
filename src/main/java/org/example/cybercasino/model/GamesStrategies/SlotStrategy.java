@@ -29,7 +29,7 @@ public class SlotStrategy extends GameStrategy {
     }
 
     @Override
-    protected boolean willWin(Object gameConstants) {
+    protected boolean willWin(List<Object> betOn, Object gameConstants) {
         SlotMachineConstants slotMachineConstants = (SlotMachineConstants) gameConstants;
         return random.nextInt(100) < slotMachineConstants.winningPercentage;
     }
