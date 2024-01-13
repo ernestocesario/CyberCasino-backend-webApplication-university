@@ -43,7 +43,7 @@ let value = getBalance(token)
         value => {
             console.log("balance "+value);
             bankValue = value;
-            bankValue += 1000; //VA ELIMINATA, MI SERVE SOLO PER PROVARE LA ROULETTE, ALTRIMENTI AVREI COME SALDO 0 E NON POSSO BETTARE
+            //bankValue += 1000; //VA ELIMINATA, MI SERVE SOLO PER PROVARE LA ROULETTE, ALTRIMENTI AVREI COME SALDO 0 E NON POSSO BETTARE
             startGame(); // il gioco va iniziato solo se il balance è stato ottenuto correttamente,
             // altrimenti si potrebbe iniziare il gioco con un balance non aggiornato,
             // inoltre, se il balance non è initializzato, tutte le funzioni a cascata mi darebbero problemi
@@ -515,7 +515,7 @@ function setBet(e, n, t, o){
         var obj = {    //bet è un array di oggetti, ogni oggetto è una puntata
             amt: wager,  //amt è la somma puntata su quel numero
             type: t,   //type è il tipo di puntata (es: street, split, corner_bet...)
-            odds: o,  //odds è il moltiplicatore della puntata
+            //odds: o,  //odds è il moltiplicatore della puntata
             numbers: n  //numbers è un array di numeri su cui ho puntato
         };
         console.log("punata:"+obj.amt+" numeri:"+obj.numbers+" tipo"+obj.type+" moltipl:"+obj.odds+"");
@@ -560,16 +560,59 @@ function spin(){
     //qua non devo usare subscribe, è un metodo di angular, uso fetch nella funzione
     //var GameResult = generateResult(token,GameType,bet,"");
 
-    /*
-    var gameInformation = GameInformation.create(token, GameType.ROULETTE, 1, "MINE");
-    console.log(gameInformation);
+
+    var gameInformation = GameInformation.create(token, GameType.ROULETTE, 1, bet,"");
     var GameResult = generateResult(gameInformation)
         .then(GameResult => {
             console.log("result "+GameResult.result);
             console.log("balance "+GameResult.balance);
-        })
-    */
 
+            var winningSpin = GameResult.result;
+            spinWheel(winningSpin);
+            setTimeout(function(){
+                if(numbersBet.includes(winningSpin)){
+                    let winValue = 0;
+                    let betTotal = 0;
+                    for(let i = 0; i < bet.length; i++){
+                        if(numArray.includes(winningSpin)){
+                            //console.log("win: "+bet[i].amt+"*"+bet[i].odds+"="+(bet[i].odds * bet[i].amt));
+                            bankValue = (bankValue + (bet[i].odds * bet[i].amt) + bet[i].amt);
+                            // queste due di sotto servono solo per far vedere a schermo il pannello nel caso di vincita
+                            // quello tutto rosso che dice le varie informazioni con la musica ludopatica
+                            winValue = winValue + (bet[i].odds * bet[i].amt);
+                            betTotal = betTotal + bet[i].amt;
+                        }
+                    }
+                    win(winningSpin, winValue, betTotal);
+                }
+
+                currentBet = 0;
+                document.getElementById('bankSpan').innerText = '' + bankValue.toLocaleString("en-GB") + '';
+                document.getElementById('betSpan').innerText = '' + currentBet.toLocaleString("en-GB") + '';
+
+                let pnClass = (numRed.includes(winningSpin))? 'pnRed' : ((winningSpin == 0)? 'pnGreen' : 'pnBlack');
+                let pnContent = document.getElementById('pnContent');
+                let pnSpan = document.createElement('span');
+                pnSpan.setAttribute('class', pnClass);
+                pnSpan.innerText = winningSpin;
+                pnContent.append(pnSpan);
+                pnContent.scrollLeft = pnContent.scrollWidth;
+
+                bet = [];
+                numbersBet = [];
+                removeChips();
+                wager = lastWager;
+                if(bankValue == 0 && currentBet == 0){
+                    gameOver();
+                }
+
+                // Ferma il suono quando la pallina si ferma ------------------------------------
+                audioElement.pause();
+                audioElement.currentTime = 0;
+                //--------------------------------------------------------------------------------
+            }, 10000);
+        })
+    /*
     //var winningSpin = Math.floor(Math.random() * 36);
     var winningSpin = 9;
 
@@ -618,6 +661,8 @@ function spin(){
         audioElement.currentTime = 0;
         //--------------------------------------------------------------------------------
     }, 10000);
+
+     */
 }
 
 function win(winningSpin, winValue, betTotal){
