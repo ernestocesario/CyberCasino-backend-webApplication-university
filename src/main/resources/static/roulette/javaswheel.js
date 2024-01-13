@@ -561,6 +561,7 @@ function spin(){
     //var GameResult = generateResult(token,GameType,bet,"");
 
 
+    var bankValueBeforeSpin = bankValue;
     var gameInformation = GameInformation.create(token, GameType.ROULETTE, 1, bet,"");
     var GameResult = generateResult(gameInformation)
         .then(GameResult => {
@@ -569,23 +570,26 @@ function spin(){
 
             var winningSpin = GameResult.result;
             spinWheel(winningSpin);
+            bankValue = GameResult.balance;
             setTimeout(function(){
-                if(numbersBet.includes(winningSpin)){
-                    let winValue = 0;
+                console.log("winningSpin: "+winningSpin);
+                console.log("numbersBet: "+numbersBet);
+
+                var winning = false;
+                for (let i=0; i<numbersBet.length; i++){
+                    if (numbersBet[i] == winningSpin){
+                        winning = true;
+                        break;
+                    }
+                }
+                if(winning){
+                    let winValue = bankValue - bankValueBeforeSpin;
                     let betTotal = 0;
-                    for(let i = 0; i < bet.length; i++){
-                        if(numArray.includes(winningSpin)){
-                            //console.log("win: "+bet[i].amt+"*"+bet[i].odds+"="+(bet[i].odds * bet[i].amt));
-                            bankValue = (bankValue + (bet[i].odds * bet[i].amt) + bet[i].amt);
-                            // queste due di sotto servono solo per far vedere a schermo il pannello nel caso di vincita
-                            // quello tutto rosso che dice le varie informazioni con la musica ludopatica
-                            winValue = winValue + (bet[i].odds * bet[i].amt);
-                            betTotal = betTotal + bet[i].amt;
-                        }
+                    for (let i=0; i<bet.length; i++){
+                        betTotal = betTotal + bet[i].amt;
                     }
                     win(winningSpin, winValue, betTotal);
                 }
-
                 currentBet = 0;
                 document.getElementById('bankSpan').innerText = '' + bankValue.toLocaleString("en-GB") + '';
                 document.getElementById('betSpan').innerText = '' + currentBet.toLocaleString("en-GB") + '';
@@ -666,7 +670,9 @@ function spin(){
 }
 
 function win(winningSpin, winValue, betTotal){
+    console.log("sono in win con winValue:" + winValue);
     if(winValue > 0){
+        console.log("winv>0");
         // Aggiungi questa riga per ottenere l'elemento audio dal documento --------------
         var audioElement = document.getElementById('winAudio');
         // Riproduci il suono ------------------------------------------------------------
