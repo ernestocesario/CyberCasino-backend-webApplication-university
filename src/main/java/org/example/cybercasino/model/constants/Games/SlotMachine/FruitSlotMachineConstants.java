@@ -10,7 +10,7 @@ public class FruitSlotMachineConstants extends SlotMachineConstants {
     }
 
     private FruitSlotMachineConstants() {
-        super(4, 12, 12, 2, new String[]{
+        super(4, 12, 12, 30, 2, new String[]{
                 "banana",
                 "bar",
                 "blueberry",

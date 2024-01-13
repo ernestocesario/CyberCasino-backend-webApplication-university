@@ -40,30 +40,16 @@ public class SlotStrategy extends GameStrategy {
     protected List<String> generateResult(List<Object> betOn, boolean isWin, Object gameConstants) {
         SlotMachineConstants slotMachineConstants = (SlotMachineConstants) gameConstants;
 
-        List<String> result = new ArrayList<>();
-        if (isWin) {
-            int winningElementPos = random.nextInt(slotMachineConstants.numberOfElements);
-            String winningElement = slotMachineConstants.elements[winningElementPos];
-
-            for (int i = 0; i < slotMachineConstants.numberOfReels; i++) {
-                result.add(winningElement);
-            }
+        List<String> result;
+        if (isWin)
+            result = generateWin(slotMachineConstants);
+        else if (willFakeWin(slotMachineConstants)) {
+            result = generateWin(slotMachineConstants);
+            avoidFakeWin(result, slotMachineConstants);
         }
         else {
-            for (int i = 0; i < slotMachineConstants.numberOfReels; i++) {
-                int rndElemPos = random.nextInt(slotMachineConstants.numberOfElements);
-                result.add(slotMachineConstants.elements[rndElemPos]);
-            }
-            //evita che si generino risultati con tutti gli elementi uguali, anche se non è una vincita
-            if (result.stream().distinct().count() == 1) {
-                String elem = result.get(0);
-                for (int i = 0; i < slotMachineConstants.elements.length; i++) {
-                    if (!slotMachineConstants.elements[i].equals(elem)) {
-                        result.set(slotMachineConstants.numberOfReels - 1, slotMachineConstants.elements[i]);
-                        break;
-                    }
-                }
-            }
+            result = generateRandomResult(slotMachineConstants);
+            avoidFakeWin(result, slotMachineConstants);
         }
         return result;
     }
@@ -72,5 +58,46 @@ public class SlotStrategy extends GameStrategy {
     protected double calculateAmount(List<String> gameResult, double bet, List<Object> betOn, boolean isWin, Object gameConstants) {
         SlotMachineConstants slotMachineConstants = (SlotMachineConstants) gameConstants;
         return isWin ? bet * slotMachineConstants.betMultiplier : bet;
+    }
+
+
+    //calcola la probabilità per generare tutti i reel uguali tranne l'ultimo
+    private boolean willFakeWin(SlotMachineConstants slotMachineConstants) {
+        return random.nextInt(100) < slotMachineConstants.fakeWinPercentage ;
+    }
+
+    //evita che si generino risultati con tutti gli elementi uguali, anche se non è una vincita
+    private void avoidFakeWin(List<String> result, SlotMachineConstants slotMachineConstants) {
+        if (result.stream().distinct().count() == 1) {
+            String elem = result.get(0);
+            for (int i = 0; i < slotMachineConstants.elements.length; i++) {
+                if (!slotMachineConstants.elements[i].equals(elem)) {
+                    result.set(slotMachineConstants.numberOfReels - 1, slotMachineConstants.elements[i]);
+                    break;
+                }
+            }
+        }
+    }
+
+    //genera una vincita
+    private List<String> generateWin(SlotMachineConstants slotMachineConstants) {
+        List<String> result = new ArrayList<>();
+        int winningElementPos = random.nextInt(slotMachineConstants.numberOfElements);
+        String winningElement = slotMachineConstants.elements[winningElementPos];
+
+        for (int i = 0; i < slotMachineConstants.numberOfReels; i++) {
+            result.add(winningElement);
+        }
+        return result;
+    }
+
+    //genera un risultato casuale
+    private List<String> generateRandomResult(SlotMachineConstants slotMachineConstants) {
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < slotMachineConstants.numberOfReels; i++) {
+            int rndElemPos = random.nextInt(slotMachineConstants.numberOfElements);
+            result.add(slotMachineConstants.elements[rndElemPos]);
+        }
+        return result;
     }
 }

@@ -14,6 +14,7 @@ public class AuthenticationUtils {
     private static final int MIN_PASSWORD_LENGTH = 8;
     private static final int MAX_PASSWORD_LENGTH = 64;
     private static final String EMAIL_REGEX = "^([a-z0-9_\\.\\+-]+)@([\\da-z\\.-]+)\\.([a-z\\.]{2,6})$";
+    private static final String USERNAME_REGEX = "^[a-z0-9_]+$";
 
     private AuthenticationUtils() {}
 
@@ -65,8 +66,12 @@ public class AuthenticationUtils {
         if (!simpleUser.email.matches(EMAIL_REGEX))
             return false;
 
-        //check username
+        //check username length
         if (simpleUser.username.length() < MIN_USERNAME_LENGTH || simpleUser.username.length() > MAX_USERNAME_LENGTH)
+            return false;
+
+        //check username only contains lowercase letters, numbers and underscores
+        if (!simpleUser.username.matches(USERNAME_REGEX))
             return false;
 
         //check password
@@ -81,7 +86,18 @@ public class AuthenticationUtils {
         try {
             String decodedToken = new String(Base64.getDecoder().decode(token));
             String[] split = decodedToken.split(":");
-            return new Credentials(split[0], split[1]);
+
+            StringBuilder password = new StringBuilder();
+            for (int i = 1; i < split.length; i++) {
+                password.append(split[i]+":");
+            }
+
+            password.deleteCharAt(password.length()-1);
+            for(int i = decodedToken.length() - 1; i >= 0 && decodedToken.charAt(i) == ':'; i--) {
+                password.append(':');
+            }
+
+            return new Credentials(split[0], password.toString());
         }
         catch (Exception e) {
             return new Credentials("", "");
