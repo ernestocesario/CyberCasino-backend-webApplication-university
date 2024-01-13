@@ -547,6 +547,10 @@ function spin(){
     // Riproduci il suono ------------------------------------------------------------
     audioElement.play();
     //--------------------------------------------------------------------------------
+
+    for(let i = 0; i < bet.length; i++){
+        console.log("bet"+i+"-> puntata:"+bet[i].amt+" numeri:"+bet[i].numbers+" tipo"+bet[i].type+" moltipl:"+bet[i].odds+"");
+    }
     //chiamata backend
 
     //currentBet è la somma di tutte le puntate (es: ho puntato 1euro sul 2, 3euro sul 4...)
@@ -576,9 +580,9 @@ function spin(){
             let betTotal = 0;
             for(let i = 0; i < bet.length; i++){
                 var numArray = bet[i].numbers.split(',').map(Number);
-                console.log("spin: "+numArray);
+                //console.log("spin: "+numArray);
                 if(numArray.includes(winningSpin)){
-                    console.log("win: "+bet[i].amt+"*"+bet[i].odds+"="+(bet[i].odds * bet[i].amt));
+                    //console.log("win: "+bet[i].amt+"*"+bet[i].odds+"="+(bet[i].odds * bet[i].amt));
                     bankValue = (bankValue + (bet[i].odds * bet[i].amt) + bet[i].amt);
                     // queste due di sotto servono solo per far vedere a schermo il pannello nel caso di vincita
                     // quello tutto rosso che dice le varie informazioni con la musica ludopatica
