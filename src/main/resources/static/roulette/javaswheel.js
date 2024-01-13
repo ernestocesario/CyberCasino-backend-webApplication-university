@@ -542,6 +542,14 @@ function setBet(e, n, t, o){
 }
 
 function spin(){
+    let betTotal = 0;
+    for (let i=0; i<bet.length; i++){
+        betTotal = betTotal + bet[i].amt;
+    }
+    if(betTotal>bankValue){
+        alert("Non hai abbastanza soldi per puntare");
+        return;
+    }
     // Aggiungi questa riga per ottenere l'elemento audio dal documento --------------
     var audioElement = document.getElementById('myAudio');
     // Riproduci il suono ------------------------------------------------------------
@@ -584,10 +592,13 @@ function spin(){
                 }
                 if(winning){
                     let winValue = bankValue - bankValueBeforeSpin;
+                    /*
                     let betTotal = 0;
                     for (let i=0; i<bet.length; i++){
                         betTotal = betTotal + bet[i].amt;
                     }
+
+                     */
                     win(winningSpin, winValue, betTotal);
                 }
                 currentBet = 0;
