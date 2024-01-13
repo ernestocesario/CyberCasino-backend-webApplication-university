@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = FrontendConstants.frontendUrl, allowCredentials = "true")
@@ -46,14 +47,16 @@ public class UserController {
     }
 
     @PostMapping("/getadditionalXLatestGamesResultsByUser")
-    public List<SimpleMatch> getLatestGamesResultsByUser(@RequestBody AuthToken token, @RequestParam long additionalMatchesToLoad) {
+    public List<SimpleMatch> getLatestGamesResultsByUser(@RequestBody Map<String, Object> body) {
+        AuthToken token = new AuthToken((String) body.get("token"));
+        long additionalMatchesToLoad = Long.parseLong((String) body.get("additionalMatchesToLoad"));
+
         User user = AuthenticationUtils.getUserFromToken(token.token);
         if (user == null)
             throw new RuntimeException(MessageConstants.USER_NOT_FOUND.name());
 
         User userProxy = new UserProxy(user);
 
-        List<Match> gameHistory;
         if (additionalMatchesToLoad == 0)
             return convertToSimpleMatches(userProxy.getGameHistory());
 
@@ -63,7 +66,10 @@ public class UserController {
     }
 
     @PostMapping("/getadditionalXLatestTransactionsByUser")
-    public List<SimpleTransaction> getLatestTransactionsByUser(@RequestBody AuthToken token, @RequestParam long additionalTransactionsToLoad) {
+    public List<SimpleTransaction> getLatestTransactionsByUser(@RequestBody Map<String, Object> body) {
+        AuthToken token = new AuthToken((String) body.get("token"));
+        long additionalTransactionsToLoad = Long.parseLong((String) body.get("additionalTransactionsToLoad"));
+
         User user = AuthenticationUtils.getUserFromToken(token.token);
         if (user == null)
             throw new RuntimeException(MessageConstants.USER_NOT_FOUND.name());
@@ -79,7 +85,11 @@ public class UserController {
     }
 
     @PostMapping("/setUserBan")
-    public void setUserBan(@RequestBody AuthToken token, @RequestParam String username, @RequestParam boolean isBanned) {
+    public void setUserBan(@RequestBody Map<String, Object> body) {
+        AuthToken token = new AuthToken((String) body.get("token"));
+        String username = (String) body.get("username");
+        boolean isBanned = Boolean.parseBoolean((String) body.get("isBanned"));
+
         User user = AuthenticationUtils.getUserFromToken(token.token);
         if (user == null)
             throw new RuntimeException(MessageConstants.USER_NOT_FOUND.name());

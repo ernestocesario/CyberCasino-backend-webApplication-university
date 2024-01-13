@@ -4,6 +4,7 @@ import org.example.cybercasino.model.DTOs.utils.Match;
 import org.example.cybercasino.model.DTOs.utils.Transaction;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -25,6 +26,8 @@ public class User {
         this.balance = balance;
         this.lastDailySpin = lastDailySpin;
         this.isBanned = isBanned;
+        transactionHistory = new ArrayList<>();
+        gameHistory = new ArrayList<>();
     }
 
     public final String getUsername() {
