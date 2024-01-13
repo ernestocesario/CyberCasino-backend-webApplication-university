@@ -24,11 +24,8 @@ public class SlotStrategy extends GameStrategy {
 
 
     @Override
-    protected boolean checkArgs(Object... args) {
-        if (args.length != 1) {
-            return false;
-        }
-        return args[0] instanceof SlotMachineConstants;
+    protected boolean checkArgs(List<Object> betOn, Object gameConstants) {
+        return gameConstants instanceof SlotMachineConstants;
     }
 
     @Override
@@ -40,7 +37,7 @@ public class SlotStrategy extends GameStrategy {
     //TODO add fake win
 
     @Override
-    protected List<String> generateResult(Object gameConstants, boolean isWin) {
+    protected List<String> generateResult(List<Object> betOn, boolean isWin, Object gameConstants) {
         SlotMachineConstants slotMachineConstants = (SlotMachineConstants) gameConstants;
 
         List<String> result = new ArrayList<>();
@@ -72,7 +69,7 @@ public class SlotStrategy extends GameStrategy {
     }
 
     @Override
-    protected double calculateAmount(List<String> gameResult, double bet, boolean isWin, Object gameConstants) {
+    protected double calculateAmount(List<String> gameResult, double bet, List<Object> betOn, boolean isWin, Object gameConstants) {
         SlotMachineConstants slotMachineConstants = (SlotMachineConstants) gameConstants;
         return isWin ? bet * slotMachineConstants.betMultiplier : bet;
     }

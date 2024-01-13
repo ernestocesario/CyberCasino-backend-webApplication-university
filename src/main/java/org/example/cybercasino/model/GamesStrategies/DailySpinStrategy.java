@@ -20,11 +20,8 @@ public class DailySpinStrategy extends GameStrategy {
     }
 
     @Override
-    protected boolean checkArgs(Object... args) {
-        if (args.length != 1) {
-            return false;
-        }
-        return args[0] instanceof DailySpinConstants;
+    protected boolean checkArgs(List<Object> betOn, Object gameConstants) {
+        return gameConstants instanceof DailySpinConstants;
     }
 
     @Override
@@ -37,7 +34,7 @@ public class DailySpinStrategy extends GameStrategy {
 
     //responsabile di generare il risultato del gioco, in base alle costanti del daily spin
     @Override
-    protected List<String> generateResult(Object gameConstants, boolean isWin) {
+    protected List<String> generateResult(List<Object> betOn, boolean isWin, Object gameConstants) {
         DailySpinConstants dailySpinConstants = (DailySpinConstants) gameConstants;
 
         // se la funzione willWin ha deciso che il giocatore deve vincere
@@ -59,7 +56,7 @@ public class DailySpinStrategy extends GameStrategy {
     }
 
     @Override
-    protected double calculateAmount(List<String> gameResult, double bet, boolean isWin, Object gameConstants) {
+    protected double calculateAmount(List<String> gameResult, double bet, List<Object> betOn, boolean isWin, Object gameConstants) {
         if (isWin)
             return Integer.parseInt(gameResult.get(0));
         return 0;

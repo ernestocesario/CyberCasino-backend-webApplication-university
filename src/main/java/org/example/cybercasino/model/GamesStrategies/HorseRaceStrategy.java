@@ -1,5 +1,7 @@
 package org.example.cybercasino.model.GamesStrategies;
 
+import org.example.cybercasino.model.constants.Games.HorseRaceConstants;
+
 import java.util.List;
 
 public class HorseRaceStrategy extends GameStrategy {
@@ -17,8 +19,10 @@ public class HorseRaceStrategy extends GameStrategy {
     }
 
     @Override
-    protected boolean checkArgs(Object... args) {
-        return false;
+    protected boolean checkArgs(List<Object> betOn, Object gameConstants) {
+        //qui devi controllare che betOn sia una lista di ciò che ti serve
+
+        return gameConstants instanceof HorseRaceConstants;
     }
 
     @Override
@@ -27,12 +31,12 @@ public class HorseRaceStrategy extends GameStrategy {
     }
 
     @Override
-    protected List<String> generateResult(Object gameConstants, boolean isWin) {
+    protected List<String> generateResult(List<Object> betOn, boolean isWin, Object gameConstants) {
         return null;
     }
 
     @Override
-    protected double calculateAmount(List<String> gameResult, double bet, boolean isWin, Object gameConstants) {
+    protected double calculateAmount(List<String> gameResult, double bet, List<Object> betOn, boolean isWin, Object gameConstants) {
         return 0;
     }
 }

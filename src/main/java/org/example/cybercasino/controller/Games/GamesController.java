@@ -122,7 +122,7 @@ public class GamesController {
 
         GameStrategy generator = gameType.getGameStrategy();
 
-        return generator.generate(gameInformation.getBet(), gameConstants);
+        return generator.generate(gameInformation.getBet(), gameInformation.getBetOn(), gameConstants);
     }
 
     private void updateUserBalance(User user, GeneratedGame generatedGame) {
