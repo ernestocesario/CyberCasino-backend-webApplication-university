@@ -33,6 +33,7 @@ public class DatabaseConstants {
     //Users queries
     public static final String GET_USER_BY_USERNAME = "SELECT * FROM " + USERS_TABLE + " WHERE " + USERS_TBL_USERNAME_COL + " = ?";
     public static final String GET_USER_BY_EMAIL = "SELECT * FROM " + USERS_TABLE + " WHERE " + USERS_TBL_EMAIL_COL + " = ?";
+    public static final String GET_ALL_USERS = "SELECT * FROM " + USERS_TABLE;
     public static final String ADD_USER = "INSERT INTO " + USERS_TABLE + " (" + USERS_TBL_EMAIL_COL + ", " + USERS_TBL_USERNAME_COL + ", " + USERS_TBL_PASSWORD_COL + ", " + USERS_TBL_BALANCE_COL + ", " + USERS_TBL_DAILYSPIN_COL + ", " + USERS_TBL_BANNED_COL + ") VALUES (?, ?, ?, ?, ?, ?)";
     public static final String UPDATE_USER = "UPDATE " + USERS_TABLE + " SET " + USERS_TBL_USERNAME_COL + " = ?, " + USERS_TBL_PASSWORD_COL + " = ?, " + USERS_TBL_BALANCE_COL + " = ?, " + USERS_TBL_DAILYSPIN_COL + " = ?, " + USERS_TBL_BANNED_COL + " = ? WHERE " + USERS_TBL_EMAIL_COL + " = ?";
 

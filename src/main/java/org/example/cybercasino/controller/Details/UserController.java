@@ -2,6 +2,7 @@ package org.example.cybercasino.controller.Details;
 
 import org.example.cybercasino.controller.Authentication.utils.AuthToken;
 import org.example.cybercasino.controller.Authentication.utils.AuthenticationUtils;
+import org.example.cybercasino.controller.Details.utils.Player;
 import org.example.cybercasino.controller.Details.utils.SimpleMatch;
 import org.example.cybercasino.controller.Details.utils.SimpleTransaction;
 import org.example.cybercasino.model.DAOs.GameHistoryDAO;
@@ -46,6 +47,19 @@ public class UserController {
         return simpleMatches;
     }
 
+    @PostMapping("/getListOfAllUsers")
+    public List<Player> getListOfAllUsers(@RequestBody AuthToken token) {
+        User user = AuthenticationUtils.getUserFromToken(token.token);
+        if (user == null)
+            throw new RuntimeException(MessageConstants.USER_NOT_FOUND.name());
+
+        if (!user.getUsername().equals("admin"))
+            throw new RuntimeException(MessageConstants.USER_NOT_ADMIN.name());
+
+        List<User> users = UserDAO.getAllUsers();
+        return convertToPlayers(users);
+    }
+
     @PostMapping("/getadditionalXLatestGamesResultsByUser")
     public List<SimpleMatch> getLatestGamesResultsByUser(@RequestBody Map<String, Object> body) {
         AuthToken token = new AuthToken((String) body.get("token"));
@@ -85,7 +99,7 @@ public class UserController {
     }
 
     @PostMapping("/setUserBan")
-    public void setUserBan(@RequestBody Map<String, Object> body) {
+    public boolean setUserBan(@RequestBody Map<String, Object> body) {
         AuthToken token = new AuthToken((String) body.get("token"));
         String username = (String) body.get("username");
         boolean isBanned = Boolean.parseBoolean((String) body.get("isBanned"));
@@ -104,6 +118,7 @@ public class UserController {
         userToBan.setBanned(isBanned);
 
         UserDAO.updateUser(userToBan);
+        return true;
     }
 
 
@@ -124,5 +139,14 @@ public class UserController {
             simpleMatches.add(SimpleMatch.convertToSimpleMatch(match));
 
         return simpleMatches;
+    }
+
+    private static List<Player> convertToPlayers(List<User> users) {
+        List<Player> players = new ArrayList<>();
+
+        for (User user : users)
+            players.add(Player.convertToPlayer(user));
+
+        return players;
     }
 }

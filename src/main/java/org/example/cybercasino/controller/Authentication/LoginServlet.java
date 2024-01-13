@@ -10,6 +10,8 @@ import org.example.cybercasino.controller.Authentication.utils.AuthToken;
 import org.example.cybercasino.controller.Authentication.utils.AuthenticationUtils;
 import org.example.cybercasino.controller.Authentication.utils.Credentials;
 import org.example.cybercasino.controller.Authentication.utils.ServletUtils;
+import org.example.cybercasino.model.DTOs.User;
+import org.example.cybercasino.model.constants.MessageConstants;
 
 import java.io.IOException;
 
@@ -31,9 +33,14 @@ public class LoginServlet extends HttpServlet {
         String token = AuthenticationUtils.encodeToken(username, plainPassword);
         AuthToken authToken = new AuthToken();
         authToken.token = token;
-        if (AuthenticationUtils.getUserFromToken(token) != null)
-            resp.getWriter().write(new ObjectMapper().writeValueAsString(authToken));
-        else
+
+        User user = AuthenticationUtils.getUserFromToken(token);
+        if (user == null)
             resp.getWriter().write("null");
+        else if (user.isBanned())
+            throw new RuntimeException(String.valueOf(MessageConstants.USER_BANNED));
+        else
+            resp.getWriter().write(new ObjectMapper().writeValueAsString(authToken));
+
     }
 }

@@ -5,6 +5,8 @@ import org.example.cybercasino.model.Database;
 import org.example.cybercasino.model.constants.DatabaseConstants;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.example.cybercasino.model.constants.DatabaseConstants.*;
 
@@ -110,5 +112,30 @@ public class UserDAO {
             Database.getInstance().fatalDatabaseError(e);
             return false;
         }
+    }
+
+    //get all users from database
+    public static List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        try (Connection connection = Database.getInstance().createDBConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DatabaseConstants.GET_ALL_USERS)) {
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String email = resultSet.getString(USERS_TBL_EMAIL_COL);
+                String username = resultSet.getString(USERS_TBL_USERNAME_COL);
+                String password = resultSet.getString(USERS_TBL_PASSWORD_COL);
+                double balance = resultSet.getDouble(USERS_TBL_BALANCE_COL);
+                Date lastDailySpin = resultSet.getDate(USERS_TBL_DAILYSPIN_COL);
+                boolean isBanned = resultSet.getBoolean(USERS_TBL_BANNED_COL);
+
+                users.add(new User(email, username, password, balance, lastDailySpin, isBanned));
+            }
+        }
+        catch (SQLException e) {
+            Database.getInstance().fatalDatabaseError(e);
+        }
+        return users;
     }
 }
