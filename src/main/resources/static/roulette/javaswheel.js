@@ -546,7 +546,15 @@ function spin(){
     for (let i=0; i<bet.length; i++){
         betTotal = betTotal + bet[i].amt;
     }
-    if(betTotal>bankValue){
+    //faccio bankValue+betTotal perchè:
+    // ogni volta che faccio una bet decremento bankValue di quella bet, mettiamo il caso
+    // ho 10 euro. Faccio una puntata da 5 euro sull'1.
+    // bankValue ora è 5. Faccio una puntata di 5 euro sul 20. BankValue ora è 0.
+    // betTotal=5+5=10.  bankValue=0. ma in realtà sul conto ho 10 euro, in quanto le bet le elimino solo
+    //dopo la chiamata della funzione spin, in modo che non devo chiamare ogni volta il db. Inoltre una
+    //puntata potrei annullarla, quindi non posso toglierla subito dal conto dell'utente, ma solo visivamente.
+    //10>10 non è vero, quindi non entro nell'if.
+    if(betTotal>bankValue+betTotal){
         alert("Non hai abbastanza soldi per puntare");
         return;
     }

@@ -1,8 +1,8 @@
 package org.example.cybercasino.model.constants.Games;
 
 public class HorseRaceConstants {
-    public final int numberOfHorses = 4;
-    public final String[] elements = {
+    public final int numberOfHorses = 4; //forse non mi serve
+    public final String[] horses = {
             "horse1",
             "horse2",
             "horse3",
@@ -20,4 +20,5 @@ public class HorseRaceConstants {
 
     private HorseRaceConstants() {
     }
+
 }

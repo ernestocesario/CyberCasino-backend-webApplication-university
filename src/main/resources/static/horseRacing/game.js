@@ -37,6 +37,7 @@ function initializeAll(){
 		//Event listener to the Start button
 		document.getElementById('start').onclick = function(){
 			amount = parseInt(document.getElementById('amount').value);
+			funds -= amount;
 
 			alert('amount: ' + amount);
 			// Check for negative or zero amount
@@ -44,7 +45,6 @@ function initializeAll(){
 				alert('Please enter a positive bet amount.');
 				return;
 			}
-
 			// Check for invalid amount (not a number)
 			if (isNaN(amount)) {
 				alert('Please enter a valid bet amount.');
@@ -53,7 +53,9 @@ function initializeAll(){
 
 			//num_lap = parseInt(document.getElementById('num_lap').value);
 			num_lap = 1;
-			bethorse = parseInt(document.getElementById('bethorse').value);
+			// ese: horse+ 1 -->  horse1
+			bethorse = "horse"+parseInt(document.getElementById('bethorse').value);
+
 
 			if (funds < amount){
 				alert('Not enough funds.');
@@ -74,6 +76,46 @@ function initializeAll(){
 					tds[i].className = 'result';//Reset the result.
 				}
 
+				//in questo caso a differenza della roulette gameInformation me lo gestisco in questo modo:
+				// in bet ci metto la puntata effettuata, e in betOn ci metto il cavallo su cui ho puntato
+				//nella roulette essendo tutto piu complicato, bet non lo utilizzavo, e tenevo tutto in betOn che era
+				// un array di oggetti "Bet" che conteneva il numero su cui si puntava e la puntata effettuata e il tipo
+				var betOn = [bethorse];
+				var gameInformation = GameInformation.create(token, GameType.HORSE_RACE, amount, betOn, "");
+				var gameInformation = generateResult(gameInformation)
+					.then( GameResult => {
+						console.log("result "+GameResult.result);
+						console.log("balance "+GameResult.balance);
+						var winningHorse = GameResult.result;
+
+						document.getElementById('funds').innerText = funds;
+						results = [];//Results array is to save the horse numbers when the race is finished.
+						horse1.run();
+						horse2.run();
+						horse3.run();
+						horse4.run();
+
+						switch (winningHorse){
+							case 'horse1':
+								horse1.vincente = true;
+								//alert('Horse 1 wins!')
+								break;
+							case 'horse2':
+								horse2.vincente = true;
+								//alert('Horse 2 wins!')
+								break;
+							case 'horse3':
+								horse3.vincente = true;
+								//alert('Horse 3 wins!')
+								break;
+							case 'horse4':
+								horse4.vincente = true;
+								//alert('Horse 4 wins!')
+								break;
+						}
+						funds = GameResult.balance;
+					})
+				/*
 				var winningHorse = 'horse3';
 				document.getElementById('funds').innerText = funds;
 				results = [];//Results array is to save the horse numbers when the race is finished.
@@ -101,8 +143,10 @@ function initializeAll(){
 						//alert('Horse 4 wins!')
 						break;
 				}
+				 */
 			}
 		}
+
 	//});
 }
 /*Create a Javascript Object for a horse with 3 parameters: HTML ID, position x and y*/
