@@ -26,129 +26,91 @@ getBalance(token).then(
 //initializeAll();
 function initializeAll(){
 	document.getElementById('funds').innerText = funds;
-
-	//Start the function when the document loaded
-	//document.addEventListener("DOMContentLoaded", function(event) {
-
-		var horse1 = new Horse('horse1', 20, 4);
-		var horse2 = new Horse('horse2', 20, 8);
-		var horse3 = new Horse('horse3', 20, 12);
-		var horse4 = new Horse('horse4', 20, 16);
-		//Event listener to the Start button
-		document.getElementById('start').onclick = function(){
-			amount = parseInt(document.getElementById('amount').value);
-			funds -= amount;
-
-			alert('amount: ' + amount);
-			// Check for negative or zero amount
-			if (amount <= 0) {
-				alert('Please enter a positive bet amount.');
-				return;
-			}
-			// Check for invalid amount (not a number)
-			if (isNaN(amount)) {
-				alert('Please enter a valid bet amount.');
-				return;
-			}
-
-			//num_lap = parseInt(document.getElementById('num_lap').value);
-			num_lap = 1;
-			// ese: horse+ 1 -->  horse1
-			bethorse = "horse"+parseInt(document.getElementById('bethorse').value);
-
-
-			if (funds < amount){
-				alert('Not enough funds.');
-			}
-			/*
-            else if (num_lap <= 0){
-                alert('Number of lap must be greater than 0.');
-            }*/
-			else{
-				/*Started the game*/
-				document.getElementById('raceSound').pause();
-				document.getElementById('raceSound').currentTime = 0;
-				document.getElementById('raceSound').play();
-
-				this.disabled = true;/*Disable the start button*/
-				var tds = document.querySelectorAll('#results .result');//Get all cells of result table.
-				for (var i = 0; i < tds.length; i++) {
-					tds[i].className = 'result';//Reset the result.
-				}
-
-				//in questo caso a differenza della roulette gameInformation me lo gestisco in questo modo:
-				// in bet ci metto la puntata effettuata, e in betOn ci metto il cavallo su cui ho puntato
-				//nella roulette essendo tutto piu complicato, bet non lo utilizzavo, e tenevo tutto in betOn che era
-				// un array di oggetti "Bet" che conteneva il numero su cui si puntava e la puntata effettuata e il tipo
-				var betOn = [bethorse];
-				var gameInformation = GameInformation.create(token, GameType.HORSE_RACE, amount, betOn, "");
-				var gameInformation = generateResult(gameInformation)
-					.then( GameResult => {
-						console.log("result "+GameResult.result);
-						console.log("balance "+GameResult.balance);
-						var winningHorse = GameResult.result;
-
-						document.getElementById('funds').innerText = funds;
-						results = [];//Results array is to save the horse numbers when the race is finished.
-						horse1.run();
-						horse2.run();
-						horse3.run();
-						horse4.run();
-
-						switch (winningHorse){
-							case 'horse1':
-								horse1.vincente = true;
-								//alert('Horse 1 wins!')
-								break;
-							case 'horse2':
-								horse2.vincente = true;
-								//alert('Horse 2 wins!')
-								break;
-							case 'horse3':
-								horse3.vincente = true;
-								//alert('Horse 3 wins!')
-								break;
-							case 'horse4':
-								horse4.vincente = true;
-								//alert('Horse 4 wins!')
-								break;
-						}
-						funds = GameResult.balance;
-					})
-				/*
-				var winningHorse = 'horse3';
-				document.getElementById('funds').innerText = funds;
-				results = [];//Results array is to save the horse numbers when the race is finished.
-				horse1.run();
-				horse2.run();
-				horse3.run();
-				horse4.run();
-
-
-				switch (winningHorse){
-					case 'horse1':
-						horse1.vincente = true;
-						//alert('Horse 1 wins!')
-						break;
-					case 'horse2':
-						horse2.vincente = true;
-						//alert('Horse 2 wins!')
-						break;
-					case 'horse3':
-						horse3.vincente = true;
-						//alert('Horse 3 wins!')
-						break;
-					case 'horse4':
-						horse4.vincente = true;
-						//alert('Horse 4 wins!')
-						break;
-				}
-				 */
-			}
+	var horse1 = new Horse('horse1', 20, 4);
+	var horse2 = new Horse('horse2', 20, 8);
+	var horse3 = new Horse('horse3', 20, 12);
+	var horse4 = new Horse('horse4', 20, 16);
+	//Event listener to the Start button
+	document.getElementById('start').onclick = function(){
+		amount = parseInt(document.getElementById('amount').value);
+		funds -= amount;
+		// Check for negative or zero amount
+		if (amount <= 0) {
+			alert('Please enter a positive bet amount.');
+			return;
 		}
+		// Check for invalid amount (not a number)
+		if (isNaN(amount)) {
+			alert('Please enter a valid bet amount.');
+			return;
+		}
+		num_lap = 1;
+		//esempio: horse+ 1 -->  horse1
+		bethorse = "horse"+parseInt(document.getElementById('bethorse').value);
+		// la checkBox è fatta di 4 valori:
+		// 1 --> horse1 --> white   cavallo bianco
+		// 2 --> horse2 --> blue     cavallo blu
+		// 3 --> horse3 --> green   cavallo verde
+		// 4 --> horse4 --> brown    cavallo marrone
 
-	//});
+		if (funds < amount){
+			alert('Not enough funds.');
+		}
+		else{
+			/*Started the game*/
+			document.getElementById('raceSound').pause();
+			document.getElementById('raceSound').currentTime = 0;
+			document.getElementById('raceSound').play();
+
+			this.disabled = true;/*Disable the start button*/
+			var tds = document.querySelectorAll('#results .result');//Get all cells of result table.
+			for (var i = 0; i < tds.length; i++) {
+				tds[i].className = 'result';//Reset the result.
+			}
+			document.getElementById('funds').innerText = funds; //se arrivo qui vuol dire che potevo fare la puntata
+
+			//in questo caso a differenza della roulette gameInformation me lo gestisco in questo modo:
+			// in bet ci metto la puntata effettuata, e in betOn ci metto il cavallo su cui ho puntato
+			//nella roulette essendo tutto piu complicato, bet non lo utilizzavo, e tenevo tutto in betOn che era
+			// un array di oggetti "Bet" che conteneva il numero su cui si puntava e la puntata effettuata e il tipo
+			var betOn = [bethorse];
+			var gameInformation = GameInformation.create(token, GameType.HORSE_RACE, amount, betOn, "");
+			var gameInformation = generateResult(gameInformation)
+				.then( GameResult => {
+					console.log("result "+GameResult.result);
+					console.log("balance "+GameResult.balance);
+					var winningHorse = GameResult.result.toString();
+					console.log("typeWinningHorse "+ typeof winningHorse);
+					results = [];//Results array is to save the horse numbers when the race is finished.
+					horse1.run();
+					horse2.run();
+					horse3.run();
+					horse4.run();
+
+					switch (winningHorse){
+						case 'horse1':
+							console.log("horse1 wins");
+							horse1.vincente = true;
+							break;
+						case 'horse2':
+							console.log("horse2 wins");
+							horse2.vincente = true;
+							break;
+						case 'horse3':
+							console.log("horse3 wins");
+							horse3.vincente = true;
+							break;
+						case 'horse4':
+							console.log("horse4 wins");
+							horse4.vincente = true;
+							break;
+					}
+					funds = GameResult.balance;
+				})
+		}
+	}
 }
+
 /*Create a Javascript Object for a horse with 3 parameters: HTML ID, position x and y*/
 function Horse(id, x, y){
 	var increaseForRandom = 10;
@@ -271,18 +233,11 @@ function Horse(id, x, y){
 		//Push the horse number to results array, according the the results array, we know the order of race results
 		results.push(this.number);
 
-		//Win horse
-		if (results.length == 1){
-			//If win horse is the bet horse, then add the fund
-			if (this.number == bethorse){
-				funds += amount;
-			}else{
-				funds -= amount;
-			}
-			document.getElementById('funds').innerText = funds;
-		}else if (results.length == 4){
+		if (results.length == 4){
 			//All horse arrived, enable again the Start Button
 			document.getElementById('start').disabled = false;
+			document.getElementById('raceSound').pause();
+			document.getElementById('funds').innerText = funds;
 		}
 	}
 }
