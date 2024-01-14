@@ -578,6 +578,7 @@ function spin(){
 
 
     var bankValueBeforeSpin = bankValue;
+    //in betOn passo l'array bet di obj, in bet passo 1 (posso passare quello che voglio tanto non la uso)
     var gameInformation = GameInformation.create(token, GameType.ROULETTE, 1, bet,"");
     var GameResult = generateResult(gameInformation)
         .then(GameResult => {

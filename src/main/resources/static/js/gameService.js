@@ -17,13 +17,6 @@ export function generateResult(gameInformation) {
           }
           return response.json();
         })
-/*
-        .then (gameResult => {
-            console.log("gameResult", gameResult.result);
-            console.log("balance", gameResult.balance);
-            return gameResult;
-        })
- */
         .catch( error => {
             console.error("Internal Server Error", error);
         }); // il blocco .catch gestisce errori di rete e di parsing JSON

@@ -22,9 +22,10 @@ public class RouletteStrategy extends GameStrategy {
     @Override
     protected boolean checkArgs(List<Object> betOn, Object gameConstants) {
         //qui devi controllare che betOn sia una lista di ciò che ti serve
+        boolean isBetOnValid = betOn.size() > 0 && betOn.get(0) instanceof LinkedHashMap;
 
         //se non usi costanti puoi togliere la riga sotto
-        return gameConstants instanceof RouletteConstants;
+        return gameConstants instanceof RouletteConstants && isBetOnValid;
     }
     /*
     ogni obj bet che arriva javaswheel.js ha questa struttura (valori di esempio):
@@ -36,21 +37,8 @@ public class RouletteStrategy extends GameStrategy {
     */
     @Override
     protected boolean willWin(List<Object> betOn, Object gameConstants) {
+        // posso fare il cast diretto in quanto ho controllato prima in checkArgs che gameConstants sia di tipo RouletteConstants
         RouletteConstants rouletteConstants = (RouletteConstants) gameConstants;
-        /*
-        String winningNumber = rouletteConstants.insideNumbers[random.nextInt(rouletteConstants.insideNumbers.length)];
-        for (Object bet : betOn) {
-            LinkedHashMap<String,Object> betMap = (LinkedHashMap<String,Object>) bet;
-            //System.out.println(betMap.get("amt").getClass());
-            //System.out.println(betMap.get("type").getClass());
-            //System.out.println(betMap.get("numbers").getClass());
-            BetRoulette betRoulette = new BetRoulette((Integer) betMap.get("amt"), (String) betMap.get("type"), (String) betMap.get("numbers"));
-            if (betRoulette.hasWon(winningNumber)) {
-                return true;
-            }
-        }
-        return false;
-         */
 
         //calcolo una percentuale di vittoria random, ma influenzata dal quantitativo di numeri su cui si punta,
         //in modo che se punto su più numeri ho più probabilità di vincere
@@ -65,7 +53,6 @@ public class RouletteStrategy extends GameStrategy {
         }
         //in questo modo se idealmente ho puntato su tutti i numeri ho il 100% di probabilità di vincere
         //se ne ho puntato su uno avrò il 1/37 di probabilità di vincere
-
         return random.nextInt(37) < numbersBet.size();
     }
 
