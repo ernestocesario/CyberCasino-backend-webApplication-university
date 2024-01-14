@@ -58,6 +58,11 @@ function initializeAll(){
 		}
 		else{
 			/*Started the game*/
+
+			document.getElementById('winSound').pause();
+			document.getElementById('trumpets').pause();
+			document.getElementById('trumpets').currentTime = 0;
+			document.getElementById('trumpets').play();
 			document.getElementById('raceSound').pause();
 			document.getElementById('raceSound').currentTime = 0;
 			document.getElementById('raceSound').play();
@@ -232,6 +237,13 @@ function Horse(id, x, y){
 
 		//Push the horse number to results array, according the the results array, we know the order of race results
 		results.push(this.number);
+		if (results.length == 1){
+			//arrivato il primo cavallo, faccio partire il winSound
+			document.getElementById('winSound').pause();
+			document.getElementById('winSound').currentTime = 0;
+			document.getElementById('winSound').play();
+
+		}
 
 		if (results.length == 4){
 			//All horse arrived, enable again the Start Button
