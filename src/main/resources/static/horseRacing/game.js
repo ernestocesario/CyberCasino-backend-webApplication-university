@@ -9,7 +9,8 @@ if(urlParams.has('token')) {
 	token = urlParams.get('token');
 	console.log('Token found: ' + token);
 }else {
-	console.log('Token not found');
+	alert("Non siamo riusciti a verificare il tuo account, verrai reindirizzato alla home");
+	window.location.href = "http://localhost:4200";
 }
 
 var funds;
@@ -23,13 +24,12 @@ getBalance(token).then(
 	}
 );
 
-//initializeAll();
 function initializeAll(){
 	document.getElementById('funds').innerText = funds;
-	var horse1 = new Horse('horse1', 20, 4);
-	var horse2 = new Horse('horse2', 20, 8);
-	var horse3 = new Horse('horse3', 20, 12);
-	var horse4 = new Horse('horse4', 20, 16);
+	var horse1 = new Horse('horse1', 20, 4);  //white
+	var horse2 = new Horse('horse2', 20, 8);  //blue
+	var horse3 = new Horse('horse3', 20, 12); //green
+	var horse4 = new Horse('horse4', 20, 16);  //brown
 	//Event listener to the Start button
 	document.getElementById('start').onclick = function(){
 		amount = parseInt(document.getElementById('amount').value);
@@ -52,13 +52,11 @@ function initializeAll(){
 		// 2 --> horse2 --> blue     cavallo blu
 		// 3 --> horse3 --> green   cavallo verde
 		// 4 --> horse4 --> brown    cavallo marrone
-
 		if (funds < amount){
 			alert('Not enough funds.');
 		}
 		else{
 			/*Started the game*/
-
 			document.getElementById('winSound').pause();
 			document.getElementById('trumpets').pause();
 			document.getElementById('trumpets').currentTime = 0;
@@ -235,7 +233,7 @@ function Horse(id, x, y){
 		//results.length is the current arrive position
 		tds[results.length].className = 'result horse'+this.number;//The class of result look like: result horse1...
 
-		//Push the horse number to results array, according the the results array, we know the order of race results
+		//Push the horse number to results array, according the results array, we know the order of race results
 		results.push(this.number);
 		if (results.length == 1){
 			//arrivato il primo cavallo, faccio partire il winSound
