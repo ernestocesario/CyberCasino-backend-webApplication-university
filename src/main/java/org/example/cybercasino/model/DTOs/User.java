@@ -2,6 +2,7 @@ package org.example.cybercasino.model.DTOs;
 
 import org.example.cybercasino.model.DTOs.utils.Match;
 import org.example.cybercasino.model.DTOs.utils.Transaction;
+import org.example.cybercasino.model.constants.MessageConstants;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -73,6 +74,8 @@ public class User {
     }
 
     public final void subtractBalance(double amount) {
+        if (amount < balance)
+            throw new IllegalArgumentException(MessageConstants.USER_BALANCE_INSUFFICIENT.name());
         balance -= amount;
     }
 
