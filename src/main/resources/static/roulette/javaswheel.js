@@ -5,29 +5,22 @@ import {GameType} from "../js/gameType.js";
 // Ottenere i parametri dall'URL
 const urlParams = new URLSearchParams(window.location.search);
 let token;
-//const GameType = 'ROULETTE';
-
 // Verificare se il parametro "token" è presente nell'URL
 if (urlParams.has('token')) {
     // Ottenere il valore del parametro "token"
     token = urlParams.get('token');
-    // Ora puoi utilizzare il valore del token come desideri
     console.log('Token:', token);
 } else {
-    console.log('Nessun token presente nell\'URL');
+    alert('Non siamo riusciti a verificare il tuo account, verrai reindirizzato alla pagina di login');
+    resetGame();
 }
 
-//------------------------------------------------
-
-//let bankValue = 1000;  //prenderlo dal db
-
 let currentBet = 0;
-let wager = 5;
+let wager = 5; //memorizza la puntata attuale
 let lastWager = 0; //memorizza l'ultima puntata
 let bet = [];
 let numbersBet = [];
 let previousNumbers = [];
-
 let numRed = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
 let wheelnumbersAC = [0, 26, 3, 35, 12, 28, 7, 29, 18, 22, 9, 31, 14, 20, 1, 33, 16, 24, 5, 10, 23, 8, 30, 11, 36, 13, 27, 6, 34, 17, 25, 2, 21, 4, 19, 15, 32];
 
@@ -43,19 +36,12 @@ let value = getBalance(token)
         value => {
             console.log("balance "+value);
             bankValue = value;
-            //bankValue += 1000; //VA ELIMINATA, MI SERVE SOLO PER PROVARE LA ROULETTE, ALTRIMENTI AVREI COME SALDO 0 E NON POSSO BETTARE
             startGame(); // il gioco va iniziato solo se il balance è stato ottenuto correttamente,
             // altrimenti si potrebbe iniziare il gioco con un balance non aggiornato,
-            // inoltre, se il balance non è initializzato, tutte le funzioni a cascata mi darebbero problemi
+            // inoltre, se il balance non è inizializzato, tutte le funzioni a cascata mi darebbero problemi
             wheel = document.getElementsByClassName('wheel')[0];
             ballTrack = document.getElementsByClassName('ballTrack')[0];
         });
-
-//startGame();
-
-
-
-// posso eliminarla ????
 function resetGame(){
     window.location.href = "http://localhost:4200";
 }
@@ -558,27 +544,24 @@ function spin(){
         alert("Non hai abbastanza soldi per puntare");
         return;
     }
-    // Aggiungi questa riga per ottenere l'elemento audio dal documento --------------
+
+    //quando spinno la roulette faccio partire il suono
     var audioElement = document.getElementById('myAudio');
-    // Riproduci il suono ------------------------------------------------------------
     audioElement.play();
-    //--------------------------------------------------------------------------------
 
     for(let i = 0; i < bet.length; i++){
         console.log("bet"+i+"-> puntata:"+bet[i].amt+" numeri:"+bet[i].numbers+" tipo"+bet[i].type+" moltipl:"+bet[i].odds+"");
     }
-    //chiamata backend
 
     //currentBet è la somma di tutte le puntate (es: ho puntato 1euro sul 2, 3euro sul 4...)
     //numbersBet sono i numeri su cui ho puntato es: [6,24,3,1]
 
     //GameResult = [result: string[], balance: number]
     //qua non devo usare subscribe, è un metodo di angular, uso fetch nella funzione
-    //var GameResult = generateResult(token,GameType,bet,"");
-
-
+    //var GameResult = generateResult(token,GameType,bet,betOn,"");
     var bankValueBeforeSpin = bankValue;
     //in betOn passo l'array bet di obj, in bet passo 1 (posso passare quello che voglio tanto non la uso)
+    //anche additionalInfo è inutilizzata, serve per le slot di ernesto.
     var gameInformation = GameInformation.create(token, GameType.ROULETTE, 1, bet,"");
     var GameResult = generateResult(gameInformation)
         .then(GameResult => {
@@ -601,13 +584,6 @@ function spin(){
                 }
                 if(winning){
                     let winValue = bankValue - bankValueBeforeSpin;
-                    /*
-                    let betTotal = 0;
-                    for (let i=0; i<bet.length; i++){
-                        betTotal = betTotal + bet[i].amt;
-                    }
-
-                     */
                     win(winningSpin, winValue, betTotal);
                 }
                 currentBet = 0;
@@ -629,75 +605,20 @@ function spin(){
                 if(bankValue == 0 && currentBet == 0){
                     gameOver();
                 }
-
                 // Ferma il suono quando la pallina si ferma ------------------------------------
                 audioElement.pause();
                 audioElement.currentTime = 0;
-                //--------------------------------------------------------------------------------
             }, 10000);
         })
-    /*
-    //var winningSpin = Math.floor(Math.random() * 36);
-    var winningSpin = 9;
-
-    spinWheel(winningSpin);
-    setTimeout(function(){
-        if(numbersBet.includes(winningSpin)){
-            let winValue = 0;
-            let betTotal = 0;
-            for(let i = 0; i < bet.length; i++){
-                var numArray = bet[i].numbers.split(',').map(Number);
-                //console.log("spin: "+numArray);
-                if(numArray.includes(winningSpin)){
-                    //console.log("win: "+bet[i].amt+"*"+bet[i].odds+"="+(bet[i].odds * bet[i].amt));
-                    bankValue = (bankValue + (bet[i].odds * bet[i].amt) + bet[i].amt);
-                    // queste due di sotto servono solo per far vedere a schermo il pannello nel caso di vincita
-                    // quello tutto rosso che dice le varie informazioni con la musica ludopatica
-                    winValue = winValue + (bet[i].odds * bet[i].amt);
-                    betTotal = betTotal + bet[i].amt;
-                }
-            }
-            win(winningSpin, winValue, betTotal);
-        }
-
-        currentBet = 0;
-        document.getElementById('bankSpan').innerText = '' + bankValue.toLocaleString("en-GB") + '';
-        document.getElementById('betSpan').innerText = '' + currentBet.toLocaleString("en-GB") + '';
-
-        let pnClass = (numRed.includes(winningSpin))? 'pnRed' : ((winningSpin == 0)? 'pnGreen' : 'pnBlack');
-        let pnContent = document.getElementById('pnContent');
-        let pnSpan = document.createElement('span');
-        pnSpan.setAttribute('class', pnClass);
-        pnSpan.innerText = winningSpin;
-        pnContent.append(pnSpan);
-        pnContent.scrollLeft = pnContent.scrollWidth;
-
-        bet = [];
-        numbersBet = [];
-        removeChips();
-        wager = lastWager;
-        if(bankValue == 0 && currentBet == 0){
-            gameOver();
-        }
-
-        // Ferma il suono quando la pallina si ferma ------------------------------------
-        audioElement.pause();
-        audioElement.currentTime = 0;
-        //--------------------------------------------------------------------------------
-    }, 10000);
-
-     */
 }
 
 function win(winningSpin, winValue, betTotal){
     console.log("sono in win con winValue:" + winValue);
     if(winValue > 0){
-        console.log("winv>0");
-        // Aggiungi questa riga per ottenere l'elemento audio dal documento --------------
+        //riproduco il suono della vincita
         var audioElement = document.getElementById('winAudio');
-        // Riproduci il suono ------------------------------------------------------------
         audioElement.play();
-        //--------------------------------------------------------------------------------
+
         let notification = document.createElement('div');
         notification.setAttribute('id', 'notification');
         let nSpan = document.createElement('div');
