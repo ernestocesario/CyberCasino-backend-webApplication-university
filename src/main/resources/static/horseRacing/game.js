@@ -33,7 +33,6 @@ function initializeAll(){
 	//Event listener to the Start button
 	document.getElementById('start').onclick = function(){
 		amount = parseInt(document.getElementById('amount').value);
-		funds -= amount;
 		// Check for negative or zero amount
 		if (amount <= 0) {
 			alert('Please enter a positive bet amount.');
@@ -70,6 +69,7 @@ function initializeAll(){
 			for (var i = 0; i < tds.length; i++) {
 				tds[i].className = 'result';//Reset the result.
 			}
+			funds -= amount;
 			document.getElementById('funds').innerText = funds; //se arrivo qui vuol dire che potevo fare la puntata
 
 			//in questo caso a differenza della roulette gameInformation me lo gestisco in questo modo:
@@ -77,6 +77,7 @@ function initializeAll(){
 			//nella roulette essendo tutto piu complicato, bet non lo utilizzavo, e tenevo tutto in betOn che era
 			// un array di oggetti "Bet" che conteneva il numero su cui si puntava e la puntata effettuata e il tipo
 			var betOn = [bethorse];
+			console.log("amount "+amount);
 			var gameInformation = GameInformation.create(token, GameType.HORSE_RACE, amount, betOn, "");
 			var gameInformation = generateResult(gameInformation)
 				.then( GameResult => {
