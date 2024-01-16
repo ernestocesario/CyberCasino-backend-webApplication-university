@@ -1,0 +1,232 @@
+@import url("https://fonts.googleapis.com/css?family=Germania+One");
+body {
+  background: #000000;
+  width: 100%;
+}
+
+h1 {
+  font-family: "Germania One", cursive;
+  color: white;
+  text-align: center;
+}
+
+#app {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  height: 100vh;
+  font-family: Helvetica, Arial, Verdana, sans-serif;
+}
+
+#table {
+  background: radial-gradient(circle, #006600, #004d00, #003300);
+  color: #ffffff;
+  margin: auto;
+  width: 1200px;
+  height: 600px;
+  border: 1px solid #ffffff;
+  position: relative;
+}
+
+#game {
+  color: #333;
+  font: 14px/17px;
+  margin: 0 auto;
+  position: relative;
+  width: 1000px;
+  height: 550px;
+}
+
+#game-info {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid white;
+}
+
+#actions {
+  padding: 10px 0;
+  border-top: 1px solid white;
+  position: absolute;
+  bottom: 0;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#actions button {
+  margin: 5px;
+  border: none;
+  min-width: 60px;
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: none;
+  height: 35px;
+}
+#actions button#deal {
+  background: green;
+  color: white;
+}
+#actions button#hit {
+  background: orange;
+  color: white;
+}
+#actions button#stand {
+  background: red;
+  color: white;
+}
+#actions button#double {
+  background: blue;
+  color: white;
+}
+
+input#wager {
+  margin-left: 5px;
+  position: relative;
+  top: 4px;
+  height: 25px;
+}
+
+div[id*=pcard] .popover {
+  left: -95px !important;
+}
+
+div[id*=dcard] .popover {
+  left: -105px !important;
+}
+
+h3.out-of-cash {
+  margin: 5px 0;
+  text-align: center;
+}
+
+div#dscore {
+  position: absolute;
+  bottom: 30px;
+}
+
+div#pscore {
+  position: absolute;
+  bottom: 15px;
+}
+
+div#phand,
+div#dhand {
+  font-weight: 700;
+  position: absolute;
+  top: -122px;
+  white-space: nowrap;
+  width: 1000px;
+}
+
+div[class*=card] {
+  background: #FFF;
+  border: 6px solid #FFF;
+  border-radius: 5px;
+  box-shadow: 0 0 1px #000;
+  display: inline-block;
+  height: 106px;
+  margin: 0 5px;
+  position: absolute;
+  right: 0;
+  width: 79px;
+}
+
+.down {
+  background: #B20000 url("https://www.clowerweb.com/cors/blackjack/card.png") center center no-repeat !important;
+}
+
+span.pos-0 {
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+span.pos-1 {
+  bottom: 0;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+  position: absolute;
+  right: 0;
+  transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+}
+
+span.rank {
+  font-size: 18px;
+}
+
+span.suit {
+  font-size: 22px;
+}
+
+.black {
+  color: #000;
+}
+
+.red {
+  color: #F00;
+}
+
+#result {
+  position: absolute;
+  bottom: 0;
+}
+
+#money {
+  border: 3px solid #FFC926;
+  border-radius: 5px;
+  top: 0;
+  height: 55px;
+  padding: 7px;
+  position: absolute;
+  right: 9px;
+  width: 235px;
+}
+
+#money:before {
+  content: "";
+}
+
+#cash,
+#bank {
+  color: #FFF;
+  font: 700 18px/20px Helvetica, Arial, Verdana, sans-serif;
+  margin: 12px 0;
+  position: relative;
+  text-shadow: 1px 1px #000;
+  z-index: 1;
+}
+
+#alert {
+  margin: 0 auto;
+  opacity: 0.95;
+  position: relative;
+  text-align: center;
+  top: 34.5%;
+  width: 350px;
+  z-index: 0;
+}
+
+#high-low {
+  position: absolute;
+  padding: 30px;
+  font-size: 12px;
+}
+#high-low div {
+  margin-bottom: 10px;
+}
+#high-low div > span {
+  display: inline-block;
+  padding: 3px 8px;
+  background: black;
+  border-radius: 3px;
+}
+
+ul.explanation {
+  color: white;
+  width: 550px;
+  margin: 30px auto;
+}
