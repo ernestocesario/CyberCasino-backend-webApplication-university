@@ -645,7 +645,7 @@ function win(winningSpin, winValue, betTotal){
         nsWin.append(nsWinBlock);
         nsWinBlock = document.createElement('div');
         nsWinBlock.setAttribute('class', 'nsWinBlock');
-        nsWinBlock.innerText = 'Payout: ' + (winValue + betTotal);
+        nsWinBlock.innerText = 'Payout: ' + (winValue - betTotal);
         nsWin.append(nsWinBlock);
         nSpan.append(nsWin);
         notification.append(nSpan);

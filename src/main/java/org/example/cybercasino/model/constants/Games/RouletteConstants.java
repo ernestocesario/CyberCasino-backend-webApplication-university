@@ -25,12 +25,12 @@ public class RouletteConstants {
         betMultiplier.put("street", 11);
         betMultiplier.put("split", 17);
         betMultiplier.put("corner_bet", 8);
-        betMultiplier.put("outside_low", 1);
-        betMultiplier.put("outside_high", 1);
+        betMultiplier.put("outside_low", 2);
+        betMultiplier.put("outside_high", 2);
         betMultiplier.put("zero", 8);
         betMultiplier.put("inside_whole", 35);
         betMultiplier.put("outside_column", 2);
         betMultiplier.put("outside_dozen", 2);
-        betMultiplier.put("outside_oerb", 1);
+        betMultiplier.put("outside_oerb", 2);
     }
 }
