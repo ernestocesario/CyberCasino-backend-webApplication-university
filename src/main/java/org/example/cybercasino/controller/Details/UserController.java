@@ -121,6 +121,37 @@ public class UserController {
         return true;
     }
 
+    @PostMapping("/deposit")
+    public boolean deposit(@RequestBody Map<String, Object> body) {
+        AuthToken token = new AuthToken((String) body.get("token"));
+        double amount = Double.parseDouble((String) body.get("amount"));
+
+        User user = AuthenticationUtils.getUserFromToken(token.token);
+        if (user == null) {
+            throw new RuntimeException(MessageConstants.USER_NOT_FOUND.name());
+        }
+
+        user.addBalance(amount);
+        UserDAO.updateUser(user);
+
+        return true;
+    }
+
+    @PostMapping("/withdraw")
+    public boolean withdraw(@RequestBody Map<String, Object> body) {
+        AuthToken token = new AuthToken((String) body.get("token"));
+        double amount = Double.parseDouble((String) body.get("amount"));
+
+        User user = AuthenticationUtils.getUserFromToken(token.token);
+        if (user == null) {
+            throw new RuntimeException(MessageConstants.USER_NOT_FOUND.name());
+        }
+
+        user.subtractBalance(amount);
+        UserDAO.updateUser(user);
+
+        return true;
+    }
 
     //private methods
     private static List<SimpleTransaction> convertToSimpleTransactions(List<Transaction> transactions) {

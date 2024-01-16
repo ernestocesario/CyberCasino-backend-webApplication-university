@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Details</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="../js/profileService.js"></script>
+</head>
+<body>
+
+<div class="card-form">
+    <h2>Dati Carta</h2>
+    <div class="form-group">
+        <label for="cardNumber">Numero Carta:</label>
+        <input type="text" id="cardNumber" placeholder="Inserisci il numero della carta">
+    </div>
+    <div class="form-group">
+        <label for="cardHolder">Proprietario della Carta:</label>
+        <input type="text" id="cardHolder" placeholder="Inserisci il proprietario della carta">
+    </div>
+    <div class="form-group">
+        <label for="expiryDate">Data Scadenza Carta:</label>
+        <input type="text" id="expiryDate" placeholder="MM/YYYY">
+    </div>
+    <div class="form-group">
+        <label for="cvv">CVV:</label>
+        <input type="text" id="cvv" placeholder="Inserisci il CVV">
+    </div>
+    <div class="form-group">
+        <label for="amount">Quantità:</label>
+        <input type="number" id="amount" placeholder="Inserisci la quantità da depositare/prelevare">
+    </div>
+    <button id="confirmButton">Conferma</button>
+</div>
+
+<script type="module" src="creditCard.js"></script>
+
+</body>
+</html>

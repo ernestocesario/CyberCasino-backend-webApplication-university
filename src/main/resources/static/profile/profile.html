@@ -102,7 +102,7 @@
                     <div class="half-container">
                         <label id="balanceText" class="middle-color">Saldo disponibile: </label>
                         <div class="green-highlighted">
-                            <label id="balanceValue" class="light-color bold">1000</label>
+                            <label id="balanceValue" class="light-color bold"></label>
                             <label class="light-color bold"> €</label>
                         </div>
                     </div>
@@ -175,15 +175,19 @@
 </div>
 <script>
     document.getElementById('btnPreleva').addEventListener('click', function () {
-        openPopup('/../creditCard/creditCard.html');
+        openPopup('/../creditCard/creditCard.html?operationType=preleva');
     });
 
     document.getElementById('btnDeposita').addEventListener('click', function () {
-        openPopup('/../creditCard/creditCard.html');
+        openPopup('/../creditCard/creditCard.html?operationType=deposita');
     });
 
     function openPopup(url) {
-        window.open(url, '_blank', 'width=600,height=600,scrollbars=yes');
+        const urlParams = new URLSearchParams(window.location.search);
+        token = urlParams.get('token');
+        window.open(url+"&token="+token, '_blank', 'width=600,height=600,scrollbars=yes');
     }
 </script>
+<script type="module" src="../js/gameService.js"></script>
+<script type="module" src="profile.js"></script>
 </body>
