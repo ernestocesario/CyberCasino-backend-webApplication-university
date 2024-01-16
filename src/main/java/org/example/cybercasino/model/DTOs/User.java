@@ -74,7 +74,7 @@ public class User {
     }
 
     public final void subtractBalance(double amount) {
-        if (amount < balance)
+        if (amount > balance)
             throw new IllegalArgumentException(MessageConstants.USER_BALANCE_INSUFFICIENT.name());
         balance -= amount;
     }
