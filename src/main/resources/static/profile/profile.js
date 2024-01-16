@@ -9,7 +9,6 @@ let token;
 if (urlParams.has('token')) {
     // Ottenere il valore del parametro "token"
     token = urlParams.get('token');
-    console.log('Token:', token);
 } else {
     alert('Non siamo riusciti a verificare il tuo account, verrai reindirizzato alla pagina di login');
     window.location.href = "http://localhost:4200";

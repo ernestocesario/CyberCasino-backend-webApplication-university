@@ -26,9 +26,15 @@ export function substractBalance(token, amount){
         credentials: 'include',
     })
         .then(response => {
-            if (!response.ok) { //gestisce errori HTTP in base al codice di stato della risposta.
-                console.log("response not ok" + response.status);
+            console.log(response);
+            if (!response.ok) {
+                // Gestione degli errori HTTP
+                throw new Error('Errore durante la richiesta: ' + response.status);
             }
-            return response.json();
+            return response.json(); // Restituisce direttamente il valore booleano (true o false)
         })
+        .catch(error => {
+            console.error('Errore durante la richiesta:', error.message);
+            return false; // Restituisce false in caso di errore
+        });
 }

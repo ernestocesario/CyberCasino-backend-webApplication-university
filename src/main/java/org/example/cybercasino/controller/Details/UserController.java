@@ -147,10 +147,13 @@ public class UserController {
             throw new RuntimeException(MessageConstants.USER_NOT_FOUND.name());
         }
 
-        user.subtractBalance(amount);
-        UserDAO.updateUser(user);
-
-        return true;
+        try {
+            user.subtractBalance(amount);
+            UserDAO.updateUser(user);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     //private methods

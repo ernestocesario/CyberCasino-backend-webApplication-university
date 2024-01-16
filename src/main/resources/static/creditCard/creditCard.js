@@ -37,12 +37,13 @@ function validateCardDetails() {
     }
 
     if (!isValidFormat(expiryDate)) {
-        alert('La data di scadenza deve essere nel formato MM/YYYY.');
+        alert('La data di scadenza deve essere nel formato MM/YYYY e il mese deve essere un mese valido.');
         return;
     }
 
     if (!isFutureExpiryDate(expiryDate)) {
         alert('Carta scaduta.');
+        return;
     }
 
     if (!isValidCVV(cvv)) {
@@ -57,12 +58,14 @@ function validateCardDetails() {
 
     if (operationType === 'preleva') {
         substractBalance(token, amount).then(r => {
-            if (!r) alert(alertMessageGenericError)
-            return r;
+            console.log(r);
+            if (!r) alert('Il saldo non è sufficiente per effettuare il prelievo.');
+            else {
+                alert('I Dati della Carta sono Validi! Cash Prelevati: ' + amount);
+            }
         });
-        alert('I Dati della Carta sono Validi! Cash Prelevati: ' + amount);
         window.opener.location.reload();
-        window.close();
+        //window.close();
     }
     else if (operationType === 'deposita') {
         addBalance(token,amount).then(r => {
@@ -93,7 +96,15 @@ function isValidFormat(expiryDate) {
     // Simulazione di un controllo di validità della data di scadenza
     // Nell'esempio, verifichiamo che sia nel formato MM/YYYY
     var parts = expiryDate.split('/');
-    return parts.length === 2 && !isNaN(parseInt(parts[0], 10)) && !isNaN(parseInt(parts[1], 10));
+    var month = parseInt(parts[0], 10);
+    var year = parseInt(parts[1], 10);
+
+    var isValidMonth = month >= 1 && month <= 12;
+    var isValidYear = !isNaN(year) && parts[1].length === 4;
+
+    var isValidExpiryDate = parts.length === 2 && isValidMonth && isValidYear;
+
+    return isValidExpiryDate;
 }
 
 function isFutureExpiryDate(expiryDate) {
