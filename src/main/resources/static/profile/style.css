@@ -5,7 +5,8 @@
     border-radius: 10px;
     margin: 0 auto;
     width: 60%;
-    margin-top: 50px;
+    margin-top: 20px;
+    margin-bottom: 50px;
     color: #ffffff;
 }
 
@@ -125,6 +126,67 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    width: 1440px;
-    height: 2000px;
+    width: 100%;
+}
+
+
+/* Stile generale per tutte le tabelle */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+/* Stile dell'intestazione della tabella */
+thead {
+    background-color: #8a3a20;
+    border: 1px solid #ddd;
+}
+
+/* Stile delle celle dell'intestazione */
+th {
+    padding: 10px;
+    text-align: left;
+}
+
+/* Stile delle celle della tabella */
+td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+/* Aggiunge uno sfondo a ogni altra riga pari*/
+tbody tr:nth-child(even) {
+    background-color: #7d7a7a;
+}
+
+/* Stile per la prima colonna con i nomi utente */
+td:first-child {
+    font-weight: bold;
+}
+
+/* Stile per le celle contenenti gli importi */
+td:nth-child(2) {
+    text-align: right;
+}
+
+/* Stile per il bottone nel footer della tabella */
+tfoot button {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Aggiunge spazio tra le tabelle all'interno della stessa sezione */
+.table-responsive table {
+    margin-bottom: 20px;
+}
+
+/* Aggiunge uno stile aggiuntivo per le tabelle specifiche */
+.table-responsive h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
 }
