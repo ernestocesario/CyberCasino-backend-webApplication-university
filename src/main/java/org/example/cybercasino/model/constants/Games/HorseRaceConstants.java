@@ -8,7 +8,7 @@ public class HorseRaceConstants {
             "horse3",
             "horse4"
     };
-    public final int winningPercentage = 25;
+    public final int winningPercentage = 10;
     public final int betMultiplier = 4;
     private static HorseRaceConstants instance;
 
