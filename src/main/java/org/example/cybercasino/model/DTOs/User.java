@@ -18,7 +18,7 @@ public class User {
 
 
     protected List<Transaction> transactionHistory;
-    protected List<Match> gameHistory;
+    protected List<Match> winningGameHistory;
 
     public User(String email, String username, String hashedPassword, double balance, Date lastDailySpin, boolean isBanned) {
         this.username = username;
@@ -28,7 +28,7 @@ public class User {
         this.lastDailySpin = lastDailySpin;
         this.isBanned = isBanned;
         transactionHistory = new ArrayList<>();
-        gameHistory = new ArrayList<>();
+        winningGameHistory = new ArrayList<>();
     }
 
     public final String getUsername() {
@@ -59,8 +59,8 @@ public class User {
         return transactionHistory;
     }
 
-    public List<Match> getGameHistory() {
-        return gameHistory;
+    public List<Match> getWinningGameHistory() {
+        return winningGameHistory;
     }
 
 
@@ -91,7 +91,7 @@ public class User {
         this.transactionHistory = transactionHistory;
     }
 
-    public final void setGameHistory(List<Match> gameHistory) {
-        this.gameHistory = gameHistory;
+    public final void setWinningGameHistory(List<Match> winningGameHistory) {
+        this.winningGameHistory = winningGameHistory;
     }
 }

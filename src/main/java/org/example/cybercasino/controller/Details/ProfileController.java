@@ -7,7 +7,6 @@ import org.example.cybercasino.model.DTOs.User;
 import org.example.cybercasino.model.DTOs.utils.Match;
 import org.example.cybercasino.model.DTOs.utils.Transaction;
 import org.example.cybercasino.model.constants.MessageConstants;
-import org.example.cybercasino.model.proxies.UserProxy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +29,7 @@ public class ProfileController {
         model.addAttribute("balance", user.getBalance());
 
         model.addAttribute("latestTransactions", convertToSimpleTransactions(user.getTransactionHistory()));
-        model.addAttribute("latestMatches", convertToSimpleMatches(user.getGameHistory()));
+        model.addAttribute("latestMatches", convertToSimpleMatches(user.getWinningGameHistory()));
 
         return "profile";
     }

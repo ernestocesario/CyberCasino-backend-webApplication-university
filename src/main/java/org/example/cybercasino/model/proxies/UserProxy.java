@@ -33,16 +33,16 @@ public class UserProxy extends User {
     }
 
     @Override
-    public List<Match> getGameHistory() {
-        if (!gameHistory.isEmpty())
-            return super.getGameHistory();
+    public List<Match> getWinningGameHistory() {
+        if (!winningGameHistory.isEmpty())
+            return super.getWinningGameHistory();
 
         List<Match> gameHistoryParts = GameHistoryDAO.getWinningMatchesByUser(this);
 
         if (gameHistoryParts == null || gameHistoryParts.isEmpty())
-            return super.getGameHistory();
-        gameHistory.addAll(gameHistoryParts);
+            return super.getWinningGameHistory();
+        winningGameHistory.addAll(gameHistoryParts);
 
-        return super.getGameHistory();
+        return super.getWinningGameHistory();
     }
 }

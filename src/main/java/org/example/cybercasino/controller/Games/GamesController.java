@@ -140,7 +140,7 @@ public class GamesController {
         Match match = new Match(-1, user, gameType, matchAmount, timestamp);
         GameHistoryDAO.addMatch(match);
 
-        if(!user.getTransactionHistory().isEmpty())
-            user.getGameHistory().add(0, match);
+        if(!user.getTransactionHistory().isEmpty() && generatedGame.isWin())
+            user.getWinningGameHistory().add(0, match);
     }
 }
