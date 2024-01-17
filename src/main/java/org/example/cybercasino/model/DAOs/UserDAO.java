@@ -2,7 +2,9 @@ package org.example.cybercasino.model.DAOs;
 
 import org.example.cybercasino.model.DTOs.User;
 import org.example.cybercasino.model.Database;
+import org.example.cybercasino.model.RuntimeUserDatabase;
 import org.example.cybercasino.model.constants.DatabaseConstants;
+import org.example.cybercasino.model.proxies.UserProxy;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ public class UserDAO {
     private UserDAO() {
     }
 
-    public static User findByEmail(String email) {
+    public static UserProxy findByEmail(String email) {
         try (Connection connection = Database.getInstance().createDBConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DatabaseConstants.GET_USER_BY_EMAIL)) {
 
@@ -29,7 +31,8 @@ public class UserDAO {
                 Date lastDailySpin = resultSet.getDate(USERS_TBL_DAILYSPIN_COL);
                 boolean isBanned = resultSet.getBoolean(USERS_TBL_BANNED_COL);
 
-                return new User(email, username, password, balance, lastDailySpin, isBanned);
+                UserProxy userProxy = new UserProxy(email, username, password, balance, lastDailySpin, isBanned);
+                return RuntimeUserDatabase.getInstance().getUser(userProxy);
             }
             return null;
         }
@@ -39,7 +42,7 @@ public class UserDAO {
         return null;
     }
 
-    public static User findByUsername(String username) {
+    public static UserProxy findByUsername(String username) {
         try (Connection connection = Database.getInstance().createDBConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DatabaseConstants.GET_USER_BY_USERNAME)) {
 
@@ -54,7 +57,8 @@ public class UserDAO {
                 Date lastDailySpin = resultSet.getDate(USERS_TBL_DAILYSPIN_COL);
                 boolean isBanned = resultSet.getBoolean(USERS_TBL_BANNED_COL);
 
-                return new User(email, username, password, balance, lastDailySpin, isBanned);
+                UserProxy userProxy = new UserProxy(email, username, password, balance, lastDailySpin, isBanned);
+                return RuntimeUserDatabase.getInstance().getUser(userProxy);
             }
             return null;
         }

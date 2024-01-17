@@ -10,9 +10,6 @@ import java.sql.Date;
 import java.util.List;
 
 public class UserProxy extends User {
-    private final int MIN_NUMBER_OF_MATCHES_TO_LOAD_IF_EMPTY = 10;
-    private final int MIN_NUMBER_OF_TRANSACTIONS_TO_LOAD_IF_EMPTY = 10;
-
     public UserProxy(User user) {
         super(user.getEmail(), user.getUsername(), user.getHashedPassword(), user.getBalance(), user.getLastDailySpin(), user.isBanned());
     }
@@ -22,24 +19,11 @@ public class UserProxy extends User {
     }
 
     @Override
-    public List<Transaction> getTransactionHistory(long ...additionalTransactionsToLoad) {
-        long howMany = 0;
+    public List<Transaction> getTransactionHistory() {
+        if (!transactionHistory.isEmpty())
+            return super.getTransactionHistory();
 
-        if (additionalTransactionsToLoad.length == 0) {
-            if (transactionHistory.isEmpty())
-                howMany = MIN_NUMBER_OF_TRANSACTIONS_TO_LOAD_IF_EMPTY;
-            else
-                return super.getTransactionHistory();
-        }
-
-        if (additionalTransactionsToLoad.length > 1)
-            throw new IllegalArgumentException("Only one argument is allowed");
-
-        if (howMany == 0)
-            howMany = additionalTransactionsToLoad[0];
-
-        long alreadyLoaded = transactionHistory.size();
-        List<Transaction> transactionHistoryParts = TransactionHistoryDAO.getLatestXTransactionsByUserStartingFromLatestYTransactions(this, howMany, alreadyLoaded);
+        List<Transaction> transactionHistoryParts = TransactionHistoryDAO.getTransactionHistoryByUser(this);
 
         if (transactionHistoryParts == null || transactionHistoryParts.isEmpty())
             return super.getTransactionHistory();
@@ -49,24 +33,11 @@ public class UserProxy extends User {
     }
 
     @Override
-    public List<Match> getGameHistory(long ...additionalMatchesToLoad) {
-        long howMany = 0;
+    public List<Match> getGameHistory() {
+        if (!gameHistory.isEmpty())
+            return super.getGameHistory();
 
-        if (additionalMatchesToLoad.length == 0) {
-            if (gameHistory.isEmpty())
-                howMany = MIN_NUMBER_OF_MATCHES_TO_LOAD_IF_EMPTY;
-            else
-                return super.getGameHistory();
-        }
-
-        if (additionalMatchesToLoad.length > 1)
-            throw new IllegalArgumentException("Only one argument is allowed");
-
-        if (howMany == 0)
-            howMany = additionalMatchesToLoad[0];
-
-        long alreadyLoaded = gameHistory.size();
-        List<Match> gameHistoryParts = GameHistoryDAO.getLatestXWinningMatchesByUserStartingFromLatestYWinningMatches(this, howMany, alreadyLoaded);
+        List<Match> gameHistoryParts = GameHistoryDAO.getWinningMatchesByUser(this);
 
         if (gameHistoryParts == null || gameHistoryParts.isEmpty())
             return super.getGameHistory();

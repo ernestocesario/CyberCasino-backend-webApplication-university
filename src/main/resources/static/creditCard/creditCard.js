@@ -62,19 +62,21 @@ function validateCardDetails() {
             if (!r) alert('Il saldo non è sufficiente per effettuare il prelievo.');
             else {
                 alert('I Dati della Carta sono Validi! Cash Prelevati: ' + amount);
+                window.opener.location.reload();
+                window.close();
             }
         });
-        window.opener.location.reload();
-        //window.close();
     }
     else if (operationType === 'deposita') {
         addBalance(token,amount).then(r => {
             if (!r) alert(alertMessageGenericError)
+            else {
+                alert('I Dati della Carta sono Validi! Cash Depositati (CI BALLIAMO LA FRESCA): ' + amount);
+                window.opener.location.reload();
+                window.close();
+            }
             return r;
         });
-        alert('I Dati della Carta sono Validi! Cash Depositati (CI BALLIAMO LA FRESCA): ' + amount);
-        window.opener.location.reload();
-        window.close();
     }
     else {
         alert(alertMessageGenericError);

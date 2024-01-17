@@ -1,4 +1,4 @@
-package org.example.cybercasino.controller.Authentication.utils;
+package org.example.cybercasino.controller.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;

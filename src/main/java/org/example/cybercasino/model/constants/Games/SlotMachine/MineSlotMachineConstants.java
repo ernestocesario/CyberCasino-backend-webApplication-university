@@ -9,7 +9,7 @@ public class MineSlotMachineConstants extends SlotMachineConstants {
         return instance;
     }
     private MineSlotMachineConstants() {
-        super(4, 12, 8, 24, 3, new String[]{
+        super(4, 12, 8, 25, 3, new String[]{
                 "star",
                 "lightning",
                 "chest",

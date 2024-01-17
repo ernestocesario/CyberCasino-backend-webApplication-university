@@ -11,11 +11,12 @@
 
 .container-fluid input{
     padding: 10px;
-    border-radius: 3px;
+    border-radius: 20px;
     margin-bottom: 10px;
     background-color: #333333;
     color: #ffffff;
     border: 1px solid #444444;
+    width: 100%;
 }
 
 .container-fluid h1 {

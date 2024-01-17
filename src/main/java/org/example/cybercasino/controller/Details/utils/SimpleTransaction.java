@@ -3,14 +3,12 @@ package org.example.cybercasino.controller.Details.utils;
 import org.example.cybercasino.model.DTOs.utils.Transaction;
 
 public class SimpleTransaction {
-    private final long id;
-    private final String username;
-    private final double amount;
-    private final String transactionType;
-    private final String timestamp;
+    public final String username;
+    public final double amount;
+    public final String transactionType;
+    public final String timestamp;
 
-    private SimpleTransaction(long id, String username, double amount, String transactionType, String timestamp) {
-        this.id = id;
+    private SimpleTransaction(String username, double amount, String transactionType, String timestamp) {
         this.username = username;
         this.amount = amount;
         this.transactionType = transactionType;
@@ -18,6 +16,6 @@ public class SimpleTransaction {
     }
 
     public static SimpleTransaction convertToSimpleTransaction(Transaction transaction) {
-        return new SimpleTransaction(transaction.id(), transaction.user().getUsername(), transaction.amount(), transaction.transactionType().toString(), transaction.timestamp().toString());
+        return new SimpleTransaction(transaction.user().getUsername(), transaction.amount(), transaction.transactionType().toString(), transaction.timestamp().toString());
     }
 }

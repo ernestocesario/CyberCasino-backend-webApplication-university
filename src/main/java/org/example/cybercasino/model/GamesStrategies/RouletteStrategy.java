@@ -1,9 +1,11 @@
 package org.example.cybercasino.model.GamesStrategies;
 
-import org.example.cybercasino.model.BetRoulette;
 import org.example.cybercasino.model.constants.Games.RouletteConstants;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Random;
 
 public class RouletteStrategy extends GameStrategy {
     private static RouletteStrategy instance;

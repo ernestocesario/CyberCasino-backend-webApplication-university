@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.cybercasino.controller.Authentication.utils.AuthenticationUtils;
-import org.example.cybercasino.controller.Authentication.utils.ServletUtils;
+import org.example.cybercasino.controller.utils.ServletUtils;
 import org.example.cybercasino.controller.Authentication.utils.SimpleUser;
 import org.example.cybercasino.model.DAOs.UserDAO;
 import org.example.cybercasino.model.DTOs.User;

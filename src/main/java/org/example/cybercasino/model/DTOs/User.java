@@ -55,15 +55,11 @@ public class User {
         return isBanned;
     }
 
-    public List<Transaction> getTransactionHistory(long ...additionalTransactionsToLoad) {
-        if (additionalTransactionsToLoad.length != 0)
-            throw new IllegalArgumentException("This method accept arguments only when it's called from UserProxy");
+    public List<Transaction> getTransactionHistory() {
         return transactionHistory;
     }
 
-    public List<Match> getGameHistory(long ...additionalMatchesToLoad) {
-        if (additionalMatchesToLoad.length != 0)
-            throw new IllegalArgumentException("This method accept arguments only when it's called from UserProxy");
+    public List<Match> getGameHistory() {
         return gameHistory;
     }
 
