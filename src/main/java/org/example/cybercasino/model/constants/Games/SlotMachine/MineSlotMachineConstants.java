@@ -9,7 +9,8 @@ public class MineSlotMachineConstants extends SlotMachineConstants {
         return instance;
     }
     private MineSlotMachineConstants() {
-        super(4, 12, 8, 25, 3, new String[]{
+        //winninPercentage = 8, fakeWinPercentage = 25
+        super(4, 12, 40, 50, 3, new String[]{
                 "star",
                 "lightning",
                 "chest",

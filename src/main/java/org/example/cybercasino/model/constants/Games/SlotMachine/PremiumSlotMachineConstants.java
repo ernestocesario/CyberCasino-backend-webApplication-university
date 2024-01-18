@@ -10,7 +10,8 @@ public class PremiumSlotMachineConstants extends SlotMachineConstants {
     }
 
     private PremiumSlotMachineConstants() {
-        super(5, 12, 5, 25, 4, new String[]{
+        //winninPercentage = 5, fakeWinPercentage = 25
+        super(5, 12, 40, 50, 4, new String[]{
                 "peach",
                 "bag",
                 "bar",
