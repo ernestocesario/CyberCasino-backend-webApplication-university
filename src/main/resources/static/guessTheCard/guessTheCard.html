@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Guess The Card</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div id="app">
+  <a class ="home-btn" style="position: absolute" href="http://localhost:4200">
+    <img src="../images/3-1.png" alt="Logo" style="max-height: 40px;">
+  </a>
+  <div id="bet">
+    <p class="special-paragraphSaldo">Saldo attuale <span id="funds">{{funds}}</span></p>
+    <label>Bet Amount (€)</label>
+    <input type="number" id="amount" value="1"><!-- Add type and default value -->
+  </div>
+  <div class="control">
+    <h1>{{state}}</h1>
+  </div>
+  <div class="cards" :class="{gather: gather}">
+    <div class="card" v-for="card in cards" :class="{open: card.open}" :data-order="card.id" @click="openCard(card)">
+      <div class="face back"> </div>
+      <div class="face front">{{ getSymbol(card.label) }}</div>
+    </div>
+  </div>
+</div>
+<!-- partial -->
+  <script type="module" src="guessTheCard.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17-beta.0/vue.js'></script>
+</body>
+
+</html>

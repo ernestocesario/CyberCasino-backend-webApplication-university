@@ -13,7 +13,9 @@ public enum GameType {
     SLOT_MACHINE,
     ROULETTE,
     DAILY_SPIN,
-    HORSE_RACE;
+    HORSE_RACE,
+    GUESS_THE_CARD;
+
 
 
     public GameStrategy getGameStrategy() {
@@ -22,6 +24,7 @@ public enum GameType {
             case ROULETTE -> RouletteStrategy.getInstance();
             case DAILY_SPIN -> DailySpinStrategy.getInstance();
             case HORSE_RACE -> HorseRaceStrategy.getInstance();
+            case GUESS_THE_CARD -> GuessTheCardStrategy.getInstance();
         };
     }
 
@@ -31,6 +34,7 @@ public enum GameType {
             case ROULETTE -> RouletteConstants.getInstance();
             case DAILY_SPIN -> DailySpinConstants.getInstance();
             case HORSE_RACE -> HorseRaceConstants.getInstance();
+            case GUESS_THE_CARD -> GuessTheCardConstants.getInstance();
         };
     }
 
