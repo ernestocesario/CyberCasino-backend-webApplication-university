@@ -86,6 +86,13 @@ function initializeAll(){
 					var winningHorse = GameResult.result.toString();
 					console.log("typeWinningHorse "+ typeof winningHorse);
 					results = [];//Results array is to save the horse numbers when the race is finished.
+
+					//ogni volta che riinizio la partita metto tutti i cavalli vincenti a false.
+					horse1.vincente = false;
+					horse2.vincente = false;
+					horse3.vincente = false;
+					horse4.vincente = false;
+
 					horse1.run();
 					horse2.run();
 					horse3.run();
