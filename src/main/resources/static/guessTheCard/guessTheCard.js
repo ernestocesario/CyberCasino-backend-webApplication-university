@@ -58,6 +58,7 @@ var vm = new Vue({
             console.log("balance:"+funds);
           }
       );
+      //document.getElementById('restartSound').play();
       var amount = parseInt(document.getElementById('amount').value);
       // Check for negative or zero amount
       if (amount <= 0) {
@@ -91,6 +92,7 @@ var vm = new Vue({
       this.turnAll(false)
       this.gather = true
       this.state="Ready..."
+
       setTimeout(()=> {
         this.gather=false
         this.state="Your mission is .."
@@ -127,12 +129,7 @@ var vm = new Vue({
       return this.cards.find(card=> card.label==label)
     },
     openCard(card){
-      //in questo caso a differenza della roulette gameInformation me lo gestisco in questo modo:
-      // in bet ci metto la puntata effettuata, e in betOn ci metto il cavallo su cui ho puntato
-      //nella roulette essendo tutto piu complicato, bet non lo utilizzavo, e tenevo tutto in betOn che era
-      // un array di oggetti "Bet" che conteneva il numero su cui si puntava e la puntata effettuata e il tipo
-
-
+      document.getElementById('flipCardSound').play();
       if(this.mode== "Answer"){
         var amount = parseInt(document.getElementById('amount').value);
         var betOn = [card.id];
@@ -154,27 +151,18 @@ var vm = new Vue({
               prova.label = labelToSwitch
               if(card.id == GameResult.result){
                 this.state="You get the "+this.question.label+this.question.symbol+"!!!"
-
-              } /*
-              else if(card.label == this.question.label) {
-                console.log(" BARARE: card.label "+card.label);
-                card.label = "hearts";
-              } */
-              else{
-                //if (winnerCard.id !== GameResult.result){
-
-                //}
-                this.state="You lose!!!"
-                setTimeout(() => {
-                  let card = this.getCard(this.question.label)
-                  card.open=true
-                },1000)
+              }
+              else {
+                this.state="You lose!"
+              setTimeout(() => {
+                let card = this.getCard(this.question.label)
+                card.open=true
+              },1000)
               }
               setTimeout(() => {
                 this.startGame()
+                //document.getElementById('restartSound').play();
               },3000)
-
-              //funds = GameResult.balance;
             })
       }else{
         this.startGame()

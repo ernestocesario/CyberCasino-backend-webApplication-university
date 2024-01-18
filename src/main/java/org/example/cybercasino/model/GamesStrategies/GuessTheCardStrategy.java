@@ -43,14 +43,13 @@ public class GuessTheCardStrategy extends GameStrategy {
     protected List<String> generateResult(List<Object> betOn, boolean isWin, Object gameConstants) {
         GuessTheCardConstants guessTheCardConstants = (GuessTheCardConstants) gameConstants;
 
-        List<String> result = new ArrayList<>(); // nel mio caso conterrà solo un valore che sarà il nome del cavallo vincente
+        List<String> result = new ArrayList<>();
         if (isWin) {
             System.out.println("toString: "+betOn.get(0).toString());
             System.out.println("getClass: "+betOn.get(0).getClass());
             System.out.println("normal: "+betOn.get(0));
 
             result.add(betOn.get(0).toString());
-            // se isWin è true, allora faccio uscire come cavallo vincente quello su cui si è scommesso
         } else {
             Integer winningCard = random.nextInt(guessTheCardConstants.numberOfCards) + 1;
             while (winningCard.equals(betOn.get(0))) {

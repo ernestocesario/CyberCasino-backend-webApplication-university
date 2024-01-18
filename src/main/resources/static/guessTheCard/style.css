@@ -100,3 +100,18 @@ html, body {
   top: 15px;
   left: 15px;
 }
+.special-paragraphSaldo {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+}
+.bet-label {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+}
+.bet-input {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}

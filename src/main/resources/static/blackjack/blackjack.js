@@ -1,16 +1,12 @@
-/*
-TODOs
-- ES6 refactors
-- Use React
-- Disable wager input after deal
-- Use chips to place bets ($1, $5, $10, $25, $50, $100, $500, $1000)
-- Get split function working
-- Multiple decks in shoe
-- Keep track of all high low scores
-- Multiple dummy players
-- Pull in card images from http://deckofcardsapi.com/static/img/2H.png
-- Add cash counter animation when players wins/loses
-*/
+const urlParams = new URLSearchParams(window.location.search);
+let token;
+if(urlParams.has('token')) {
+  token = urlParams.get('token');
+  console.log('Token found: ' + token);
+}else {
+  alert("Non siamo riusciti a verificare il tuo account, verrai reindirizzato alla home");
+  window.location.href = "http://localhost:4200";
+}
 
 (function () {
 
@@ -55,6 +51,7 @@ TODOs
     };
 
     this.setHand = function (card) {
+
       hand.push(card);
     };
 
