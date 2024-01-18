@@ -119,6 +119,21 @@
     border: 1px solid #524eb7;
 }
 
+.btn-loadmore {
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: lightslategrey;
+    color: #ffffff;
+    transition: opacity 0.2s ease-in-out;
+    border: 1px solid lightgrey;
+    position: relative;
+    left: 91%;
+}
+.btn-loadmore:hover {
+    opacity: 0.7;
+}
+
 body {
     margin: 0; /* Rimuove i margini predefiniti del body */
     padding: 0; /* Rimuove i padding predefiniti del body */
