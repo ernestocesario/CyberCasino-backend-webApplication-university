@@ -67,19 +67,18 @@ public class TransactionHistoryDAO {
         }
     }
 
-    /* These methods are currently not used
-
-    //method to get the last X (number) transactions of a user
-    public static List<Transaction> getLastXTransactionsByUser(User user, long number) {
+    //method to get the latest X (number) transactions of a user but discarding the latest Y (number) transactions
+    public static List<Transaction> getLatestXTransactionsByUserStartingFromLatestYTransactions(User user, long number, long discard) {
         List<Transaction> transactionHistory = new ArrayList<>();
 
         String email = user.getEmail();
 
         try(Connection connection = Database.getInstance().createDBConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(DatabaseConstants.SELECT_LAST_X_TRANSACTIONS_BY_USER)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(DatabaseConstants.SELECT_LATEST_X_TRANSACTIONS_BY_USER)) {
 
             preparedStatement.setString(1, email);
             preparedStatement.setLong(2, number);
+            preparedStatement.setLong(3, discard);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -101,18 +100,19 @@ public class TransactionHistoryDAO {
         }
     }
 
-    //method to get the latest X (number) transactions of a user but discarding the latest Y (number) transactions
-    public static List<Transaction> getLatestXTransactionsByUserStartingFromLatestYTransactions(User user, long number, long discard) {
+    /* These methods are currently not used
+
+    //method to get the last X (number) transactions of a user
+    public static List<Transaction> getLastXTransactionsByUser(User user, long number) {
         List<Transaction> transactionHistory = new ArrayList<>();
 
         String email = user.getEmail();
 
         try(Connection connection = Database.getInstance().createDBConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(DatabaseConstants.SELECT_LATEST_X_TRANSACTIONS_BY_USER)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(DatabaseConstants.SELECT_LAST_X_TRANSACTIONS_BY_USER)) {
 
             preparedStatement.setString(1, email);
             preparedStatement.setLong(2, number);
-            preparedStatement.setLong(3, discard);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 

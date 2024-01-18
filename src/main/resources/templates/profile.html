@@ -77,17 +77,17 @@
                             <table>
                                 <thead>
                                 <tr>
-                                    <th>User</th>
                                     <th>Amount</th>
                                     <th>Transaction Type</th>
+                                    <th>Timestamp (UTC)</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <!-- Utilizza Thymeleaf per iterare attraverso la lista di transazioni -->
                                 <tr th:each="transaction : ${latestTransactions}">
-                                    <td th:text="${transaction.username}"></td>
                                     <td th:text="${transaction.amount}"></td>
                                     <td th:text="${transaction.transactionType}"></td>
+                                    <td th:text="${transaction.timestamp}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -98,22 +98,23 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th>Username</th>
                                     <th>Game</th>
                                     <th>Amount</th>
+                                    <th>Timestamp (UTC)</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <!-- Utilizza Thymeleaf per iterare attraverso la lista di match -->
                                 <tr th:each="match : ${latestMatches}">
-                                    <td th:text="${match.username}"></td>
                                     <td th:text="${match.game}"></td>
                                     <td th:text="${match.amount}"></td>
+                                    <td th:text="${match.timestamp}"></td>
                                 </tr>
                                 </tbody>
                             </table>
                             <button id="btnLoadMoreMatches" class="btn-loadmore">Load More</button>
                         </div>
+                        <button id="btnResetView" class="btn-loadmore">Reset View</button>
                     </div>
                 </div>
             </div>
@@ -136,5 +137,5 @@
     }
 </script>
 <script type="module" src="/js/gameService.js"></script>
-<script type="module" src="/profile/profile.js"></script>
+<script src="/profile/profile.js"></script>
 </body>

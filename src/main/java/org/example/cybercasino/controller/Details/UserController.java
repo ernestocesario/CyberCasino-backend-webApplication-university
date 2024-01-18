@@ -2,22 +2,15 @@ package org.example.cybercasino.controller.Details;
 
 import org.example.cybercasino.controller.Authentication.utils.AuthToken;
 import org.example.cybercasino.controller.Authentication.utils.AuthenticationUtils;
+import org.example.cybercasino.controller.Details.utils.LeaderboardMatch;
 import org.example.cybercasino.controller.Details.utils.Player;
-import org.example.cybercasino.controller.Details.utils.SimpleMatch;
-import org.example.cybercasino.controller.Details.utils.SimpleTransaction;
+import org.example.cybercasino.model.DTOs.utils.*;
 import org.example.cybercasino.model.DAOs.GameHistoryDAO;
 import org.example.cybercasino.model.DAOs.TransactionHistoryDAO;
 import org.example.cybercasino.model.DAOs.UserDAO;
 import org.example.cybercasino.model.DTOs.User;
-import org.example.cybercasino.model.DTOs.utils.Match;
-import org.example.cybercasino.model.DTOs.utils.Transaction;
-import org.example.cybercasino.model.DTOs.utils.TransactionType;
 import org.example.cybercasino.model.constants.FrontendConstants;
-import org.example.cybercasino.model.constants.Games.GameType;
 import org.example.cybercasino.model.constants.MessageConstants;
-import org.example.cybercasino.model.proxies.UserProxy;
-import org.example.cybercasino.utils.GeneratedGame;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -43,17 +36,17 @@ public class UserController {
     }
 
     @GetMapping("/getLatestGamesResults")
-    public List<SimpleMatch> getLatestGamesResults() {
+    public List<LeaderboardMatch> getLatestGamesResults() {
         List<Match> matches = GameHistoryDAO.getLastXWinningMatchesGlobally(MAX_NUMBER_OF_LATEST_WINNING_MATCHES_FOR_LEADERBOARD);
-        List<SimpleMatch> simpleMatches = new ArrayList<>();
+        List<LeaderboardMatch> leaderboardMatches = new ArrayList<>();
 
         if (matches == null)
-            return simpleMatches;
+            return leaderboardMatches;
 
         for (Match match : matches)
-            simpleMatches.add(SimpleMatch.convertToSimpleMatch(match));
+            leaderboardMatches.add(LeaderboardMatch.convertToLeaderboardMatch(match));
 
-        return simpleMatches;
+        return leaderboardMatches;
     }
 
     @PostMapping("/getListOfAllUsers")
@@ -129,6 +122,7 @@ public class UserController {
         }
     }
 
+
     //private methods
     private static List<Player> convertToPlayers(List<User> users) {
         List<Player> players = new ArrayList<>();
@@ -146,7 +140,7 @@ public class UserController {
         TransactionHistoryDAO.addTransaction(transaction);
 
         if (!user.getTransactionHistory().isEmpty()) {
-            user.getTransactionHistory().add(0, transaction);
+            user.getTransactionHistory().add(0, SimpleTransaction.convertToSimpleTransaction(transaction));
         }
     }
 }

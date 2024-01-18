@@ -9,7 +9,7 @@ import java.util.Map;
 public class RuntimeUserDatabase {
     private static RuntimeUserDatabase instance = null;
 
-    private Map<String, UserProxy> users = new HashMap<>();
+    private final Map<String, UserProxy> users = new HashMap<>();
 
 
     private RuntimeUserDatabase() {

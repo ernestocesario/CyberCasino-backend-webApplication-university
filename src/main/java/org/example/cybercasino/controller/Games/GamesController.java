@@ -3,6 +3,7 @@ package org.example.cybercasino.controller.Games;
 import org.example.cybercasino.controller.Authentication.utils.AuthenticationUtils;
 import org.example.cybercasino.controller.Games.utils.GameInformation;
 import org.example.cybercasino.controller.Games.utils.GameResult;
+import org.example.cybercasino.model.DTOs.utils.SimpleMatch;
 import org.example.cybercasino.model.constants.MessageConstants;
 import org.example.cybercasino.utils.GeneratedGame;
 import org.example.cybercasino.model.DAOs.GameHistoryDAO;
@@ -141,6 +142,6 @@ public class GamesController {
         GameHistoryDAO.addMatch(match);
 
         if(!user.getTransactionHistory().isEmpty() && generatedGame.isWin())
-            user.getWinningGameHistory().add(0, match);
+            user.getWinningGameHistory().add(0, SimpleMatch.convertToSimpleMatch(match));
     }
 }

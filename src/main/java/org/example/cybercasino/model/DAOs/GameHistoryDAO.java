@@ -94,8 +94,6 @@ public class GameHistoryDAO {
         }
     }
 
-    /* These methods are currently not used
-
     //method to get the latest X (number) winning match of a user but discarding the latest Y (number) winning match
     public static List<Match> getLatestXWinningMatchesByUserStartingFromLatestYWinningMatches(User user, long number, long discard) {
         List<Match> gameHistory = new ArrayList<>();
@@ -129,7 +127,7 @@ public class GameHistoryDAO {
     }
     
 
-
+    /* These methods are currently not used
     //method to get the last X (number) winning match of a user
     public static List<Match> getLastXWinningMatchesByUser(User user, long number) {
         List<Match> gameHistory = new ArrayList<>();
