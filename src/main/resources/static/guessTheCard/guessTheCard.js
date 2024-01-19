@@ -56,7 +56,6 @@ var vm = new Vue({
       getBalance(token).then(
           value => {
             this.funds = parseInt(value);
-            console.log("balance:"+funds);
           }
       );
       document.getElementById('restartSound').play();
@@ -110,7 +109,6 @@ var vm = new Vue({
       setTimeout(()=>{
         let startShuffle= () => {
           this.shuffle()
-          console.log("Shuffle! "+this.count)
           if( this.count++ < 6){
             setTimeout(startShuffle,300)
           }else{
@@ -134,16 +132,13 @@ var vm = new Vue({
       if(this.mode== "Answer"){
         var amount = parseInt(document.getElementById('amount').value);
         var betOn = [card.id];
-        console.log("betOn "+betOn);
-        console.log("amount "+amount);
         var gameInformation = GameInformation.create(token, GameType.GUESS_THE_CARD, amount, betOn, "");
         var gameInformation = generateResult(gameInformation)
             .then( GameResult => {
-              console.log("result "+GameResult.result);
-              console.log("balance "+GameResult.balance);
               var winningCard = GameResult.result.toString();
 
               card.open =!card.open
+
               var winnerCard = this.getCard(this.question.label)
               var labelToSwitch = winnerCard.label
               var prova = this.cards.find(card=> card.id==GameResult.result)

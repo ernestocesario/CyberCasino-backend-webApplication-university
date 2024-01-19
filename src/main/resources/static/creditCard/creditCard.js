@@ -58,7 +58,6 @@ function validateCardDetails() {
 
     if (operationType === 'preleva') {
         substractBalance(token, amount).then(r => {
-            console.log(r);
             if (!r) alert('The balance is not sufficient to make the withdrawal.');
             else {
                 alert('Card Details are Valid! Amount Withdrawn: ' + amount);

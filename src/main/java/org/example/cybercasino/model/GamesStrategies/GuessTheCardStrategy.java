@@ -23,10 +23,6 @@ public class GuessTheCardStrategy extends GameStrategy {
 
     @Override
     protected boolean checkArgs(List<Object> betOn, Object gameConstants) {
-        System.out.println("betOn: "+betOn.get(0));
-        System.out.println("betOn: "+betOn.get(0).getClass());
-        //qui devi controllare che betOn sia una lista di ciò che ti serve
-
         //in GuessTheCard betOn non sarà altro che un lista di interi con un solo valore, che contiene
         //l'indice su cui si vuole scommettere. es: betOn = [1];
         boolean isbetOnValid = betOn.size() == 1 && betOn.get(0) instanceof Integer;
@@ -45,10 +41,6 @@ public class GuessTheCardStrategy extends GameStrategy {
 
         List<String> result = new ArrayList<>();
         if (isWin) {
-            System.out.println("toString: "+betOn.get(0).toString());
-            System.out.println("getClass: "+betOn.get(0).getClass());
-            System.out.println("normal: "+betOn.get(0));
-
             result.add(betOn.get(0).toString());
         } else {
             Integer winningCard = random.nextInt(guessTheCardConstants.numberOfCards) + 1;
