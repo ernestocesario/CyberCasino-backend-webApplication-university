@@ -41,12 +41,13 @@ var vm = new Vue({
     question: null,
     mode: "",
     count: 0
-    
+
   },
   methods: {
     shuffle(){
       let newOrder = [1,2,3,4].sort((a,b)=> Math.random()>0.5?1:-1)
       this.cards.forEach((card,cid)=> card.id=newOrder[cid])
+      document.getElementById('shuffleCardsSound').play();
     },
     turnAll(state){
       this.cards.forEach(card => card.open=state)
@@ -58,7 +59,7 @@ var vm = new Vue({
             console.log("balance:"+funds);
           }
       );
-      //document.getElementById('restartSound').play();
+      document.getElementById('restartSound').play();
       var amount = parseInt(document.getElementById('amount').value);
       // Check for negative or zero amount
       if (amount <= 0) {
@@ -119,7 +120,7 @@ var vm = new Vue({
         }
         startShuffle()
       },6000)
-      
+
     },
     getSymbol(label){
       let result = this.symbols.find(s => s.label == label)
@@ -150,10 +151,10 @@ var vm = new Vue({
               winnerCard.label = prova.label
               prova.label = labelToSwitch
               if(card.id == GameResult.result){
-                this.state="You get the "+this.question.label+this.question.symbol+"!!!"
+                this.state="WIN! You get the "+this.question.label+this.question.symbol+"!!!"
               }
               else {
-                this.state="You lose!"
+                this.state="YOU LOSE!"
               setTimeout(() => {
                 let card = this.getCard(this.question.label)
                 card.open=true
@@ -172,5 +173,5 @@ var vm = new Vue({
   mounted(){
     this.startGame()
   }
-  
+
 })
