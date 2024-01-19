@@ -1,16 +1,11 @@
-import {generateResult, getBalance} from "../js/gameService.js";
+import {generateResult, getBalance, getToken} from "../js/gameService.js";
 import {GameInformation} from "../js/gameInformation.js";
 import {GameType} from "../js/gameType.js";
 
 // Ottenere i parametri dall'URL
 const urlParams = new URLSearchParams(window.location.search);
-let token;
-// Verificare se il parametro "token" è presente nell'URL
-if (urlParams.has('token')) {
-    // Ottenere il valore del parametro "token"
-    token = urlParams.get('token');
-    console.log('Token:', token);
-} else {
+let token = getToken(urlParams);
+if (token==null){
     alert('Non siamo riusciti a verificare il tuo account, verrai reindirizzato alla pagina di login');
     resetGame();
 }
