@@ -1,5 +1,5 @@
 import {addBalance,substractBalance} from '../js/profileService.js';
-import {getToken} from '../js/gameService';
+import {getToken} from '../js/gameService.js';
 
 const alertMessageGenericError = 'Internal error. Please try again.';
 
