@@ -1,10 +1,10 @@
-import { getToken } from "../js/gameService";
-
-// Ottenere i parametri dall'URL
 const urlParams = new URLSearchParams(window.location.search);
-let token = getToken(urlParams);
-if (token==null){
-  alert('We were unable to verify your account, you will be redirected to the login page.');
+let token;
+if(urlParams.has('token')) {
+  token = urlParams.get('token');
+  console.log('Token found: ' + token);
+}else {
+  alert("We were unable to verify your account, you will be redirected to the login page.");
   window.location.href = "http://localhost:4200";
 }
 
