@@ -34,8 +34,6 @@ public class SlotStrategy extends GameStrategy {
         return random.nextInt(100) < slotMachineConstants.winningPercentage;
     }
 
-    //TODO add fake win
-
     @Override
     protected List<String> generateResult(List<Object> betOn, boolean isWin, Object gameConstants) {
         SlotMachineConstants slotMachineConstants = (SlotMachineConstants) gameConstants;

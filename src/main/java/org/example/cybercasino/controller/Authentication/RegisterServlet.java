@@ -18,6 +18,8 @@ import java.sql.Date;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
+    private final Date INITIAL_DAILY_BONUS_DATE = Date.valueOf("1970-01-01");
+
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ServletUtils.setResponseHeadersForAccessControl(resp);
@@ -35,7 +37,7 @@ public class RegisterServlet extends HttpServlet {
         String email = simpleUser.email;
         String username = simpleUser.username;
         String hashedPassword = BCryptHashAlgorithm.getInstance().getHash(simpleUser.password);
-        User user = new User(email, username, hashedPassword, 0, Date.valueOf("1970-01-01"), false);
+        User user = new User(email, username, hashedPassword, 0, INITIAL_DAILY_BONUS_DATE, false);
 
         //check if user already exists
         if (UserDAO.findByUsername(username) != null || UserDAO.findByEmail(email) != null) {

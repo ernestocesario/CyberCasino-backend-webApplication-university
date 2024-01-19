@@ -8,8 +8,7 @@ public class HorseRaceConstants {
             "horse3",
             "horse4"
     };
-    public final int winningPercentage = 50; //dovrebbe essere di 20, la mettiamo a 50 solo per fare prima
-    //quando faremo vedere il progetto al prof.
+    public final int winningPercentage = 50; //dovrebbe essere di 20, la mettiamo a 50 solo per fare prima quando faremo vedere il progetto al prof.
     public final int betMultiplier = 4;
     private static HorseRaceConstants instance;
 

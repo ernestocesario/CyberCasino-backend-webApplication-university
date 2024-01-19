@@ -93,9 +93,9 @@ public class UserDAO {
         }
     }
 
-    public static boolean updateUser(User user) {
+    public static void updateUser(User user) {
         if (findByEmail(user.getEmail()) == null) {
-            return false;
+            return;
         }
 
         try (Connection connection = Database.getInstance().createDBConnection();
@@ -109,12 +109,10 @@ public class UserDAO {
             preparedStatement.setString(6, user.getEmail());
 
             preparedStatement.executeLargeUpdate();
-            return true;
         }
 
         catch (SQLException e) {
             Database.getInstance().fatalDatabaseError(e);
-            return false;
         }
     }
 
