@@ -4,12 +4,12 @@ import org.example.cybercasino.model.DTOs.utils.Match;
 
 public class LeaderboardMatch {
     private final String username;
-    private final String gameType;
+    private final String game;
     private final double amount;
 
-    private LeaderboardMatch(String username, String gameType, double amount) {
+    private LeaderboardMatch(String username, String game, double amount) {
         this.username = username;
-        this.gameType = gameType;
+        this.game = game;
         this.amount = amount;
     }
 
@@ -17,8 +17,8 @@ public class LeaderboardMatch {
         return username;
     }
 
-    public String getGameType() {
-        return gameType;
+    public String getGame() {
+        return game;
     }
 
     public double getAmount() {
