@@ -10,6 +10,7 @@ if (token==null){
     resetGame();
 }
 
+let betInCorso = false;
 let currentBet = 0;
 let wager = 5; //memorizza la puntata attuale
 let lastWager = 0; //memorizza l'ultima puntata
@@ -409,12 +410,15 @@ function buildBettingBoard(){
                 }
                 wager = parseInt(chip.childNodes[0].innerText);
             }else{
-                bankValue = bankValue + currentBet;
-                currentBet = 0;
-                document.getElementById('bankSpan').innerText = '' + bankValue.toLocaleString("en-GB") + '';
-                document.getElementById('betSpan').innerText = '' + currentBet.toLocaleString("en-GB") + '';
-                clearBet();
-                removeChips();
+                //se sono qui vuol dire che ho premuto su clear, resetto le puntate solo se non c'è una bet in corso
+                if(betInCorso==false) {
+                    bankValue = bankValue + currentBet;
+                    currentBet = 0;
+                    document.getElementById('bankSpan').innerText = '' + bankValue.toLocaleString("en-GB") + '';
+                    document.getElementById('betSpan').innerText = '' + currentBet.toLocaleString("en-GB") + '';
+                    clearBet();
+                    removeChips();
+                }
             }
         };
         let chipSpan = document.createElement('span');
@@ -465,6 +469,9 @@ function clearBet(){
 }
 
 function setBet(e, n, t, o){
+    if(betInCorso==true){
+        return;
+    }
     lastWager = wager;
     wager = (bankValue < wager)? bankValue : wager;
     if(wager > 0){
@@ -523,6 +530,8 @@ function setBet(e, n, t, o){
 }
 
 function spin(){
+    betInCorso=true;
+
     let betTotal = 0;
     for (let i=0; i<bet.length; i++){
         betTotal = betTotal + bet[i].amt;
@@ -597,6 +606,7 @@ function spin(){
                 numbersBet = [];
                 removeChips();
                 wager = lastWager;
+                betInCorso=false;
                 if(bankValue == 0 && currentBet == 0){
                     gameOver();
                 }
