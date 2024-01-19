@@ -85,10 +85,10 @@ if(urlParams.has('token')) {
     };
 
     this.getBank = function () {
-      $('#bank').html('Winnings: $' + bank.formatMoney(2, '.', ','));
+      $('#bank').html('Winnings: €' + bank.formatMoney(2, '.', ','));
 
       if (bank < 0) {
-        $('#bank').html('Winnings: <span style="color: #D90000">-$' +
+        $('#bank').html('Winnings: <span style="color: #D90000">-€' +
         bank.formatMoney(2, '.', ',').toString().replace('-', '') + '</span>');
       }
     };
@@ -405,7 +405,7 @@ if(urlParams.has('token')) {
     i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + '',
     j = i.length;
     j = j > 3 ? j % 3 : 0;
-    return s + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : '');
+    return s + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '1€' + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : '');
   };
 
   /*****************************************************************/
@@ -520,7 +520,7 @@ if(urlParams.has('token')) {
             container: '#pcard-0',
             content: player.getScore(),
             placement: 'left',
-            title: 'Tu Hai',
+            title: 'You Have',
             trigger: 'manual' });
 
 
@@ -537,7 +537,7 @@ if(urlParams.has('token')) {
             container: '#dcard-0',
             content: dealer.getScore(),
             placement: 'left',
-            title: 'Dealer Ha',
+            title: 'Dealer Has',
             trigger: 'manual' });
 
 
@@ -605,12 +605,12 @@ if(urlParams.has('token')) {
         player.setCash(winnings);
         player.setBank(winnings - wager);
         $('#alert').removeClass('alert-info alert-error').addClass('alert-success');
-        result = 'Hai Vinto!';
+        result = 'You Win!';
       } else if (pscore > 21) {
         winnings -= wager;
         player.setBank(winnings);
         $('#alert').removeClass('alert-info alert-success').addClass('alert-error');
-        result = 'Sballato!';
+        result = 'Bust!';
       }
     } else if (pscore < dscore) {
       if (pscore <= 21 && dscore > 21) {
@@ -618,12 +618,12 @@ if(urlParams.has('token')) {
         player.setCash(winnings);
         player.setBank(winnings - wager);
         $('#alert').removeClass('alert-info alert-error').addClass('alert-success');
-        result = 'Hai Vinto! Il Dealer ha sballato!';
+        result = 'You Win! Dealer bust!';
       } else if (dscore <= 21) {
         winnings -= wager;
         player.setBank(winnings);
         $('#alert').removeClass('alert-info alert-success').addClass('alert-error');
-        result = 'Hai Perso!';
+        result = 'You Lose!';
       }
     } else if (pscore === dscore) {
       if (pscore <= 21) {
@@ -631,18 +631,18 @@ if(urlParams.has('token')) {
           winnings -= wager;
           player.setBank(winnings);
           $('#alert').removeClass('alert-info alert-success').addClass('alert-error');
-          result = 'Hai Perso - BlackJack del Dealer!';
+          result = 'You Lose! - dealer Blackjack! Don\'t gamble, kids.';
         } else {
           winnings = wager;
           $('#alert').removeClass('alert-error alert-success').addClass('alert-info');
           player.setCash(winnings);
-          result = 'Parità!';
+          result = 'Push!';
         }
       } else {
         winnings -= wager;
         player.setBank(winnings);
         $('#alert').removeClass('alert-info alert-success').addClass('alert-error');
-        result = 'Sballato!';
+        result = 'Bust!';
       }
     }
 
@@ -675,7 +675,7 @@ if(urlParams.has('token')) {
         game.newGame();
       } else {
         $('#alert').removeClass('alert-info alert-success').addClass('alert-error');
-        showAlert('La scommessa minima è $1.');
+        showAlert('The minimum bet is 1€.');
       }
     } else {
       $('#myModal').modal();

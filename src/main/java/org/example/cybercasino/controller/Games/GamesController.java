@@ -76,9 +76,10 @@ public class GamesController {
                     }
                     break;
                 }
-                //if gameType is roulette, horseRace, check that betOn is not null or empty
+                //if gameType is roulette, horseRace, guessTheCard, check that betOn is not null or empty
                 case ROULETTE:
                 case HORSE_RACE:
+                case GUESS_THE_CARD:
                     return gameInformation.getBetOn() != null && !gameInformation.getBetOn().isEmpty();
             }
 
