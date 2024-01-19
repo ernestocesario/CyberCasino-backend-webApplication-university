@@ -24,7 +24,7 @@ public class RouletteStrategy extends GameStrategy {
     @Override
     protected boolean checkArgs(List<Object> betOn, Object gameConstants) {
         //qui devi controllare che betOn sia una lista di ciò che ti serve
-        boolean isBetOnValid = betOn.size() > 0 && betOn.get(0) instanceof LinkedHashMap;
+        boolean isBetOnValid = !betOn.isEmpty() && betOn.get(0) instanceof LinkedHashMap;
 
         //se non usi costanti puoi togliere la riga sotto
         return gameConstants instanceof RouletteConstants && isBetOnValid;
