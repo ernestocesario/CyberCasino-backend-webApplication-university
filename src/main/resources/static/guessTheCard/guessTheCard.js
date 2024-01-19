@@ -142,7 +142,6 @@ var vm = new Vue({
               console.log("result "+GameResult.result);
               console.log("balance "+GameResult.balance);
               var winningCard = GameResult.result.toString();
-              console.log("typeWinningHorse "+ typeof winningHorse);
 
               card.open =!card.open
               var winnerCard = this.getCard(this.question.label)
@@ -151,9 +150,11 @@ var vm = new Vue({
               winnerCard.label = prova.label
               prova.label = labelToSwitch
               if(card.id == GameResult.result){
+                document.getElementById('winSound').play();
                 this.state="WIN! You get the "+this.question.label+this.question.symbol+"!!!"
               }
               else {
+                document.getElementById('loseSound').play();
                 this.state="YOU LOSE!"
               setTimeout(() => {
                 let card = this.getCard(this.question.label)
@@ -162,7 +163,6 @@ var vm = new Vue({
               }
               setTimeout(() => {
                 this.startGame()
-                //document.getElementById('restartSound').play();
               },3000)
             })
       }else{
