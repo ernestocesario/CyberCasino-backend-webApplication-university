@@ -706,7 +706,7 @@ function spinWheel(winningSpin){
     }, 9000);
     setTimeout(function(){
         wheel.style.cssText = '';
-        style.remove();
+        //wheel.style.remove();
     }, 10000);
 }
 
