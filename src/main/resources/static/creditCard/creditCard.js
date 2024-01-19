@@ -1,18 +1,16 @@
 import {addBalance,substractBalance} from '../js/profileService.js';
+import {getToken} from '../js/gameService.js';
 
-const alertMessageGenericError = 'Errore interno. Si prega di riprovare.';
+const alertMessageGenericError = 'Internal error. Please try again.';
+
 // Ottenere i parametri dall'URL
 const urlParams = new URLSearchParams(window.location.search);
 const operationType = urlParams.get('operationType');
 
-let token;
+let token = getToken(urlParams);
 // Verificare se il parametro "token" è presente nell'URL
-if (urlParams.has('token')) {
-    // Ottenere il valore del parametro "token"
-    token = urlParams.get('token');
-    console.log('Token:', token);
-} else {
-    alert('Non siamo riusciti a verificare il tuo account, verrai reindirizzato alla pagina di login');
+if (token == null) {
+    alert('We were unable to verify your account, you will be redirected to the login page.');
     window.location.href = "http://localhost:4200";
 }
 

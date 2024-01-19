@@ -1,10 +1,9 @@
+import {getToken} from "../js/gameService.js";
+
 const urlParams = new URLSearchParams(window.location.search);
-let token;
-if(urlParams.has('token')) {
-  token = urlParams.get('token');
-  console.log('Token found: ' + token);
-}else {
-  alert("Non siamo riusciti a verificare il tuo account, verrai reindirizzato alla home");
+let token = getToken(urlParams);
+if (token==null){
+  alert('We were unable to verify your account, you will be redirected to the login page.');
   window.location.href = "http://localhost:4200";
 }
 

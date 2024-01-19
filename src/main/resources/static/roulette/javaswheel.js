@@ -6,7 +6,7 @@ import {GameType} from "../js/gameType.js";
 const urlParams = new URLSearchParams(window.location.search);
 let token = getToken(urlParams);
 if (token==null){
-    alert('Non siamo riusciti a verificare il tuo account, verrai reindirizzato alla pagina di login');
+    alert('We were unable to verify your account, you will be redirected to the login page.');
     resetGame();
 }
 
@@ -706,7 +706,7 @@ function spinWheel(winningSpin){
     }, 9000);
     setTimeout(function(){
         wheel.style.cssText = '';
-        style.remove();
+        //wheel.style.remove();
     }, 10000);
 }
 
