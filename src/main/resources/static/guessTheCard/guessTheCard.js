@@ -13,6 +13,7 @@ if (token==null){
 var vm = new Vue({
   el: '#app',
   data: {
+    running: true,
     gather: true,
     funds: 0,
     state: "Press the cards to start a game",
@@ -90,6 +91,7 @@ var vm = new Vue({
       this.turnAll(false)
       this.gather = true
       this.state="Ready..."
+      //this.clickListenerActive = false
 
       setTimeout(()=> {
         this.gather=false
@@ -112,8 +114,10 @@ var vm = new Vue({
           }else{
             this.state="Please pick out "+ this.question.label + this.question.symbol
             this.mode="Answer"
+            this.running=false
           }
         }
+
         startShuffle()
       },6000)
 
@@ -126,8 +130,12 @@ var vm = new Vue({
       return this.cards.find(card=> card.label==label)
     },
     openCard(card){
-      document.getElementById('flipCardSound').play();
-      if(this.mode== "Answer"){
+      if (this.running) {
+        return;
+      }
+      this.running=true
+      if(this.mode == "Answer"){
+        document.getElementById('flipCardSound').play();
         var amount = parseInt(document.getElementById('amount').value);
         var betOn = [card.id];
         var gameInformation = GameInformation.create(token, GameType.GUESS_THE_CARD, amount, betOn, "");
