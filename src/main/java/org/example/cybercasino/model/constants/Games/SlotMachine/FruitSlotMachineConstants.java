@@ -10,7 +10,8 @@ public class FruitSlotMachineConstants extends SlotMachineConstants {
     }
 
     private FruitSlotMachineConstants() {
-        super(4, 12, 12, 25, 2, new String[]{
+        //winninPercentage = 12, fakeWinPercentage = 25
+        super(4, 12, 40, 50, 2, new String[]{
                 "banana",
                 "bar",
                 "blueberry",

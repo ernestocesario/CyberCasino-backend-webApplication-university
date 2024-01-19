@@ -25,7 +25,6 @@ public class HorseRaceStrategy extends GameStrategy {
     protected boolean checkArgs(List<Object> betOn, Object gameConstants) {
         System.out.println("betOn: "+betOn.get(0));
         System.out.println("betOn: "+betOn.get(0).getClass());
-        //qui devi controllare che betOn sia una lista di ciò che ti serve
 
         //in HorseRace betOn non sarà altro che un lista di stringhe con un solo valore, che contiene
         //il nome del cavallo su cui si vuole scommettere. es: betOn = ["horse1"];

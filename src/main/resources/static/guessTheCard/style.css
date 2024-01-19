@@ -1,9 +1,14 @@
 html, body {
-  background-color: #102438;
   color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+body {
+  background-image: url("../images/backgroundGames/guessTheCardBackground.png");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .cards {
@@ -114,4 +119,18 @@ html, body {
     font-size: 16px;
     font-weight: bold;
     text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#bet {
+  background-color: #0d0440; /* Colore di sfondo */
+  border: #222222; /* Bordo */
+  padding: 15px; /* Spaziatura interna */
+  border-radius: 8px; /* Bordo arrotondato */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombra */
+}
+
+#funds {
+  font-weight: bold;
 }

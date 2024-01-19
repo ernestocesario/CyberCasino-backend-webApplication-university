@@ -27,41 +27,40 @@ function validateCardDetails() {
 
     // Controlli semplificati per la simulazione
     if (!isValidCardNumber(cardNumber)) {
-        alert('Il Numero di Carta deve essere composto da 16 cifre.');
+        alert('The card number must consist of 16 digits.');
         return;
     }
 
     if (!isValidCardHolder(cardHolder)) {
-        alert('Il proprietario della carta deve essere composto da sole lettere.');
+        alert('The owner of the ard must consist of letters only.');
         return;
     }
 
     if (!isValidFormat(expiryDate)) {
-        alert('La data di scadenza deve essere nel formato MM/YYYY e il mese deve essere un mese valido.');
+        alert('The expiration date must be in the format MM/YYYY and the month must be a valid month.');
         return;
     }
 
     if (!isFutureExpiryDate(expiryDate)) {
-        alert('Carta scaduta.');
+        alert('Card expired.');
         return;
     }
 
     if (!isValidCVV(cvv)) {
-        alert('Il CVV deve essere composto da 3 cifre.');
+        alert('The CVV must consist of 3 digits.');
         return;
     }
 
     if (!isValidAmount(amount)) {
-        alert('La Quantità deve essere un numero maggiore di 0.');
+        alert('Amount must be a number greater than 0.');
         return;
     }
 
     if (operationType === 'preleva') {
         substractBalance(token, amount).then(r => {
-            console.log(r);
-            if (!r) alert('Il saldo non è sufficiente per effettuare il prelievo.');
+            if (!r) alert('The balance is not sufficient to make the withdrawal.');
             else {
-                alert('I Dati della Carta sono Validi! Cash Prelevati: ' + amount);
+                alert('Card Details are Valid! Amount Withdrawn: ' + amount);
                 window.opener.location.reload();
                 window.close();
             }
@@ -71,7 +70,7 @@ function validateCardDetails() {
         addBalance(token,amount).then(r => {
             if (!r) alert(alertMessageGenericError)
             else {
-                alert('I Dati della Carta sono Validi! Cash Depositati (CI BALLIAMO LA FRESCA): ' + amount);
+                alert('Card Details are Valid! Amount Deposited: ' + amount);
                 window.opener.location.reload();
                 window.close();
             }

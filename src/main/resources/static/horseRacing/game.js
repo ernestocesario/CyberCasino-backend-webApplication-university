@@ -1,14 +1,11 @@
-import {generateResult, getBalance} from "../js/gameService.js";
+import {generateResult, getBalance, getToken} from "../js/gameService.js";
 import {GameInformation} from "../js/gameInformation.js";
 import {GameType} from "../js/gameType.js";
 
 //parte per ottenere il token da URL
 const urlParams = new URLSearchParams(window.location.search);
-let token;
-if(urlParams.has('token')) {
-	token = urlParams.get('token');
-	console.log('Token found: ' + token);
-}else {
+let token= getToken(urlParams);
+if (token == null){
 	alert("Non siamo riusciti a verificare il tuo account, verrai reindirizzato alla home");
 	window.location.href = "http://localhost:4200";
 }

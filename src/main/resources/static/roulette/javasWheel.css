@@ -11,8 +11,8 @@ html, body{
 
 body{
     background-image: url("../images/rouletteImg/Roulette2.png");
-
-    height: 98vh;
+    overflow: hidden;
+    height: 100vh;
     background-size: cover;
     background-position: center center;
 }

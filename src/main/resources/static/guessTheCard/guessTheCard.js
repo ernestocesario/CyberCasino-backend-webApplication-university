@@ -41,12 +41,13 @@ var vm = new Vue({
     question: null,
     mode: "",
     count: 0
-    
+
   },
   methods: {
     shuffle(){
       let newOrder = [1,2,3,4].sort((a,b)=> Math.random()>0.5?1:-1)
       this.cards.forEach((card,cid)=> card.id=newOrder[cid])
+      document.getElementById('shuffleCardsSound').play();
     },
     turnAll(state){
       this.cards.forEach(card => card.open=state)
@@ -55,10 +56,9 @@ var vm = new Vue({
       getBalance(token).then(
           value => {
             this.funds = parseInt(value);
-            console.log("balance:"+funds);
           }
       );
-      //document.getElementById('restartSound').play();
+      document.getElementById('restartSound').play();
       var amount = parseInt(document.getElementById('amount').value);
       // Check for negative or zero amount
       if (amount <= 0) {
@@ -109,7 +109,6 @@ var vm = new Vue({
       setTimeout(()=>{
         let startShuffle= () => {
           this.shuffle()
-          console.log("Shuffle! "+this.count)
           if( this.count++ < 6){
             setTimeout(startShuffle,300)
           }else{
@@ -119,7 +118,7 @@ var vm = new Vue({
         }
         startShuffle()
       },6000)
-      
+
     },
     getSymbol(label){
       let result = this.symbols.find(s => s.label == label)
@@ -133,27 +132,25 @@ var vm = new Vue({
       if(this.mode== "Answer"){
         var amount = parseInt(document.getElementById('amount').value);
         var betOn = [card.id];
-        console.log("betOn "+betOn);
-        console.log("amount "+amount);
         var gameInformation = GameInformation.create(token, GameType.GUESS_THE_CARD, amount, betOn, "");
         var gameInformation = generateResult(gameInformation)
             .then( GameResult => {
-              console.log("result "+GameResult.result);
-              console.log("balance "+GameResult.balance);
               var winningCard = GameResult.result.toString();
-              console.log("typeWinningHorse "+ typeof winningHorse);
 
               card.open =!card.open
+
               var winnerCard = this.getCard(this.question.label)
               var labelToSwitch = winnerCard.label
               var prova = this.cards.find(card=> card.id==GameResult.result)
               winnerCard.label = prova.label
               prova.label = labelToSwitch
               if(card.id == GameResult.result){
-                this.state="You get the "+this.question.label+this.question.symbol+"!!!"
+                document.getElementById('winSound').play();
+                this.state="WIN! You get the "+this.question.label+this.question.symbol+"!!!"
               }
               else {
-                this.state="You lose!"
+                document.getElementById('loseSound').play();
+                this.state="YOU LOSE!"
               setTimeout(() => {
                 let card = this.getCard(this.question.label)
                 card.open=true
@@ -161,7 +158,6 @@ var vm = new Vue({
               }
               setTimeout(() => {
                 this.startGame()
-                //document.getElementById('restartSound').play();
               },3000)
             })
       }else{
@@ -172,5 +168,5 @@ var vm = new Vue({
   mounted(){
     this.startGame()
   }
-  
+
 })

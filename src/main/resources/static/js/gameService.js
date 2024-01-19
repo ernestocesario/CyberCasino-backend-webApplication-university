@@ -47,3 +47,10 @@ interface GameResult {
     balance: number;
 }
 */
+
+export function getToken(urlParam){
+    if(urlParam.has('token')){
+        return urlParam.get('token');  //return string
+    }
+    return null; //return null
+}
