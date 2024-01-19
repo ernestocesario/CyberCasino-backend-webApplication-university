@@ -7,5 +7,6 @@ public enum MessageConstants {
     USER_BALANCE_INSUFFICIENT,
     USER_BANNED,
     USER_NOT_ADMIN,
+    CANNOT_BAN_ADMIN,
     DAILY_SPIN_ALREADY_USED
 }

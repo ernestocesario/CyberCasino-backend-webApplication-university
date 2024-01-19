@@ -79,6 +79,9 @@ public class UserController {
         if (userToBan == null)
             throw new RuntimeException(MessageConstants.USER_NOT_FOUND.name());
 
+        if (userToBan.getUsername().equals("admin"))
+            throw new RuntimeException(MessageConstants.CANNOT_BAN_ADMIN.name());
+
         userToBan.setBanned(isBanned);
 
         UserDAO.updateUser(userToBan);

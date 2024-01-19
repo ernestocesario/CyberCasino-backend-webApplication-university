@@ -19,14 +19,14 @@ public class AuthenticationUtils {
     private AuthenticationUtils() {}
 
     /*
-    Code used with spring boot rest controller
+    Code used with spring boot rest controller. We use servlets instead.
 
     @PostMapping("/register")
     public boolean register(@RequestBody SimpleUser simpleUser) {
         String email = simpleUser.email;
         String username = simpleUser.username;
         String hashedPassword = BCryptHashAlgorithm.getInstance().getHash(simpleUser.password);
-        User user = new User(email, username, hashedPassword, 10, Date.valueOf("1970-01-01"), false);
+        User user = new User(email, username, hashedPassword, 0, Date.valueOf("1970-01-01"), false);
 
         //check if user already exists
         if (UserDAO.getInstance().findUserByUsername(username) != null || UserDAO.getInstance().findByEmail(email) != null)
