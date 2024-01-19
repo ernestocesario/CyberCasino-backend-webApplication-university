@@ -35,7 +35,7 @@ public class RegisterServlet extends HttpServlet {
         String email = simpleUser.email;
         String username = simpleUser.username;
         String hashedPassword = BCryptHashAlgorithm.getInstance().getHash(simpleUser.password);
-        User user = new User(email, username, hashedPassword, 10, Date.valueOf("1970-01-01"), false);
+        User user = new User(email, username, hashedPassword, 0, Date.valueOf("1970-01-01"), false);
 
         //check if user already exists
         if (UserDAO.findByUsername(username) != null || UserDAO.findByEmail(email) != null) {
