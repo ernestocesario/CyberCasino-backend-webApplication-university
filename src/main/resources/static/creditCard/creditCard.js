@@ -55,6 +55,10 @@ function validateCardDetails() {
     }
 
     if (operationType === 'preleva') {
+        if (amount < 15) {
+            alert('The minimum withdrawal amount is 15.');
+            return;
+        }
         substractBalance(token, amount).then(r => {
             if (!r) alert('The balance is not sufficient to make the withdrawal.');
             else {
@@ -65,8 +69,12 @@ function validateCardDetails() {
         });
     }
     else if (operationType === 'deposita') {
+        if (amount < 5) {
+            alert('The minimum deposit amount is 5.');
+            return;
+        }
         addBalance(token,amount).then(r => {
-            if (!r) alert(alertMessageGenericError)
+            if (!r) alert(alertMessageGenericError);
             else {
                 alert('Card Details are Valid! Amount Deposited: ' + amount);
                 window.opener.location.reload();
