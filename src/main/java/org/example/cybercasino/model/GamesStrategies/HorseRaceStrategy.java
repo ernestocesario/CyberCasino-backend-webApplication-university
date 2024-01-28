@@ -15,14 +15,17 @@ public class HorseRaceStrategy extends GameStrategy {
     }
 
     public static HorseRaceStrategy getInstance() {
+
         if (instance == null) {
             instance = new HorseRaceStrategy();
         }
+        // restituisco l'istanza della classe
         return instance;
     }
 
     @Override
     protected boolean checkArgs(List<Object> betOn, Object gameConstants) {
+        // controllo che betOn sia una lista di stringhe con un solo valore
         System.out.println("betOn: "+betOn.get(0));
         System.out.println("betOn: "+betOn.get(0).getClass());
 
@@ -34,35 +37,41 @@ public class HorseRaceStrategy extends GameStrategy {
 
     @Override
     protected boolean willWin(List<Object> betOn, Object gameConstants) {
+        // in questo caso betOn conterrà solo un valore che sarà il nome del cavallo su cui si è scommesso
         HorseRaceConstants horseRaceConstants = (HorseRaceConstants) gameConstants;
         return random.nextInt(100) < horseRaceConstants.winningPercentage;
     }
 
     @Override
+    // in questo caso betOn conterrà solo un valore che sarà il nome del cavallo su cui si è scommesso
     protected List<String> generateResult(List<Object> betOn, boolean isWin, Object gameConstants) {
         HorseRaceConstants horseRaceConstants = (HorseRaceConstants) gameConstants;
 
-        List<String> result = new ArrayList<>(); // nel mio caso conterrà solo un valore che sarà il nome del cavallo vincente
+        List<String> result = new ArrayList<>();
         if (isWin) {
+            // se isWin è true, allora faccio uscire come cavallo vincente quello su cui si è scommesso
             System.out.println("toString: "+betOn.get(0).toString());
             System.out.println("getClass: "+betOn.get(0).getClass());
             System.out.println("normal: "+betOn.get(0));
 
             result.add(betOn.get(0).toString());
-            // se isWin è true, allora faccio uscire come cavallo vincente quello su cui si è scommesso
         } else {
+            // se isWin è false, allora faccio uscire come cavallo vincente uno diverso da quello su cui si è scommesso
             String winningHorse = horseRaceConstants.horses[random.nextInt(horseRaceConstants.horses.length)];
             while (winningHorse.equals(betOn.get(0))) {
+                // se il cavallo vincente è uguale a quello su cui si è scommesso, allora ne genero un altro
                 winningHorse = horseRaceConstants.horses[random.nextInt(horseRaceConstants.horses.length)];
             }
             result.add(winningHorse);
         }
+        // restituisco il nome del cavallo vincente
         return result;
     }
 
     @Override
     protected double calculateAmount(List<String> gameResult, double bet, List<Object> betOn, boolean isWin, Object gameConstants) {
         HorseRaceConstants horseRaceConstants = (HorseRaceConstants) gameConstants;
+        // se il cavallo vincente è quello su cui si è scommesso, allora restituisco l'importo scommesso moltiplicato per il moltiplicatore di vincita
         return isWin ? bet * horseRaceConstants.betMultiplier : bet;
     }
 }

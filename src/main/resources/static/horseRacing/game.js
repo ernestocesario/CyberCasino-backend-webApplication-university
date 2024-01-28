@@ -3,6 +3,7 @@ import {GameInformation} from "../js/gameInformation.js";
 import {GameType} from "../js/gameType.js";
 
 //parte per ottenere il token da URL
+//se l'URL contiene il parametro token, ritorna il valore del parametro
 const urlParams = new URLSearchParams(window.location.search);
 let token= getToken(urlParams);
 if (token == null){
@@ -23,6 +24,7 @@ getBalance(token).then(
 
 function initializeAll(){
 	document.getElementById('funds').innerText = funds;
+	//Create 4 horses
 	var horse1 = new Horse('horse1', 20, 4);  //white
 	var horse2 = new Horse('horse2', 20, 8);  //blue
 	var horse3 = new Horse('horse3', 20, 12); //green
@@ -49,6 +51,7 @@ function initializeAll(){
 		// 3 --> horse3 --> green   cavallo verde
 		// 4 --> horse4 --> brown    cavallo marrone
 		if (funds < amount){
+			// Check for insufficient funds
 			alert('Not enough funds.');
 		}
 		else{
@@ -135,6 +138,7 @@ function Horse(id, x, y){
 
 	this.vincente = false; //If the horse is the winner
 
+	/*Move the horse to right*/
 	this.moveRight = function(){
 		var horse = this;/*Assign horse to this object*/
 
@@ -182,6 +186,7 @@ function Horse(id, x, y){
 			}
 		}, 1000/this.speed)
 	}
+	//Move left
 	this.moveLeft = function(){
 		var horse = this;
 		setTimeout(function(){
@@ -201,6 +206,7 @@ function Horse(id, x, y){
 			}
 		}, 1000/this.speed)
 	}
+	//Move up
 	this.moveUp = function(){
 		var horse = this;
 		setTimeout(function(){

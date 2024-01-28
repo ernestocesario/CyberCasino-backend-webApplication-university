@@ -3,11 +3,13 @@ const backendUrl = 'http://localhost:8080';
 // Funzione per inviare una richiesta POST per generare il risultato del gioco
 //come parametro prende l'oggetto GameInformation di gameInformation.js
 export function generateResult(gameInformation) {
+    //serve per inviare una richiesta POST al backend
     return fetch(backendUrl+'/play', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
+        //converte l'oggetto in una stringa JSON
         body: JSON.stringify(gameInformation),
         credentials: 'include',
     })
@@ -24,6 +26,7 @@ export function generateResult(gameInformation) {
 
 // Funzione per inviare una richiesta POST per ottenere il saldo
 export function getBalance(token){
+    //serve per inviare una richiesta POST al backend
     return fetch(backendUrl+'/getBalance', {
         method: 'POST',
         headers: {
@@ -49,6 +52,7 @@ interface GameResult {
 */
 
 export function getToken(urlParam){
+    //se l'URL contiene il parametro token, ritorna il valore del parametro
     if(urlParam.has('token')){
         return urlParam.get('token');  //return string
     }
